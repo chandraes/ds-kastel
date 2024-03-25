@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createCustomerTitle">Tambah Project</h5>
+                <h5 class="modal-title" id="createCustomerTitle">Tambah Product</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{route('db.project.store')}}" method="post" id="createForm">
@@ -11,16 +11,16 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-4 col-md-12 mb-3">
-                            <label for="customer_id" class="form-label text-capitalize">Nama Customer</label>
+                            <label for="customer_id" class="form-label text-capitalize">Nama Konsumen</label>
                             <select class="form-select" name="customer_id" id="customer_id" required>
-                                <option value="" selected>Pilih Customer</option>
+                                <option value="" selected>Pilih Konsumen</option>
                                 @foreach ($customers as $customer)
                                 <option value="{{$customer->id}}">{{$customer->nama}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-lg-4 col-md-12 mb-3">
-                            <label for="nama" class="form-label">Nama Project</label>
+                            <label for="nama" class="form-label">Nama Product</label>
                             <input type="text" class="form-control" name="nama" id="nama" aria-describedby="helpId"
                                 placeholder="" required>
                         </div>

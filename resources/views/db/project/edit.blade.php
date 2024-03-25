@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editProjectTitle">Edit Project</h5>
+                <h5 class="modal-title" id="editProjectTitle">Edit Product</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="post" id="editForm" data-csrf-token="{{ csrf_token() }}">
@@ -12,16 +12,16 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-4 col-md-12 mb-3">
-                            <label for="customer_id" class="form-label text-capitalize">Nama Customer</label>
+                            <label for="customer_id" class="form-label text-capitalize">Nama Konsumen</label>
                             <select class="form-select" name="customer_id" id="edit_customer_id" required>
-                                <option value="" selected>Pilih Customer</option>
+                                <option value="" selected>Pilih Konsumen</option>
                                 @foreach ($customers as $customer)
                                 <option value="{{$customer->id}}">{{$customer->nama}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-lg-4 col-md-12 mb-3">
-                            <label for="nama" class="form-label">Nama Project</label>
+                            <label for="nama" class="form-label">Nama Product</label>
                             <input type="text" class="form-control" name="nama" id="edit_nama" aria-describedby="helpId"
                                 placeholder="" required>
                         </div>

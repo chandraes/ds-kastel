@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
-            <h1><u>PROJECT</u></h1>
+            <h1><u>PRODUCT</u></h1>
         </div>
     </div>
     <div class="flex-row justify-content-between mt-3">
@@ -15,7 +15,7 @@
                     <td><a href="{{route('db')}}"><img src="{{asset('images/database.svg')}}" alt="dokumen" width="30">
                             Database</a></td>
                     <td><a href="#" data-bs-toggle="modal" data-bs-target="#createCustomer"><img
-                                src="{{asset('images/project.svg')}}" width="30"> Tambah Project</a>
+                                src="{{asset('images/project.svg')}}" width="30"> Tambah Product</a>
 
                     </td>
                 </tr>
@@ -31,8 +31,8 @@
             <tr>
                 <th class="text-center align-middle" style="width: 5%">NO</th>
                 <th class="text-center align-middle">KODE</th>
-                <th class="text-center align-middle">CUSTOMER</th>
-                <th class="text-center align-middle">NAMA PROJECT</th>
+                <th class="text-center align-middle">KONSUMEN</th>
+                <th class="text-center align-middle">NAMA PRODUCT</th>
                 <th class="text-center align-middle">NO KONTRAK</th>
                 <th class="text-center align-middle">NILAI DPP</th>
                 <th class="text-center align-middle">TGL MULAI</th>
