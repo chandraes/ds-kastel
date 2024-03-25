@@ -69,6 +69,13 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::delete('/{project}/delete', [App\Http\Controllers\ProjectController::class, 'destroy'])->name('db.project.delete');
             });
 
+            Route::prefix('product')->group(function(){
+                Route::get('/', [App\Http\Controllers\DatabaseController::class, 'product'])->name('db.product');
+                Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'product_store'])->name('db.product.store');
+                Route::patch('/{product}/update', [App\Http\Controllers\DatabaseController::class, 'product_update'])->name('db.product.update');
+                Route::delete('/{product}/delete', [App\Http\Controllers\DatabaseController::class, 'product_destroy'])->name('db.product.delete');
+            });
+
             Route::get('/investor', [App\Http\Controllers\InvestorController::class, 'index'])->name('db.investor');
             Route::patch('/investor/{investor}/update', [App\Http\Controllers\InvestorController::class, 'update'])->name('db.investor.update');
 

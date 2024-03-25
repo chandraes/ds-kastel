@@ -27,7 +27,7 @@
 
 	</head>
 
-	<body class="bg-secondary bg-gradient">
+	<body class="bg-white bg-gradient">
 
 		<div>
 
