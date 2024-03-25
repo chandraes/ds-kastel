@@ -21,7 +21,7 @@
                             </select>
                         </div>
                         <div class="col-lg-4 col-md-12 mb-3">
-                            <label for="nama" class="form-label">Nama Product</label>
+                            <label for="nama" class="form-label">Nama Singkatan</label>
                             <input type="text" class="form-control" name="nama" id="edit_nama" aria-describedby="helpId"
                                 placeholder="" required>
                         </div>

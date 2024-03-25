@@ -33,7 +33,7 @@
                 <th class="text-center align-middle">KODE</th>
                 <th class="text-center align-middle">KONSUMEN</th>
                 <th class="text-center align-middle">NAMA KONSUMEN</th>
-                <th class="text-center align-middle">NO</th>
+                <th class="text-center align-middle">NO KONTRAK</th>
                 <th class="text-center align-middle">NILAI DPP</th>
                 <th class="text-center align-middle">TGL MULAI</th>
                 <th class="text-center align-middle">TGL JATUH TEMPO</th>
