@@ -32,8 +32,8 @@
                 <th class="text-center align-middle" style="width: 5%">NO</th>
                 <th class="text-center align-middle">KODE</th>
                 <th class="text-center align-middle">KONSUMEN</th>
-                <th class="text-center align-middle">NAMA PRODUCT</th>
-                <th class="text-center align-middle">NO KONSUMEN</th>
+                <th class="text-center align-middle">NAMA KONSUMEN</th>
+                <th class="text-center align-middle">NO</th>
                 <th class="text-center align-middle">NILAI DPP</th>
                 <th class="text-center align-middle">TGL MULAI</th>
                 <th class="text-center align-middle">TGL JATUH TEMPO</th>
