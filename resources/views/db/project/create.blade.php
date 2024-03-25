@@ -24,9 +24,24 @@
                             <input type="text" class="form-control" name="nama" id="nama" aria-describedby="helpId"
                                 placeholder="" required>
                         </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="npwp" class="form-label">NPWP</label>
+                            <input type="text" class="form-control" name="npwp" id="npwp" aria-describedby="helpId"
+                                placeholder="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="cp" class="form-label">Nama Contact Person</label>
+                            <input type="text" class="form-control" name="cp" id="cp" aria-describedby="helpId"
+                                placeholder="" required>
+                        </div>
                         <div class="col-lg-4 col-md-12 mb-3">
                             <label for="nomor_kontrak" class="form-label">No. WA</label>
                             <input type="text" class="form-control" name="nomor_kontrak" id="nomor_kontrak"
+                                aria-describedby="helpId" placeholder="" required>
+                        </div>
+                        <div class="col-lg-4 col-md-12 mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" id="email"
                                 aria-describedby="helpId" placeholder="" required>
                         </div>
                     </div>
@@ -69,7 +84,7 @@
                             </label>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
