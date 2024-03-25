@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createCustomerTitle">Tambah Product</h5>
+                <h5 class="modal-title" id="createCustomerTitle">Tambah Konsumen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{route('db.project.store')}}" method="post" id="createForm">
@@ -20,7 +20,7 @@
                             </select>
                         </div>
                         <div class="col-lg-4 col-md-12 mb-3">
-                            <label for="nama" class="form-label">Nama Product</label>
+                            <label for="nama" class="form-label">Nama Konsumen</label>
                             <input type="text" class="form-control" name="nama" id="nama" aria-describedby="helpId"
                                 placeholder="" required>
                         </div>
