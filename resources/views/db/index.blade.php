@@ -29,16 +29,16 @@
         @endif
     </div>
     <div class="row justify-content-left">
-        <div class="col-lg-4 my-4 text-center">
+        {{-- <div class="col-lg-4 my-4 text-center">
             <a href="{{route('db.customer')}}" class="text-decoration-none">
                 <img src="{{asset('images/customer.svg')}}" alt="" width="100">
                 <h2>KONSUMEN</h2>
             </a>
-        </div>
+        </div> --}}
         <div class="col-lg-4 my-4 text-center">
             <a href="{{route('db.project')}}" class="text-decoration-none">
-                <img src="{{asset('images/project.svg')}}" alt="" width="100">
-                <h2>Project</h2>
+                <img src="{{asset('images/customer.svg')}}" alt="" width="100">
+                <h2>KONSUMEN</h2>
             </a>
         </div>
         <div class="col-lg-4 my-4 text-center">
