@@ -45,6 +45,12 @@
                                 aria-describedby="helpId" placeholder="" required>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="alamat" class="form-label">Alamat</label>
+                            <textarea class="form-control" name="alamat" id="alamat" rows="3" required></textarea>
+                          </div>
+                    </div>
                     <hr>
                     <div class="row">
                         <div class="col-lg-4 col-md-12 col-sm-12 mb-3">
