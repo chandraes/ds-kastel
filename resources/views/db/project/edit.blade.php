@@ -26,7 +26,7 @@
                                 placeholder="" required>
                         </div>
                         <div class="col-lg-4 col-md-12 mb-3">
-                            <label for="nomor_kontrak" class="form-label">No. Kontrak</label>
+                            <label for="nomor_kontrak" class="form-label">No. WA</label>
                             <input type="text" class="form-control" name="nomor_kontrak" id="edit_nomor_kontrak" aria-describedby="helpId"
                                 placeholder="" required>
                         </div>

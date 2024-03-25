@@ -25,7 +25,7 @@
                                 placeholder="" required>
                         </div>
                         <div class="col-lg-4 col-md-12 mb-3">
-                            <label for="nomor_kontrak" class="form-label">No. Kontrak</label>
+                            <label for="nomor_kontrak" class="form-label">No. WA</label>
                             <input type="text" class="form-control" name="nomor_kontrak" id="nomor_kontrak"
                                 aria-describedby="helpId" placeholder="" required>
                         </div>
@@ -69,6 +69,7 @@
                             </label>
                         </div>
                     </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
