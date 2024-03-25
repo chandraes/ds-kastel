@@ -44,7 +44,7 @@
                         <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
                             data-bs-target="#editProject" onclick="editProject({{$d}}, {{$d->id}})"><i
                                 class="fa fa-edit"></i></button>
-                        <form action="{{route('db.product.delete', $d)}}" method="post" id="deleteForm-{{$d->id}}">
+                        <form action="{{route('db.project.delete', $d)}}" method="post" id="deleteForm-{{$d->id}}">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger m-2"><i class="fa fa-trash"></i></button>
