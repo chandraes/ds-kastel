@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
-            <h1><u>CUSTOMER</u></h1>
+            <h1><u>KONSUMEN</u></h1>
         </div>
     </div>
     <div class="flex-row justify-content-between mt-3">
@@ -16,7 +16,7 @@
                             Database</a></td>
                     @if (auth()->user()->role == 'admin' || auth()->user()->role == 'su')
                     <td><a href="#" data-bs-toggle="modal" data-bs-target="#createCustomer"><img
-                                src="{{asset('images/customer.svg')}}" width="30"> Tambah Customer</a>
+                                src="{{asset('images/customer.svg')}}" width="30"> Tambah Konsumen</a>
                     </td>
                     @endif
                     @include('db.customer.create')

@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editCustomerTitle">Edit Customer @isset($d) {{$d->nama}} @endisset</h5>
+                <h5 class="modal-title" id="editCustomerTitle">Edit Konsumen @isset($d) {{$d->nama}} @endisset</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="post" id="editForm">
