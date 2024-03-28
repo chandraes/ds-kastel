@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('bank')->nullable();
             $table->bigInteger('modal_investor')->nullable();
             $table->bigInteger('modal_investor_terakhir');
-            $table->foreignId('project_id')->nullable()->constrained('projects');
             $table->timestamps();
         });
     }

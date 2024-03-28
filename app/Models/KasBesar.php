@@ -15,11 +15,6 @@ class KasBesar extends Model
 
     protected $appends = ['nf_nominal', 'tanggal', 'kode_deposit', 'kode_kas_kecil', 'nf_saldo', 'nf_modal_investor'];
 
-    public function project()
-    {
-        return $this->belongsTo(Project::class);
-    }
-
     public function investorModal()
     {
         return $this->belongsTo(InvestorModal::class);

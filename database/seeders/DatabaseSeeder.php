@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RekeningSeeder::class,
             GroupWaSeeder::class,
-            ProjectStatusSeeder::class,
         ]);
     }
 }
