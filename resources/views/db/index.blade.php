@@ -42,13 +42,13 @@
             </a>
         </div> --}}
         <div class="col-lg-3 col-md-3 col-sm-6 my-4 text-center">
-            <a href="{{route('db.project')}}" class="text-decoration-none">
+            <a href="#" class="text-decoration-none">
                 <img src="{{asset('images/customer.svg')}}" alt="" width="100">
                 <h2>KONSUMEN</h2>
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 my-4 text-center">
-            <a href="{{route('db.product')}}" class="text-decoration-none">
+            <a href="#" class="text-decoration-none">
                 <img src="{{asset('images/project.svg')}}" alt="" width="100">
                 <h2>PRODUCT</h2>
             </a>

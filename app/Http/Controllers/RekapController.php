@@ -20,12 +20,10 @@ class RekapController extends Controller
 {
     public function index()
     {
-        $customer = Customer::all();
-        $project = Project::where('project_status_id', 1)->get();
+
 
         return view('rekap.index', [
-            'customer' => $customer,
-            'project' => $project,
+
         ]);
     }
 
@@ -88,98 +86,6 @@ class RekapController extends Controller
         ])->setPaper('a4', 'landscape');
 
         return $pdf->stream('Rekap Kas Besar '.$stringBulanNow.' '.$tahun.'.pdf');
-    }
-
-    public function kas_project(Request $request)
-    {
-        $project = Project::findOrFail($request->project);
-
-        $kas = new KasProject();
-
-        $bulan = $request->bulan ?? date('m');
-        $tahun = $request->tahun ?? date('Y');
-
-        $dataTahun = $kas->dataTahun();
-
-        $data = $kas->kasProject($project->id, $bulan, $tahun);
-
-        $bulanSebelumnya = $bulan - 1;
-        $bulanSebelumnya = $bulanSebelumnya == 0 ? 12 : $bulanSebelumnya;
-        $tahunSebelumnya = $bulanSebelumnya == 12 ? $tahun - 1 : $tahun;
-        $stringBulan = Carbon::createFromDate($tahun, $bulanSebelumnya)->locale('id')->monthName;
-        $stringBulanNow = Carbon::createFromDate($tahun, $bulan)->locale('id')->monthName;
-
-        $dataSebelumnya = $kas->kasProjectByMonth($project->id, $bulanSebelumnya, $tahunSebelumnya);
-
-        return view('rekap.kas-project.index', [
-            'data' => $data,
-            'project' => $project,
-            'dataTahun' => $dataTahun,
-            'dataSebelumnya' => $dataSebelumnya,
-            'stringBulan' => $stringBulan,
-            'tahun' => $tahun,
-            'tahunSebelumnya' => $tahunSebelumnya,
-            'bulan' => $bulan,
-            'stringBulanNow' => $stringBulanNow,
-        ]);
-    }
-
-    public function kas_project_print(Request $request)
-    {
-        $kas = new KasProject();
-        $project = Project::findOrFail($request->project);
-
-        $bulan = $request->bulan ?? date('m');
-        $tahun = $request->tahun ?? date('Y');
-
-        $data = $kas->kasProject($request->project,$bulan, $tahun);
-
-        $bulanSebelumnya = $bulan - 1;
-        $bulanSebelumnya = $bulanSebelumnya == 0 ? 12 : $bulanSebelumnya;
-        $tahunSebelumnya = $bulanSebelumnya == 12 ? $tahun - 1 : $tahun;
-        $stringBulan = Carbon::createFromDate($tahun, $bulanSebelumnya)->locale('id')->monthName;
-        $stringBulanNow = Carbon::createFromDate($tahun, $bulan)->locale('id')->monthName;
-
-        $dataSebelumnya = $kas->kasProjectByMonth($request->project, $bulanSebelumnya, $tahunSebelumnya);
-
-        $pdf = PDF::loadview('rekap.kas-project.pdf', [
-            'data' => $data,
-            'project' => $project,
-            'dataSebelumnya' => $dataSebelumnya,
-            'stringBulan' => $stringBulan,
-            'tahun' => $tahun,
-            'tahunSebelumnya' => $tahunSebelumnya,
-            'bulan' => $bulan,
-            'stringBulanNow' => $stringBulanNow,
-        ])->setPaper('a4', 'landscape');
-
-        return $pdf->stream('Rekap Kas Project '.$stringBulanNow.' '.$tahun.'.pdf');
-    }
-
-    public function void_kas_project(KasProject $kasProject)
-    {
-        $db = new KasProject();
-        $store = $db->void_transaksi($kasProject);
-
-        return redirect()->back()->with($store['status'], $store['message']);
-    }
-
-    public function detail_tagihan(InvoiceTagihan $invoice)
-    {
-        $data = $invoice->transaksi;
-        $customer = $invoice->customer;
-        $total = $data->sum('total');
-        $totalBerat = $data->sum('berat');
-        $totalTagihan = $data->sum('total_tagihan');
-
-
-        return view('rekap.kas-besar.detail-tagihan', [
-            'data' => $data,
-            'customer' => $customer,
-            'totalBerat' => $totalBerat,
-            'total' => $total,
-            'totalTagihan' => $totalTagihan,
-        ]);
     }
 
 
@@ -280,49 +186,6 @@ class RekapController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Data berhasil di void');
-    }
-
-    public function rekap_invoice()
-    {
-        $data = InvoiceTagihan::with(['invoiceTagihanDetails', 'customer', 'project', 'kasProjects'])->where('finished', 1)->get();
-
-        return view('rekap.invoice.index', [
-            'data' => $data,
-        ]);
-    }
-
-    public function rekap_invoice_detail_project(Request $request)
-    {
-        $project = Project::findOrFail($request->project);
-
-        $kas = new KasProject();
-
-        $bulan = $request->bulan ?? date('m');
-        $tahun = $request->tahun ?? date('Y');
-
-        $dataTahun = $kas->dataTahun();
-
-        $data = $kas->kasProject($project->id, $bulan, $tahun);
-
-        $bulanSebelumnya = $bulan - 1;
-        $bulanSebelumnya = $bulanSebelumnya == 0 ? 12 : $bulanSebelumnya;
-        $tahunSebelumnya = $bulanSebelumnya == 12 ? $tahun - 1 : $tahun;
-        $stringBulan = Carbon::createFromDate($tahun, $bulanSebelumnya)->locale('id')->monthName;
-        $stringBulanNow = Carbon::createFromDate($tahun, $bulan)->locale('id')->monthName;
-
-        $dataSebelumnya = $kas->kasProjectByMonth($project->id, $bulanSebelumnya, $tahunSebelumnya);
-
-        return view('rekap.invoice.detail', [
-            'data' => $data,
-            'project' => $project,
-            'dataTahun' => $dataTahun,
-            'dataSebelumnya' => $dataSebelumnya,
-            'stringBulan' => $stringBulan,
-            'tahun' => $tahun,
-            'tahunSebelumnya' => $tahunSebelumnya,
-            'bulan' => $bulan,
-            'stringBulanNow' => $stringBulanNow,
-        ]);
     }
 
     public function rekap_investor()

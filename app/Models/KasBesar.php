@@ -67,7 +67,7 @@ class KasBesar extends Model
 
     public function kasBesar($month, $year)
     {
-        return $this->with(['project', 'project.invoice_tagihan', 'project.customer'])->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
+        return $this->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
     }
 
     public function kasBesarByMonth($month, $year)

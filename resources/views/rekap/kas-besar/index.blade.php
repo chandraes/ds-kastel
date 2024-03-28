@@ -71,7 +71,6 @@
             <tr>
                 <th class="text-center align-middle">Tanggal</th>
                 <th class="text-center align-middle">Uraian</th>
-                <th class="text-center align-middle">Project</th>
                 <th class="text-center align-middle">Deposit</th>
                 <th class="text-center align-middle">Kas Kecil</th>
                 <th class="text-center align-middle">Masuk</th>
@@ -82,7 +81,7 @@
                 <th class="text-center align-middle">Modal Investor</th>
             </tr>
             <tr class="table-warning">
-                <td colspan="6" class="text-center align-middle">Saldo Bulan
+                <td colspan="5" class="text-center align-middle">Saldo Bulan
                     {{$stringBulan}} {{$tahunSebelumnya}}</td>
                 <td></td>
                 <td class="text-end align-middle">Rp. {{$dataSebelumnya ? $dataSebelumnya->nf_saldo : ''}}</td>
@@ -106,15 +105,7 @@
                         @endif
 
                     </td>
-                    <td class="text-start align-middle">
-                        @if ($d->project)
-                        <div class="text-center">
-                            <a href="#"  data-bs-toggle="modal"
-                            data-bs-target="#modalId">{{$d->project->kode_project}}</a>
-                        </div>
-                        @include('rekap.kas-besar.detail-project')
-                        
-                        @endif
+
                     <td class="text-center align-middle">{{$d->kode_deposit}}</td>
                     <td class="text-center align-middle">{{$d->kode_kas_kecil}}</td>
                     <td class="text-end align-middle">{{$d->jenis === 1 ?
@@ -133,7 +124,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td class="text-center align-middle" colspan="5"><strong>GRAND TOTAL</strong></td>
+                    <td class="text-center align-middle" colspan="4"><strong>GRAND TOTAL</strong></td>
                     <td class="text-end align-middle"><strong>{{number_format($data->where('jenis',
                             1)->sum('nominal'), 0, ',', '.')}}</strong></td>
                     <td class="text-end align-middle text-danger"><strong>{{number_format($data->where('jenis',

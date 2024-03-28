@@ -21,14 +21,13 @@
             @include('billing.modal-form-kas-kecil')
         </div>
         @if (auth()->user()->role == 'admin' || auth()->user()->role == 'su')
-        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
+        {{-- <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalTransaksi">
                 <img src="{{asset('images/transaksi.svg')}}" alt="" width="100">
                 <h2>FORM TRANSAKSI</h2>
             </a>
             @include('billing.modal-form-transaksi')
-
-        </div>
+        </div> --}}
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalLain">
                 <img src="{{asset('images/form-lain.svg')}}" alt="" width="100">
@@ -61,7 +60,7 @@
     </div>
     <div class="row justify-content-left">
 
-        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
+        {{-- <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('nota-tagihan.index')}}" class="text-decoration-none">
                 <img src="{{asset('images/nota-tagihan.svg')}}" alt="" width="100">
                 <h2>NOTA TAGIHAN @if($nt != 0) <span class="text-danger">({{$nt}})</span> @endif</h2>
@@ -90,7 +89,7 @@
                 <img src="{{asset('images/ppn-susulan.svg')}}" alt="" width="100">
                 <h2>PPN MASUKAN SUSULAN</h2>
             </a>
-        </div>
+        </div> --}}
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="100">

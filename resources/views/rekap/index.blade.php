@@ -26,45 +26,12 @@
         </div>
     </div>
     <div class="row justify-content-left">
-        <div class="col-lg-4 mt-3 mb-3 text-center">
-            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#kasSupplier">
-                <img src="{{asset('images/kas-supplier.svg')}}" alt="" width="100">
-                <h2>KAS PROJECT</h2>
-            </a>
-            <div class="modal fade" id="kasSupplier" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-                role="dialog" aria-labelledby="kasSupplierTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="kasSupplierTitle">Kas Project</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form action="{{route('rekap.kas-project')}}" method="get">
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <select class="form-select" name="project" id="project" required>
-                                        <option value="">-- Pilih Project --</option>
-                                        @foreach ($project as $i)
-                                        <option value="{{$i->id}}">{{$i->nama}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                <button type="submit" class="btn btn-primary">Lanjutkan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 mt-3 mb-3 text-center">
+        {{-- <div class="col-lg-4 mt-3 mb-3 text-center">
             <a href="{{route('rekap.invoice')}}" class="text-decoration-none">
                 <img src="{{asset('images/rekap-invoice.svg')}}" alt="" width="100">
                 <h2>INVOICE</h2>
             </a>
-        </div>
+        </div> --}}
         <div class="col-lg-4 mt-3 mb-3 text-center">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="100">

@@ -58,16 +58,7 @@ Route::group(['middleware' => ['auth']], function() {
         });
 
         Route::group(['middleware' => ['role:su,admin']], function() {
-            Route::post('/customer/store', [App\Http\Controllers\CustomerController::class, 'store'])->name('db.customer.store');
-            Route::patch('/customer/{customer}/update', [App\Http\Controllers\CustomerController::class, 'update'])->name('db.customer.update');
-            Route::delete('/customer/{customer}/delete', [App\Http\Controllers\CustomerController::class, 'destroy'])->name('db.customer.delete');
 
-            Route::prefix('project')->group(function(){
-                Route::get('/', [App\Http\Controllers\ProjectController::class, 'index'])->name('db.project');
-                Route::post('/store', [App\Http\Controllers\ProjectController::class, 'store'])->name('db.project.store');
-                Route::patch('/{project}/update', [App\Http\Controllers\ProjectController::class, 'update'])->name('db.project.update');
-                Route::delete('/{project}/delete', [App\Http\Controllers\ProjectController::class, 'destroy'])->name('db.project.delete');
-            });
 
             Route::prefix('product')->group(function(){
                 Route::get('/', [App\Http\Controllers\DatabaseController::class, 'product'])->name('db.product');
