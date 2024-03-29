@@ -51,20 +51,21 @@ Route::group(['middleware' => ['auth']], function() {
         // ROUTE DB
     Route::view('db', 'db.index')->name('db')->middleware('role:su,admin,user');
     Route::prefix('db')->group(function () {
-
-        Route::group(['middleware' => ['role:su,admin,user']], function() {
-            Route::get('/customer', [App\Http\Controllers\CustomerController::class, 'index'])->name('db.customer');
-            Route::patch('/customer/{customer}/update-harga', [App\Http\Controllers\CustomerController::class, 'update_harga'])->name('db.customer.update-harga');
-        });
-
+        
         Route::group(['middleware' => ['role:su,admin']], function() {
-
 
             Route::prefix('product')->group(function(){
                 Route::get('/', [App\Http\Controllers\DatabaseController::class, 'product'])->name('db.product');
                 Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'product_store'])->name('db.product.store');
                 Route::patch('/{product}/update', [App\Http\Controllers\DatabaseController::class, 'product_update'])->name('db.product.update');
                 Route::delete('/{product}/delete', [App\Http\Controllers\DatabaseController::class, 'product_destroy'])->name('db.product.delete');
+            });
+
+            Route::prefix('konsumen')->group(function(){
+                Route::get('/', [App\Http\Controllers\DatabaseController::class, 'konsumen'])->name('db.konsumen');
+                Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'konsumen_store'])->name('db.konsumen.store');
+                Route::patch('/{konsumen}/update', [App\Http\Controllers\DatabaseController::class, 'konsumen_update'])->name('db.konsumen.update');
+                Route::delete('/{konsumen}/delete', [App\Http\Controllers\DatabaseController::class, 'konsumen_delete'])->name('db.konsumen.delete');
             });
 
             Route::get('/investor', [App\Http\Controllers\InvestorController::class, 'index'])->name('db.investor');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Konsumen;
 use App\Models\Pengelola;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -103,5 +104,63 @@ class DatabaseController extends Controller
         $pengelola->delete();
 
         return redirect()->route('db.pengelola')->with('success', 'Data berhasil dihapus');
+    }
+
+    public function konsumen()
+    {
+        $data = Konsumen::all();
+
+        return view('db.konsumen.index', [
+            'data' => $data
+        ]);
+    }
+
+    public function konsumen_store(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+            'singkatan' => 'required',
+            'cp' => 'required',
+            'no_hp' => 'required',
+            'npwp' => 'required',
+            'alamat' => 'required',
+            'ppn' => 'nullable',
+            'pph' => 'nullable'
+        ]);
+
+        $data['ppn'] = $request->filled('ppn') ? 1 : 0;
+        $data['pph'] = $request->filled('pph') ? 1 : 0;
+
+        Konsumen::create($data);
+
+        return redirect()->route('db.konsumen')->with('success', 'Data berhasil ditambahkan');
+    }
+
+    public function konsumen_update(Konsumen $konsumen, Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+            'singkatan' => 'required',
+            'cp' => 'required',
+            'no_hp' => 'required',
+            'npwp' => 'required',
+            'alamat' => 'required',
+            'ppn' => 'nullable',
+            'pph' => 'nullable'
+        ]);
+
+        $data['ppn'] = $request->filled('ppn') ? 1 : 0;
+        $data['pph'] = $request->filled('pph') ? 1 : 0;
+
+        $konsumen->update($data);
+
+        return redirect()->route('db.konsumen')->with('success', 'Data berhasil diupdate');
+    }
+
+    public function konsumen_delete(Konsumen $konsumen)
+    {
+        $konsumen->delete();
+
+        return redirect()->route('db.konsumen')->with('success', 'Data berhasil dihapus');
     }
 }
