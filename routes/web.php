@@ -99,7 +99,6 @@ Route::group(['middleware' => ['auth']], function() {
                     Route::patch('/{kategori}/update', [App\Http\Controllers\BahanBakuController::class, 'kategori_update'])->name('db.bahan-baku.kategori.update');
                     Route::delete('/{kategori}/delete', [App\Http\Controllers\BahanBakuController::class, 'kategori_destroy'])->name('db.bahan-baku.kategori.delete');
                 });
-
             });
         });
     });
@@ -166,11 +165,9 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/form-lain/keluar', [App\Http\Controllers\FormLainController::class, 'keluar'])->name('form-lain.keluar');
             Route::post('/form-lain/keluar/store', [App\Http\Controllers\FormLainController::class, 'keluar_store'])->name('form-lain.keluar.store');
 
-            Route::get('/form-transaksi', [App\Http\Controllers\FormTransaksiController::class, 'index'])->name('form-transaksi.index');
-            Route::get('/form-transaksi/tambah/{customer}', [App\Http\Controllers\FormTransaksiController::class, 'tambah'])->name('form-transaksi.tambah');
-            Route::post('/form-transaksi/tambah-store', [App\Http\Controllers\FormTransaksiController::class, 'tambah_store'])->name('form-transaksi.tambah-store');
-            Route::get('/form-transaksi/masuk', [App\Http\Controllers\FormTransaksiController::class, 'masuk'])->name('form-transaksi.masuk');
-            Route::post('/form-transaksi/masuk/store', [App\Http\Controllers\FormTransaksiController::class, 'masuk_store'])->name('form-transaksi.masuk.store');
+            Route::prefix('transaksi')->group(function(){
+                Route::get('/', [App\Http\Controllers\FormTransaksiController::class, 'index'])->name('billing.form-transaksi');
+            });
 
             Route::get('/nota-tagihan', [App\Http\Controllers\NotaTagihanController::class, 'index'])->name('nota-tagihan.index');
             Route::post('/nota-tagihan/cicilan/{invoice}', [App\Http\Controllers\NotaTagihanController::class, 'cicilan'])->name('nota-tagihan.cicilan');

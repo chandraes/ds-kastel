@@ -4,7 +4,7 @@
     <h1>BILLING</h1>
 </div>
 @include('swal')
-<div class="container mt-5">
+<div class="container mt-3">
     <div class="row justify-content-left">
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#formDeposit">
@@ -56,7 +56,12 @@
             </div>
         </div>
         @endif
-
+        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
+            <a href="{{route('billing.form-transaksi')}}" class="text-decoration-none">
+                <img src="{{asset('images/transaksi.svg')}}" alt="" width="80">
+                <h3 class="mt-2">FORM TRANSAKSI</h3>
+            </a>
+        </div>
     </div>
     <div class="row justify-content-left">
 
@@ -130,13 +135,6 @@
         }
     }
 
-    function funTransaksi(){
-        var selectTransaksi = document.getElementById('selectTransaksi').value;
-        if(selectTransaksi == 'masuk'){
-            window.location.href = "{{route('form-transaksi.masuk')}}";
-        }else if(selectTransaksi == 'keluar'){
-            window.location.href = "{{route('form-transaksi.index')}}";
-        }
-    }
+
 </script>
 @endpush
