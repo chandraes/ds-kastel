@@ -64,7 +64,7 @@
 @push('js')
 
 <script src="{{asset('assets/js/cleave.min.js')}}"></script>
-
+<script src="{{ asset('build/main.js') }}"></script>
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
     function editInvestor(data, id) {
@@ -79,7 +79,7 @@
         scrollCollapse: true,
         scrollY: "550px",
     });
-
+    
 
     $('#createForm').submit(function(e){
             e.preventDefault();

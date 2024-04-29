@@ -51,7 +51,7 @@ Route::group(['middleware' => ['auth']], function() {
         // ROUTE DB
     Route::view('db', 'db.index')->name('db')->middleware('role:su,admin,user');
     Route::prefix('db')->group(function () {
-        
+
         Route::group(['middleware' => ['role:su,admin']], function() {
 
             Route::prefix('product')->group(function(){
@@ -86,6 +86,20 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'pengelola_store'])->name('db.pengelola.store');
                 Route::patch('/{pengelola}/update', [App\Http\Controllers\DatabaseController::class, 'pengelola_update'])->name('db.pengelola.update');
                 Route::delete('/{pengelola}/delete', [App\Http\Controllers\DatabaseController::class, 'pengelola_delete'])->name('db.pengelola.delete');
+            });
+
+            Route::prefix('bahan-baku')->group(function(){
+                Route::get('/', [App\Http\Controllers\BahanBakuController::class, 'index'])->name('db.bahan-baku');
+                Route::post('/store', [App\Http\Controllers\BahanBakuController::class, 'store'])->name('db.bahan-baku.store');
+                Route::delete('/{bahan}/delete', [App\Http\Controllers\BahanBakuController::class, 'destroy'])->name('db.bahan-baku.delete');
+                Route::patch('/update/{bahan}', [App\Http\Controllers\BahanBakuController::class, 'update'])->name('db.bahan-baku.update');
+
+                Route::prefix('kategori')->group(function(){
+                    Route::post('/store', [App\Http\Controllers\BahanBakuController::class, 'kategori_store'])->name('db.bahan-baku.kategori.store');
+                    Route::patch('/{kategori}/update', [App\Http\Controllers\BahanBakuController::class, 'kategori_update'])->name('db.bahan-baku.kategori.update');
+                    Route::delete('/{kategori}/delete', [App\Http\Controllers\BahanBakuController::class, 'kategori_destroy'])->name('db.bahan-baku.kategori.delete');
+                });
+
             });
         });
     });
