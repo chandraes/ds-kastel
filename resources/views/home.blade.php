@@ -3,7 +3,7 @@
 <div class="container text-center">
     <h1>DASHBOARD</h1>
 </div>
-<div class="container mt-5">
+<div class="container mt-3">
     <div class="row justify-content-left">
         @if (auth()->user()->role != 'supplier' && auth()->user()->role != 'investor')
         <div class="col-md-3 text-center mb-5 mt-3">

@@ -62,6 +62,12 @@
                 <h3 class="mt-2">FORM TRANSAKSI</h3>
             </a>
         </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
+            <a href="{{route('home')}}" class="text-decoration-none">
+                <img src="{{asset('images/dashboard.svg')}}" alt="" width="80">
+                <h3 class="mt-2">DASHBOARD</h3>
+            </a>
+        </div>
     </div>
     <div class="row justify-content-left">
 
@@ -95,12 +101,7 @@
                 <h3 class="mt-2">PPN MASUKAN SUSULAN</h3>
             </a>
         </div> --}}
-        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="{{route('home')}}" class="text-decoration-none">
-                <img src="{{asset('images/dashboard.svg')}}" alt="" width="80">
-                <h3 class="mt-2">DASHBOARD</h3>
-            </a>
-        </div>
+
     </div>
 </div>
 @endsection

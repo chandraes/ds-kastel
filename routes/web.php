@@ -100,6 +100,14 @@ Route::group(['middleware' => ['auth']], function() {
                     Route::delete('/{kategori}/delete', [App\Http\Controllers\BahanBakuController::class, 'kategori_destroy'])->name('db.bahan-baku.kategori.delete');
                 });
             });
+
+            Route::prefix('satuan')->group(function(){
+                Route::get('/', [App\Http\Controllers\DatabaseController::class, 'satuan'])->name('db.satuan');
+                Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'satuan_store'])->name('db.satuan.store');
+                Route::patch('/update/{satuan}', [App\Http\Controllers\DatabaseController::class, 'satuan_update'])->name('db.satuan.update');
+                Route::delete('/delete/{satuan}', [App\Http\Controllers\DatabaseController::class, 'satuan_delete'])->name('db.satuan.delete');
+
+            });
         });
     });
 

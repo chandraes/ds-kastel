@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\db\Satuan;
 use App\Models\Konsumen;
 use App\Models\Pengelola;
 use App\Models\Product;
@@ -162,5 +163,43 @@ class DatabaseController extends Controller
         $konsumen->delete();
 
         return redirect()->route('db.konsumen')->with('success', 'Data berhasil dihapus');
+    }
+
+    public function satuan()
+    {
+        $data = Satuan::all();
+
+        return view('db.satuan.index', [
+            'data' => $data
+        ]);
+    }
+
+    public function satuan_store(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required'
+        ]);
+
+        Satuan::create($data);
+
+        return redirect()->route('db.satuan')->with('success', 'Data berhasil ditambahkan');
+    }
+
+    public function satuan_update(Satuan $satuan, Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required'
+        ]);
+
+        $satuan->update($data);
+
+        return redirect()->route('db.satuan')->with('success', 'Data berhasil diupdate');
+    }
+
+    public function satuan_delete(Satuan $satuan)
+    {
+        $satuan->delete();
+
+        return redirect()->route('db.satuan')->with('success', 'Data berhasil dihapus');
     }
 }
