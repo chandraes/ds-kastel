@@ -63,7 +63,7 @@ class BahanBakuController extends Controller
             'satuan_id' => 'required_if:apa_konversi,0',
         ]);
 
-        if ($data['apa_konversi'] == 0) {
+        if ($data['apa_konversi'] == 1) {
             $data['satuan_id'] = 1;
         }
 

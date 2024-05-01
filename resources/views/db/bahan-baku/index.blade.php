@@ -22,7 +22,6 @@
                     <td>
                         <td><a href="#" data-bs-toggle="modal" data-bs-target="#create-category"><img src="{{asset('images/kategori.svg')}}" alt="dokumen"
                             width="30"> Tambah Kategori</a></td>
-
                     </td>
                     <td>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#createModal"">
@@ -54,12 +53,18 @@
             @foreach ($data->where('apa_konversi', 1) as $d)
                 <tr>
                     <td class="text-center align-middle">{{$loop->iteration}}</td>
-                    <td class="text-center align-middle">{{$d->kategori->nama}}</td>
+                    <td class="text-center align-middle">
+                        @if ($d->kategori)
+                        {{$d->kategori->nama}}
+                        @endif
+                    </td>
                     <td class="text-center align-middle">{{$d->nama}}</td>
                     <td class="text-center align-middle">1 : {{$d->konversi}}</td>
                     <td class="text-center align-middle">{{$d->stock}}</td>
                     <td class="text-center align-middle">{{$d->stock * $d->konversi}}</td>
-                    <td class="text-end align-middle"></td>
+                    <td class="text-end align-middle">
+                        {{$d->nf_modal}}
+                    </td>
                     <td class="text-center align-middle">
                         <div class="d-flex justify-content-center m-2">
                             <button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal"
@@ -77,6 +82,23 @@
                 </tr>
             @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <th class="text-center align-middle" colspan="4">
+                    Grand Total
+                </th>
+                <th class="text-center align-middle">
+                    {{$data->where('apa_konversi', 1)->sum('stock')}}
+                </th>
+                <th class="text-center align-middle">
+                    {{$data->where('apa_konversi', 1)->sum('stock') * $data->where('apa_konversi', 1)->sum('konversi')}}
+                </th>
+                <th class="text-end align-middle">
+                    {{$data->where('apa_konversi', 1)->sum('nf_modal')}}
+                </th>
+                <th class="text-center align-middle"></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 <div class="container mt-5 table-responsive ">
@@ -99,11 +121,21 @@
             @foreach ($data->where('apa_konversi', 0) as $a)
                 <tr>
                     <td class="text-center align-middle">{{$loop->iteration}}</td>
-                    <td class="text-center align-middle">{{$a->kategori->nama}}</td>
+                    <td class="text-center align-middle">
+                        @if ($a->kategori)
+                        {{$a->kategori->nama}}
+                        @endif
+                    </td>
                     <td class="text-center align-middle">{{$a->nama}}</td>
                     <td class="text-center align-middle">{{$a->stock}}</td>
-                    <td class="text-center align-middle">{{$a->satuan->nama}}</td>
-                    <td class="text-end align-middle"></td>
+                    <td class="text-center align-middle">
+                        @if ($a->satuan)
+                        {{$a->satuan->nama}}
+                        @endif
+                    </td>
+                    <td class="text-end align-middle">
+                        {{$a->nf_modal}}
+                    </td>
                     <td class="text-center align-middle">
                         <div class="d-flex justify-content-center m-2">
                             <button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal"
@@ -121,6 +153,21 @@
                 </tr>
             @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <th class="text-center align-middle" colspan="3">
+                    Grand Total
+                </th>
+                <th class="text-center align-middle">
+                    {{$data->where('apa_konversi', 0)->sum('stock')}}
+                </th>
+                <th class="text-center align-middle"></th>
+                <th class="text-end align-middle">
+                    {{$data->where('apa_konversi', 0)->sum('nf_modal')}}
+                </th>
+                <th class="text-center align-middle"></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 @endsection

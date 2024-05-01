@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('nama');
             $table->float('jumlah');
             $table->foreignId('satuan_id')->nullable()->constrained('satuans')->onDelete('set null');
+            $table->integer('harga');
+            $table->integer('add_fee')->default(0);
             $table->timestamps();
         });
     }
