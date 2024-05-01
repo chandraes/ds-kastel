@@ -36,23 +36,17 @@
     </div>
     <div class="row justify-content-left">
         {{-- <div class="col-lg-3 col-md-3 col-sm-6 my-4 text-center">
-            <a href="{{route('db.customer')}}" class="text-decoration-none">
-                <img src="{{asset('images/customer.svg')}}" alt="" width="80">
-                <h3 class="mt-2">KONSUMEN</h3>
-            </a>
-        </div> --}}
-        <div class="col-lg-3 col-md-3 col-sm-6 my-4 text-center">
             <a href="{{route('db.konsumen')}}" class="text-decoration-none">
                 <img src="{{asset('images/customer.svg')}}" alt="" width="80">
                 <h3 class="mt-2">KONSUMEN</h3>
             </a>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 my-4 text-center">
+        </div> --}}
+        {{-- <div class="col-lg-3 col-md-3 col-sm-6 my-4 text-center">
             <a href="#" class="text-decoration-none">
                 <img src="{{asset('images/project.svg')}}" alt="" width="80">
                 <h3 class="mt-2">PRODUCT</h3>
             </a>
-        </div>
+        </div> --}}
         <div class="col-lg-3 col-md-3 col-sm-6 my-4 text-center">
             <a href="{{route('db.satuan')}}" class="text-decoration-none">
                 <img src="{{asset('images/satuan.svg')}}" alt="" width="80">

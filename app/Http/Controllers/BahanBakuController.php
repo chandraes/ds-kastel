@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\db\BahanBaku;
 use App\Models\db\KategoriBahan;
+use App\Models\db\Satuan;
 use Illuminate\Http\Request;
 
 class BahanBakuController extends Controller
@@ -11,8 +12,12 @@ class BahanBakuController extends Controller
     public function index()
     {
         $kategori = KategoriBahan::with(['bahanBaku'])->get();
+        $data = BahanBaku::with(['kategori', 'satuan'])->get();
+        $satuan = Satuan::all();
         return view('db.bahan-baku.index', [
             'kategori' => $kategori,
+            'data' => $data,
+            'satuan' => $satuan
         ]);
     }
 
@@ -51,37 +56,35 @@ class BahanBakuController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
+            'apa_konversi' => 'required',
             'kategori_bahan_id' => 'required',
             'nama' => 'required',
-            'konversi' => 'required',
+            'konversi' => 'required_if:apa_konversi,1',
+            'satuan_id' => 'required_if:apa_konversi,0',
         ]);
 
-        BahanBaku::create([
-            'kategori_bahan_id' => $data['kategori_bahan_id'],
-            'nama' => $data['nama'],
-            'konversi' => $data['konversi'],
-        ]);
+        if ($data['apa_konversi'] == 0) {
+            $data['satuan_id'] = 1;
+        }
 
-
+        BahanBaku::create($data);
         return redirect()->route('db.bahan-baku')->with('success', 'Bahan baku berhasil ditambahkan');
     }
 
     public function update(BahanBaku $bahan, Request $request)
     {
         $data = $request->validate([
+            'apa_konversi' => 'required',
             'kategori_bahan_id' => 'required',
             'nama' => 'required',
-            'konversi' => 'required',
+            'konversi' => 'required_if:apa_konversi,1',
+            'satuan_id' => 'required_if:apa_konversi,0',
         ]);
 
-        $bahan->update([
-            'kategori_bahan_id' => $data['kategori_bahan_id'],
-            'nama' => $data['nama'],
-            'konversi' => $data['konversi'],
-        ]);
+        $bahan->update($data);
 
         return redirect()->route('db.bahan-baku')->with('success', 'Bahan baku berhasil diubah');
-    
+
     }
 
     public function destroy(BahanBaku $bahan)

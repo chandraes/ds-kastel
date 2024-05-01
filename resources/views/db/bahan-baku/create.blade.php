@@ -10,9 +10,16 @@
             </div>
             <form action="{{route('db.bahan-baku.store')}}" method="post" id="masukForm">
                 @csrf
-
                 <div class="modal-body">
                     <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="apa_konversi" class="form-label">Apakah membutuhkan Konversi?</label>
+                            <select class="form-select" name="apa_konversi" id="apa_konversi" required onchange="createFun()">
+                                <option value="">-- Pilih --</option>
+                                <option value="0">Tidak</option>
+                                <option value="1">Ya</option>
+                            </select>
+                        </div>
                         <div class="col-md-4 mb-3">
                                 <label for="kategori_bahan_id" class="form-label">Kategori Barang</label>
                                 <select class="form-select" name="kategori_bahan_id" id="kategori_bahan_id" required>
@@ -27,7 +34,7 @@
                             <input type="text" class="form-control" name="nama" id="nama" aria-describedby="helpId"
                                 placeholder="" />
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-4 mb-3" id="divKonversi" hidden>
                             <label for="konversi" class="form-label">Konversi</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon1">1</span>
@@ -35,6 +42,15 @@
                                 <input type="text" class="form-control" name="konversi" id="konversi">
                             </div>
                             <small class="text-danger">Gunakan "." untuk nilai desimal!!</small>
+                        </div>
+                        <div class="col-md-4 mb-3" id="divSatuan" hidden>
+                            <label for="satuan_id" class="form-label">Satuan</label>
+                            <select class="form-select" name="satuan_id" id="satuan_id">
+                                <option value="">-- Pilih Satuan --</option>
+                                @foreach ($satuan as $i)
+                                <option value="{{$i->id}}">{{$i->nama}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>

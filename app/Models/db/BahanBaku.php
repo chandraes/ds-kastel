@@ -13,6 +13,11 @@ class BahanBaku extends Model
 
     public function kategori()
     {
-        return $this->belongsTo(KategoriBahan::class);
+        return $this->belongsTo(KategoriBahan::class, 'kategori_bahan_id');
+    }
+
+    public function satuan()
+    {
+        return $this->belongsTo(Satuan::class, 'satuan_id');
     }
 }

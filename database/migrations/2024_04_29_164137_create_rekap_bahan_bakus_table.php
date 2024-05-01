@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('rekap_bahan_bakus', function (Blueprint $table) {
             $table->id();
+            $table->boolean('jenis');
+            $table->integer('bahan_baku_id');
+            $table->index('bahan_baku_id');
+            $table->string('nama');
+            $table->float('jumlah');
+            $table->foreignId('satuan_id')->nullable()->constrained('satuans')->onDelete('set null');
             $table->timestamps();
         });
     }
