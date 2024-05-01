@@ -179,6 +179,10 @@ Route::group(['middleware' => ['auth']], function() {
 
             Route::prefix('transaksi')->group(function(){
                 Route::get('/', [App\Http\Controllers\FormTransaksiController::class, 'index'])->name('billing.form-transaksi');
+
+                Route::prefix('form-bahan-baku')->group(function(){
+                    Route::get('/beli', [App\Http\Controllers\FormTransaksiController::class, 'bahan_baku_beli'])->name('billing.form-transaksi.bahan-baku.beli');
+                });
             });
 
             Route::get('/nota-tagihan', [App\Http\Controllers\NotaTagihanController::class, 'index'])->name('nota-tagihan.index');
