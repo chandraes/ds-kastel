@@ -13,11 +13,17 @@ class BahanBakuController extends Controller
     {
         $kategori = KategoriBahan::with(['bahanBaku'])->get();
         $data = BahanBaku::with(['kategori', 'satuan'])->get();
+        $non_konversi = BahanBaku::with(['kategori', 'satuan'])
+                        ->where('apa_konversi', 0)
+                        ->get()
+                        ->groupBy('kategori.nama');
+        // dd($non_konversi);
         $satuan = Satuan::all();
         return view('db.bahan-baku.index', [
             'kategori' => $kategori,
             'data' => $data,
-            'satuan' => $satuan
+            'satuan' => $satuan,
+            'non_konversi' => $non_konversi
         ]);
     }
 

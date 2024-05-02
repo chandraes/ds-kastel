@@ -118,39 +118,34 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($data->where('apa_konversi', 0) as $a)
-                <tr>
-                    <td class="text-center align-middle">{{$loop->iteration}}</td>
-                    <td class="text-center align-middle">
-                        @if ($a->kategori)
-                        {{$a->kategori->nama}}
+            @foreach ($non_konversi as $kategori_nama => $bahanBakus)
+                @foreach ($bahanBakus as $index => $bahanBaku)
+                    <tr>
+                        <td class="text-center align-middle">{{$loop->iteration}}</td>
+                        @if ($index === 0)
+                            <td rowspan="{{ count($bahanBakus) }}" class="text-center align-middle">{{ $kategori_nama }}</td>
                         @endif
-                    </td>
-                    <td class="text-center align-middle">{{$a->nama}}</td>
-                    <td class="text-center align-middle">{{$a->stock}}</td>
-                    <td class="text-center align-middle">
-                        @if ($a->satuan)
-                        {{$a->satuan->nama}}
-                        @endif
-                    </td>
-                    <td class="text-end align-middle">
-                        {{$a->nf_modal}}
-                    </td>
-                    <td class="text-center align-middle">
-                        <div class="d-flex justify-content-center m-2">
-                            <button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal"
-                                data-bs-target="#editModal" onclick="editFun({{ $a }}, {{ $a->id }})">
-                                Edit
-                            </button>
-                        <form action="{{ route('db.bahan-baku.delete', $a->id) }}" method="post" id="deleteForm{{ $a->id }}"
-                            class="delete-form" data-id="{{ $a->id }}">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </form>
-                        </div>
-                    </td>
-                </tr>
+                        <td class="text-center align-middle">{{ $bahanBaku->nama }}</td>
+                        <td class="text-center align-middle">{{ $bahanBaku->stock }}</td>
+                        <td class="text-center align-middle">{{ $bahanBaku->satuan->nama }}</td>
+                        <td class="text-center align-middle">{{ $bahanBaku->nf_modal }}</td>
+                        <td class="text-center align-middle">
+                            <div class="d-flex justify-content-center m-2">
+                                <button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal"
+                                    data-bs-target="#editModal" onclick="editFun({{ $bahanBaku }}, {{ $bahanBaku->id }})">
+                                    Edit
+                                </button>
+                            <form action="{{ route('db.bahan-baku.delete', $bahanBaku->id) }}" method="post" id="deleteForm{{ $bahanBaku->id }}"
+                                class="delete-form" data-id="{{ $bahanBaku->id }}">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger">Hapus</button>
+                            </form>
+                            </div>
+                        </td>
+                        <!-- Other columns -->
+                    </tr>
+                @endforeach
             @endforeach
         </tbody>
         <tfoot>
