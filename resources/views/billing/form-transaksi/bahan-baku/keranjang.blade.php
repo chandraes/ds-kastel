@@ -11,9 +11,10 @@
                         <tr>
                             <th class="text-center align-middle">Kategori Barang</th>
                             <th class="text-center align-middle">Nama Barang</th>
-                            <th class="text-center align-middle">Jumlah</th>
+                            <th class="text-center align-middle">Banyak</th>
+                            <th class="text-center align-middle">Satuan</th>
                             <th class="text-center align-middle">Harga Satuan</th>
-                            <th class="text-center align-middle">Additional Fee</th>
+                            <th class="text-center align-middle">Biaya Tambahan</th>
                             <th class="text-center align-middle">Total</th>
                             <th class="text-center align-middle">Aksi</th>
                         </tr>
@@ -24,6 +25,7 @@
                             <td class="text-center align-middle">{{$b->bahan_baku->kategori->nama}}</td>
                             <td class="text-center align-middle">{{$b->bahan_baku->nama}}</td>
                             <td class="text-center align-middle">{{$b->jumlah}}</td>
+                            <td class="text-center align-middle">{{$b->satuan->nama}}</td>
                             <td class="text-center align-middle">{{number_format($b->harga, 0, ',','.')}}</td>
                             <td class="text-center align-middle">{{number_format($b->add_fee, 0, ',','.')}}</td>
                             <td class="text-center align-middle">{{number_format($b->total + $b->add_fee, 0, ',','.')}}</td>
@@ -42,6 +44,7 @@
                             <td class="text-center align-middle"></td>
                             <td class="text-center align-middle"></td>
                             <td class="text-center align-middle">{{count($keranjang) > 0 ? number_format($keranjang->sum('jumlah'), 0, ',','.') : ''}}</td>
+                            <td class="text-center align-middle"></td>
                             <td class="text-center align-middle">{{count($keranjang) > 0 ? number_format($keranjang->sum('harga'), 0, ',','.') : ''}}</td>
                             <td class="text-center align-middle">{{count($keranjang) > 0 ? number_format($keranjang->sum('add_fee'), 0, ',','.') : ''}}</td>
                             <td class="text-center align-middle">{{count($keranjang) > 0 ? number_format($keranjang->sum('total'), 0, ',','.') : ''}}</td>
