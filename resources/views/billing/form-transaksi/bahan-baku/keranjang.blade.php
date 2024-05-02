@@ -13,6 +13,7 @@
                             <th class="text-center align-middle">Nama Barang</th>
                             <th class="text-center align-middle">Jumlah</th>
                             <th class="text-center align-middle">Harga Satuan</th>
+                            <th class="text-center align-middle">Additional Fee</th>
                             <th class="text-center align-middle">Total</th>
                             <th class="text-center align-middle">Aksi</th>
                         </tr>
@@ -20,13 +21,13 @@
                     <tbody>
                         @foreach ($keranjang as $b)
                         <tr>
-                            <td class="text-center align-middle">{{$b->barang->kategori_barang->nama}}</td>
-                            <td class="text-center align-middle">{{$b->barang->nama}}</td>
+                            <td class="text-center align-middle">{{$b->bahan_baku->kategori->nama}}</td>
+                            <td class="text-center align-middle">{{$b->bahan_baku->nama}}</td>
                             <td class="text-center align-middle">{{$b->jumlah}}</td>
-                            <td class="text-center align-middle">{{number_format($b->harga_satuan, 0, ',','.')}}</td>
-                            <td class="text-center align-middle">{{number_format($b->total, 0, ',','.')}}</td>
+                            <td class="text-center align-middle">{{number_format($b->harga, 0, ',','.')}}</td>
+                            <td class="text-center align-middle">{{number_format($b->total + $b->add_fee, 0, ',','.')}}</td>
                             <td class="text-center align-middle">
-                                <form action="{{route('billing.form-barang.keranjang-destroy', $b->id)}}" method="post">
+                                <form action="" method="post">
                                     @csrf
                                     @method('delete')
                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>

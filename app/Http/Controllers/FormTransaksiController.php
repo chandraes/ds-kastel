@@ -39,7 +39,9 @@ class FormTransaksiController extends Controller
         ]);
 
         $data['user_id'] = auth()->id();
+        $data['harga'] = str_replace('.', '', $data['harga']);
         $data['total'] = $data['jumlah'] * $data['harga'];
+        $data['add_fee'] = str_replace('.', '', $data['add_fee']);
 
         unset($data['apa_konversi']);
 

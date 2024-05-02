@@ -29,7 +29,7 @@
         </div>
     </div>
     @include('swal')
-    <form action="" method="post" id="masukForm">
+    <form action="{{route('billing.form-transaksi.bahan-baku.keranjang.store')}}" method="post" id="masukForm">
         @csrf
         <div class="row">
             <div class="col-md-3">
