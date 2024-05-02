@@ -39,6 +39,9 @@ class FormTransaksiController extends Controller
         ]);
 
         $data['user_id'] = auth()->id();
+        $data['total'] = $data['jumlah'] * $data['harga'];
+
+        unset($data['apa_konversi']);
 
         Keranjang::create($data);
 

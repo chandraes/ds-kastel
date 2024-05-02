@@ -81,12 +81,12 @@
                 </div>
             </div>
             <div class="col-md-3 mb-3">
-                <label for="harga_satuan" class="form-label">Harga Satuan</label>
+                <label for="harga" class="form-label">Harga Satuan</label>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Rp</span>
-                    <input type="text" class="form-control @if ($errors->has('harga_satuan'))
+                    <input type="text" class="form-control @if ($errors->has('harga'))
                     is-invalid
-                @endif" name="harga_satuan" id="harga_satuan" data-thousands="." required>
+                @endif" name="harga" id="harga" data-thousands="." required>
                   </div>
             </div>
             <div class="col-md-3 mb-3">
@@ -111,7 +111,7 @@
 @push('js')
     <script>
         $(function() {
-            var nominal = new Cleave('#harga_satuan', {
+            var nominal = new Cleave('#harga', {
                 numeral: true,
                 numeralThousandsGroupStyle: 'thousand',
                 numeralDecimalMark: ',',
