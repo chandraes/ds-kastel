@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center mb-5">
         <div class="col-md-12 text-center">
             <h1><u>Form Beli Bahan Baku</u></h1>
@@ -32,10 +32,20 @@
     <form action="" method="post" id="masukForm">
         @csrf
         <div class="row">
-            <div class="col-6">
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label for="apa_konversi" class="form-label">Bahan</label>
+                    <select class="form-select" name="apa_konversi" id="apa_konversi" required>
+                        <option value=""> -- Pilih salah satu -- </option>
+                        <option value="1">Konversi</option>
+                        <option value="0">Non Konversi</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
                 <div class="mb-3">
                     <label for="kategori_bahan_id" class="form-label">Kategori Barang</label>
-                    <select class="form-select" name="kategori_bahan_id" id="kategori_bahan_id" onchange="funGetBarang()">
+                    <select class="form-select" name="kategori_bahan_id" id="kategori_bahan_id" onchange="funGetBarang()" required>
                         <option value=""> -- Pilih kategori barang -- </option>
                         @foreach ($kategori as $k)
                             <option value="{{$k->id}}">{{$k->nama}}</option>
@@ -43,22 +53,34 @@
                     </select>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="mb-3">
                     <label for="bahan_baku_id" class="form-label">Nama Barang</label>
-                    <select class="form-select" name="bahan_baku_id" id="bahan_baku_id">
+                    <select class="form-select" name="bahan_baku_id" id="bahan_baku_id" required>
                         <option value=""> -- Pilih Bahan Baku -- </option>
                     </select>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="mb-3">
                   <label for="jumlah" class="form-label">Jumlah</label>
                   <input type="number"
                     class="form-control" name="jumlah" id="jumlah" aria-describedby="helpId" placeholder="" required>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3">
+                <div class="mb-3">
+                  <label for="satuan_id" class="form-label">Satuan</label>
+                  {{-- select satuan_id --}}
+                    <select class="form-select" name="satuan_id" id="satuan_id" required>
+                        <option value=""> -- Pilih Satuan -- </option>
+                        @foreach ($satuan as $s)
+                            <option value="{{$s->id}}">{{$s->nama}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
                 <label for="harga_satuan" class="form-label">Harga Satuan</label>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Rp</span>
@@ -67,7 +89,7 @@
                 @endif" name="harga_satuan" id="harga_satuan" data-thousands="." required>
                   </div>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-3 mb-3">
                 <label for="add_fee" class="form-label">Additional Fee</label>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Rp</span>
@@ -110,11 +132,13 @@
         // funGetBarang
         function funGetBarang() {
             var kategori_bahan_id = $('#kategori_bahan_id').val();
+            var apa_konversi = $('#apa_konversi').val();
             $.ajax({
                 url: "{{route('billing.form-transaksi.bahan-baku.get-barang')}}",
                 type: "GET",
                 data: {
-                    kategori_bahan_id: kategori_bahan_id
+                    kategori_bahan_id: kategori_bahan_id,
+                    apa_konversi: apa_konversi
                 },
                 success: function(data){
                     $('#bahan_baku_id').empty();

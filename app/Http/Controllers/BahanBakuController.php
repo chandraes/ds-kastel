@@ -95,7 +95,8 @@ class BahanBakuController extends Controller
 
     public function get_barang(Request $request)
     {
-        $data = BahanBaku::where('kategori_bahan_id', $request->kategori_bahan_id)->get()->toArray();
+        $data = BahanBaku::where('kategori_bahan_id', $request->kategori_bahan_id)
+                            ->where('apa_konversi', $request->apa_konversi)->get()->toArray();
         return response()->json($data);
     }
 }
