@@ -92,4 +92,10 @@ class BahanBakuController extends Controller
         $bahan->delete();
         return redirect()->route('db.bahan-baku')->with('success', 'Bahan baku berhasil dihapus');
     }
+
+    public function get_barang(Request $request)
+    {
+        $data = BahanBaku::where('kategori_bahan_id', $request->kategori_bahan_id)->get()->toArray();
+        return response()->json($data);
+    }
 }

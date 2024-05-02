@@ -17,7 +17,8 @@
                         @include('billing.form-transaksi.bahan-baku.keranjang')
                     </td>
                     <td>
-                        <form action="" method="get" id="kosongKeranjang">
+                        <form action="{{route('billing.form-transaksi.bahan-baku.keranjang.empty')}}" method="post" id="kosongKeranjang">
+                            @csrf
                             <button class="btn btn-danger" type="submit">
                                 <i class="fa fa-trash"> Kosongkan Keranjang </i>
                             </button>
@@ -33,8 +34,8 @@
         <div class="row">
             <div class="col-6">
                 <div class="mb-3">
-                    <label for="kategori_barang_id" class="form-label">Kategori Barang</label>
-                    <select class="form-select" name="kategori_barang_id" id="kategori_barang_id" onchange="funGetBarang()">
+                    <label for="kategori_bahan_id" class="form-label">Kategori Barang</label>
+                    <select class="form-select" name="kategori_bahan_id" id="kategori_bahan_id" onchange="funGetBarang()">
                         <option value=""> -- Pilih kategori barang -- </option>
                         @foreach ($kategori as $k)
                             <option value="{{$k->id}}">{{$k->nama}}</option>
@@ -44,26 +45,35 @@
             </div>
             <div class="col-6">
                 <div class="mb-3">
-                    <label for="barang_id" class="form-label">Nama Barang</label>
-                    <select class="form-select" name="barang_id" id="barang_id">
-                        <option value=""> -- Pilih kategori barang -- </option>
+                    <label for="bahan_baku_id" class="form-label">Nama Barang</label>
+                    <select class="form-select" name="bahan_baku_id" id="bahan_baku_id">
+                        <option value=""> -- Pilih Bahan Baku -- </option>
                     </select>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-md-2">
                 <div class="mb-3">
                   <label for="jumlah" class="form-label">Jumlah</label>
                   <input type="number"
                     class="form-control" name="jumlah" id="jumlah" aria-describedby="helpId" placeholder="" required>
                 </div>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-4 mb-3">
                 <label for="harga_satuan" class="form-label">Harga Satuan</label>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Rp</span>
                     <input type="text" class="form-control @if ($errors->has('harga_satuan'))
                     is-invalid
                 @endif" name="harga_satuan" id="harga_satuan" data-thousands="." required>
+                  </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="add_fee" class="form-label">Additional Fee</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Rp</span>
+                    <input type="text" class="form-control @if ($errors->has('add_fee'))
+                    is-invalid
+                @endif" name="add_fee" id="add_fee" data-thousands="." required value="0">
                   </div>
             </div>
         </div>
@@ -85,57 +95,32 @@
                 numeralDecimalMark: ',',
                 delimiter: '.'
             });
+
+            var add_fee = new Cleave('#add_fee', {
+                numeral: true,
+                numeralThousandsGroupStyle: 'thousand',
+                numeralDecimalMark: ',',
+                delimiter: '.'
+            });
         });
 
-        $('#kosongKeranjang').submit(function(e){
-            e.preventDefault();
-            Swal.fire({
-                title: 'Apakah anda yakin?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, simpan!'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#spinner').show();
-                    this.submit();
-                }
-            })
-        });
-
-        $('#beliBarang').submit(function(e){
-            e.preventDefault();
-            Swal.fire({
-                title: 'Apakah anda yakin?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, simpan!'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#spinner').show();
-                    this.submit();
-                }
-            })
-        });
+        confirmAndSubmit('#kosongKeranjang', 'Apakah anda Yakin?');
+        confirmAndSubmit('#beliBarang', 'Apakah anda Yakin?');
 
         // funGetBarang
         function funGetBarang() {
-            var kategori_barang_id = $('#kategori_barang_id').val();
+            var kategori_bahan_id = $('#kategori_bahan_id').val();
             $.ajax({
-                url: "",
+                url: "{{route('billing.form-transaksi.bahan-baku.get-barang')}}",
                 type: "GET",
                 data: {
-                    kategori_barang_id: kategori_barang_id
+                    kategori_bahan_id: kategori_bahan_id
                 },
                 success: function(data){
-                    console.log(data);
-                    $('#barang_id').empty();
-                    $('#barang_id').append('<option value=""> -- Pilih kategori barang -- </option>');
+                    $('#bahan_baku_id').empty();
+                    $('#bahan_baku_id').append('<option value=""> -- Pilih Bahan Baku -- </option>');
                     $.each(data, function(index, value){
-                        $('#barang_id').append('<option value="'+value.id+'">'+value.nama+'</option>');
+                        $('#bahan_baku_id').append('<option value="'+value.id+'">'+value.nama+'</option>');
                     });
                 }
             });

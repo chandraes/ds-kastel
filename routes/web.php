@@ -182,6 +182,12 @@ Route::group(['middleware' => ['auth']], function() {
 
                 Route::prefix('form-bahan-baku')->group(function(){
                     Route::get('/beli', [App\Http\Controllers\FormTransaksiController::class, 'bahan_baku_beli'])->name('billing.form-transaksi.bahan-baku.beli');
+                    Route::get('/get-barang', [App\Http\Controllers\BahanBakuController::class, 'get_barang'])->name('billing.form-transaksi.bahan-baku.get-barang');
+                    Route::prefix('keranjang')->group(function(){
+                        Route::post('/store', [App\Http\Controllers\FormTransaksiController::class, 'keranjang_store'])->name('billing.form-transaksi.bahan-baku.keranjang.store');
+                        Route::post('/empty', [App\Http\Controllers\FormTransaksiController::class, 'keranjang_empty'])->name('billing.form-transaksi.bahan-baku.keranjang.empty');
+                    });
+
                 });
             });
 

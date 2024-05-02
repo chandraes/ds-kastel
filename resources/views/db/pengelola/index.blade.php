@@ -99,7 +99,7 @@
 @endpush
 @push('js')
 
-<script src="{{asset('assets/js/cleave.min.js')}}"></script>
+
 
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>

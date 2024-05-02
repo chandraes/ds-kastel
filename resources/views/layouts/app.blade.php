@@ -100,6 +100,7 @@
             @yield('content')
         </main>
     </div>
+    <script src="{{asset('assets/js/cleave.min.js')}}"></script>
     <script src="{{asset('assets/js/swalConfirm.js')}}"></script>
     <script src="{{asset('assets/js/dt5.min.js')}}"></script>
     @stack('js')

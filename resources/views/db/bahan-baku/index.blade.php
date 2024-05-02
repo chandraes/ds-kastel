@@ -194,8 +194,8 @@
     }
 
     function createFunEdit() {
-        var apa_konversi = document.getElementById('edit_apa_konversi').value;
-        if (apa_konversi == 1) {
+        var edit_apa_konversi = document.getElementById('edit_apa_konversi').value;
+        if (edit_apa_konversi == 1) {
             document.getElementById('edit_konversi').setAttribute('required', true);
             document.getElementById('edit_satuan_id').removeAttribute('required');
             document.getElementById('edit_satuan_id').value = '';
@@ -263,39 +263,8 @@
         });
     } );
 
-    $('#masukForm').submit(function(e){
-            e.preventDefault();
-            Swal.fire({
-                title: 'Apakah Data yang anda masukan sudah benar?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, simpan!'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#spinner').show();
-                    this.submit();
-                }
-            })
-        });
-
-        $('#editForm').submit(function(e){
-            e.preventDefault();
-            Swal.fire({
-                title: 'Apakah Data yang anda masukan sudah benar?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, simpan!'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#spinner').show();
-                    this.submit();
-                }
-            })
-        });
+    confirmAndSubmit('#masukForm', 'Apakah anda Yakin?');
+    confirmAndSubmit('#editForm', 'Apakah anda Yakin?');
 
         $('.delete-form').submit(function(e){
             e.preventDefault();
