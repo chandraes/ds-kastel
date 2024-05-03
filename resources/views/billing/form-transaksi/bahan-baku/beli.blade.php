@@ -110,6 +110,14 @@
 @endsection
 @push('js')
     <script>
+
+    function add_diskon() {
+        var diskon = document.getElementById('diskon').value;
+        var total = ;
+        var total_diskon = total - diskon;
+        document.getElementById('total_diskon').value = total_diskon;
+    }
+
         $(function() {
             var nominal = new Cleave('#harga', {
                 numeral: true,

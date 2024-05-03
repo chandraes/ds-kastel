@@ -202,13 +202,6 @@
         }
     }
 
-    function add_diskon() {
-        var diskon = document.getElementById('diskon').value;
-        var total = {{$total}};
-        var total_diskon = total - diskon;
-        document.getElementById('total_diskon').value = total_diskon;
-    }
-
     function createFunEdit() {
         var edit_apa_konversi = document.getElementById('edit_apa_konversi').value;
         if (edit_apa_konversi == 1) {

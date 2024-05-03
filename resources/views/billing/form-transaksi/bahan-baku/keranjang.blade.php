@@ -31,7 +31,7 @@
                         <tr>
                             <td class="text-center align-middle">{{$b->bahan_baku->kategori->nama}}</td>
                             <td class="text-center align-middle">{{$b->bahan_baku->nama}}</td>
-                            <td class="text-center align-middle">{{$b->jumlah}}</td>
+                            <td class="text-center align-middle">{{$b->nf_jumlah}}</td>
                             <td class="text-center align-middle">{{$b->satuan->nama}}</td>
                             <td class="text-center align-middle">{{number_format($b->harga, 0, ',','.')}}</td>
                             <td class="text-center align-middle">{{number_format($b->add_fee, 0, ',','.')}}</td>
@@ -106,7 +106,7 @@
                             <div class="mb-3">
                                 <label for="uraian" class="form-label">Uraian</label>
                                 <input type="text" class="form-control" name="uraian" id="uraian"
-                                    aria-describedby="helpId" placeholder="" required>
+                                    aria-describedby="helpId" placeholder="" required maxlength="20">
                             </div>
                         </div>
                         <div class="col-md-4">

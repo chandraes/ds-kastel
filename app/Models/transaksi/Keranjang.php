@@ -13,6 +13,12 @@ class Keranjang extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+    protected $appends = ['nf_jumlah'];
+
+    public function getNfJumlahAttribute()
+    {
+        return number_format($this->jumlah, 0, ',','.');
+    }
 
     public function user()
     {
