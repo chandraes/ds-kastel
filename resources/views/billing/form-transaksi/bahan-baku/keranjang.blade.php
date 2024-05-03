@@ -65,7 +65,7 @@
                         </tr>
                         <tr>
                             <td class="text-end align-middle" colspan="6">Total DPP</td>
-                            <td class="text-end align-middle">{{count($keranjang) > 0 ?
+                            <td class="text-end align-middle" id="tdTotal">{{count($keranjang) > 0 ?
                                 number_format($keranjang->sum('total') + $keranjang->sum('add_fee'), 0, ',','.') : ''}}
                             </td>
                             <td class="text-center align-middle"></td>
@@ -79,7 +79,7 @@
                         </tr>
                         <tr>
                             <td class="text-end align-middle" colspan="6">Total DPP Setelah Diskon</td>
-                            <td class="text-end align-middle" id="tdDiskon">
+                            <td class="text-end align-middle" id="tdTotalSetelahDiskon">
                                 {{number_format($total-$diskon, 0, ',','.')}}
                             </td>
                             <td class="text-center align-middle"></td>

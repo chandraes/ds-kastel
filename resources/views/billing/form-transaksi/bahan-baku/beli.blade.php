@@ -112,14 +112,31 @@
     <script>
 
     function add_diskon() {
+        // get value from tdDiskon
+
         var diskon = document.getElementById('diskon').value;
-        var total = ;
+        diskon = diskon.replace(/\./g, '');
+        // get element value tdTotal
+
+        var total = document.getElementById('tdTotal').textContent;
+        // remove "." from total
+        total = total.replace(/\./g, '');
+        console.log(total);
         var total_diskon = total - diskon;
-        document.getElementById('total_diskon').value = total_diskon;
+        var diskonFormatted = diskon.toLocaleString('id-ID');
+        document.getElementById('tdDiskon').textContent = diskonFormatted;
+        var totalFormatted = total_diskon.toLocaleString('id-ID');
+        document.getElementById('tdTotalSetelahDiskon').textContent = totalFormatted;
     }
 
         $(function() {
             var nominal = new Cleave('#harga', {
+                numeral: true,
+                numeralThousandsGroupStyle: 'thousand',
+                numeralDecimalMark: ',',
+                delimiter: '.'
+            });
+            var diskoTn = new Cleave('#diskon', {
                 numeral: true,
                 numeralThousandsGroupStyle: 'thousand',
                 numeralDecimalMark: ',',
