@@ -78,6 +78,13 @@
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
+                            <td class="text-end align-middle" colspan="6">Total DPP Setelah Diskon</td>
+                            <td class="text-end align-middle" id="tdDiskon">
+                                {{number_format($total-$diskon, 0, ',','.')}}
+                            </td>
+                            <td class="text-center align-middle"></td>
+                        </tr>
+                        <tr>
                             <td class="text-end align-middle" colspan="6">PPN</td>
                             <td class="text-end align-middle">
                                 0
@@ -87,7 +94,7 @@
                         <tr>
                             <td class="text-end align-middle" colspan="6">Grand Total</td>
                             <td class="text-end align-middle" id="grand_total">
-                                {{$total + $add_fee + $ppn - $diskon}}
+                                {{number_format($total + $add_fee + $ppn - $diskon, 0, ',','.')}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
