@@ -9,6 +9,8 @@
             @php
             $diskon = 0;
             $ppn = 0;
+            $total = $keranjang ? $keranjang->sum('total') : 0;
+            $add_fee = $keranjang ? $keranjang->sum('add_fee') : 0;
             @endphp
             <div class="modal-body">
                 <table class="table table-bordered">
@@ -71,28 +73,28 @@
                         <tr>
                             <td class="text-end align-middle" colspan="6">PPN</td>
                             <td class="text-end align-middle">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('total') + $keranjang->sum('add_fee'), 0, ',','.') : ''}}
+                                number_format($total+$add_fee, 0, ',','.') : ''}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
                             <td class="text-end align-middle" colspan="6">Diskon</td>
                             <td class="text-end align-middle" id="tdDiskon">
-                                0
+                                {{number_format($diskon, 0, ',','.')}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
                             <td class="text-end align-middle" colspan="6">PPN</td>
-                            <td class="text-end align-middle">
-                                0
+                            <td class="text-end align-middle" id="tdppn">
+                                {{$ppn}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
                             <td class="text-end align-middle" colspan="6">Grand Total</td>
-                            <td class="text-end align-middle">
-                                0
+                            <td class="text-end align-middle" id="grand_total">
+                                {{$total + $add_fee + $ppn - $diskon}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
@@ -123,7 +125,7 @@
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1">Rp</span>
                                     <input type="text" class="form-control" name="diskon" id="diskon"
-                                        aria-describedby="helpId" placeholder="" required value="0">
+                                        aria-describedby="helpId" placeholder="" required value="0" onkeyup="add_diskon()">
                                 </div>
                             </div>
                         </div>

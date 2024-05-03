@@ -184,6 +184,9 @@
 <script src="{{asset('assets/plugins/datatable/datatables.min.js')}}"></script>
 <script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
 <script>
+
+
+
     function createFun() {
         var apa_konversi = document.getElementById('apa_konversi').value;
         if (apa_konversi == 1) {
@@ -197,6 +200,13 @@
             document.getElementById('divKonversi').setAttribute('hidden', true);
             document.getElementById('divSatuan').removeAttribute('hidden');
         }
+    }
+
+    function add_diskon() {
+        var diskon = document.getElementById('diskon').value;
+        var total = {{$total}};
+        var total_diskon = total - diskon;
+        document.getElementById('total_diskon').value = total_diskon;
     }
 
     function createFunEdit() {
