@@ -113,21 +113,45 @@
 
     function add_diskon() {
         // get value from tdDiskon
+        var diskonT = document.getElementById('diskon').value;
+        var diskon = diskonT.replace(/\./g, '');
 
-        var diskon = document.getElementById('diskon').value;
-        diskon = diskon.replace(/\./g, '');
         // get element value tdTotal
-
         var total = document.getElementById('tdTotal').textContent;
-        // remove "." from total
         total = total.replace(/\./g, '');
-        console.log(total);
+
+        var ppn = document.getElementById('tdPpn').textContent;
+        ppn = ppn.replace(/\./g, '');
+
         var total_diskon = total - diskon;
-        
-        var diskonFormatted = diskon.toLocaleString('id-ID');
-        document.getElementById('tdDiskon').textContent = diskonFormatted;
+
+        var gd = total_diskon + Number(ppn);
+
+        var diskonFormatted = Number(diskon).toLocaleString('id-ID');
         var totalFormatted = total_diskon.toLocaleString('id-ID');
+        var gF = gd.toLocaleString('id-ID');
+
+        document.getElementById('tdDiskon').textContent = diskonT;
         document.getElementById('tdTotalSetelahDiskon').textContent = totalFormatted;
+        document.getElementById('grand_total').textContent = gF;
+    }
+
+    function add_ppn(){
+        var apa_ppn = document.getElementById('ppn').value;
+        console.log(apa_ppn);
+        if (apa_ppn === "1") { // compare with string "1"
+            var gt = Number(document.getElementById('tdTotalSetelahDiskon').textContent.replace(/\./g, ''));
+
+            var vPpn = gt * 0.11;
+            var totalap = gt + (gt * 0.11);
+
+            var tF = totalap.toLocaleString('id-ID');
+            var vF = vPpn.toLocaleString('id-ID');
+            document.getElementById('grand_total').textContent = tF;
+            document.getElementById('tdPpn').textContent = vF;
+        } else {
+            add_diskon();
+        }
     }
 
         $(function() {

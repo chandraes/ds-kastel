@@ -86,7 +86,7 @@
                         </tr>
                         <tr>
                             <td class="text-end align-middle" colspan="6">PPN</td>
-                            <td class="text-end align-middle">
+                            <td class="text-end align-middle" id="tdPpn">
                                 0
                             </td>
                             <td class="text-center align-middle"></td>
@@ -112,7 +112,7 @@
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="uraian" class="form-label">Apakah menggunakan PPn?</label>
-                                <select class="form-select" name="ppn" id="ppn">
+                                <select class="form-select" name="ppn" id="ppn" onchange="add_ppn()">
                                     <option value="">-- Pilih Salah Satu --</option>
                                     <option value="1">Dengan PPn</option>
                                     <option value="0">Tanpa PPn</option>
