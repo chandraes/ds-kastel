@@ -123,6 +123,7 @@
         total = total.replace(/\./g, '');
         console.log(total);
         var total_diskon = total - diskon;
+        
         var diskonFormatted = diskon.toLocaleString('id-ID');
         document.getElementById('tdDiskon').textContent = diskonFormatted;
         var totalFormatted = total_diskon.toLocaleString('id-ID');
