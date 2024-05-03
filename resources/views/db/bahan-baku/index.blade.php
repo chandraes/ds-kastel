@@ -49,37 +49,45 @@
                 <th class="text-center align-middle">ACT</th>
             </tr>
         </thead>
+        @php
+            $kg = 0;
+            $nk = 1;
+        @endphp
         <tbody>
-            @foreach ($data->where('apa_konversi', 1) as $d)
-                <tr>
-                    <td class="text-center align-middle">{{$loop->iteration}}</td>
-                    <td class="text-center align-middle">
-                        @if ($d->kategori)
-                        {{$d->kategori->nama}}
+            @foreach ($data as $kategori_nama => $konversi)
+                @foreach ($konversi as $idx => $k)
+                    <tr>
+                        <td class="text-center align-middle">{{$nk++}}</td>
+                        @if ($idx === 0)
+                            <td rowspan="{{ count($konversi) }}" class="text-center align-middle">{{ $kategori_nama }}</td>
                         @endif
-                    </td>
-                    <td class="text-center align-middle">{{$d->nama}}</td>
-                    <td class="text-center align-middle">1 : {{$d->konversi}}</td>
-                    <td class="text-center align-middle">{{$d->stock}}</td>
-                    <td class="text-center align-middle">{{$d->stock * $d->konversi}}</td>
-                    <td class="text-end align-middle">
-                        {{$d->nf_modal}}
-                    </td>
-                    <td class="text-center align-middle">
-                        <div class="d-flex justify-content-center m-2">
-                            <button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal"
-                                data-bs-target="#editModal" onclick="editFun({{ $d }}, {{ $d->id }})">
-                                Edit
-                            </button>
-                        <form action="{{ route('db.bahan-baku.delete', $d->id) }}" method="post" id="deleteForm{{ $d->id }}"
-                            class="delete-form" data-id="{{ $d->id }}">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </form>
-                        </div>
-                    </td>
-                </tr>
+                        <td class="text-center align-middle">{{ $k->nama }}</td>
+                        <td class="text-center align-middle">1 : {{ $k->konversi }}</td>
+                        <td class="text-center align-middle">{{ $k->stock }}</td>
+                        <td class="text-center align-middle">
+                            @php
+                                $kg += $k->stock * $k->konversi;
+                            @endphp
+                            {{ $k->stock * $k->konversi }}
+                        </td>
+                        <td class="text-end align-middle">{{ $k->nf_modal }}</td>
+                        <td class="text-center align-middle">
+                            <div class="d-flex justify-content-center m-2">
+                                <button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal"
+                                    data-bs-target="#editModal" onclick="editFun({{ $k }}, {{ $k->id }})">
+                                    Edit
+                                </button>
+                            <form action="{{ route('db.bahan-baku.delete', $k->id) }}" method="post" id="deleteForm{{ $k->id }}"
+                                class="delete-form" data-id="{{ $k->id }}">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger">Hapus</button>
+                            </form>
+                            </div>
+                        </td>
+                        <!-- Other columns -->
+                    </tr>
+                @endforeach
             @endforeach
         </tbody>
         <tfoot>
@@ -88,13 +96,13 @@
                     Grand Total
                 </th>
                 <th class="text-center align-middle">
-                    {{$data->where('apa_konversi', 1)->sum('stock')}}
+                    {{$data->sum('stock')}}
                 </th>
                 <th class="text-center align-middle">
-                    {{$data->where('apa_konversi', 1)->sum('stock') * $data->where('apa_konversi', 1)->sum('konversi')}}
+                    {{$kg}}
                 </th>
                 <th class="text-end align-middle">
-                    {{$data->where('apa_konversi', 1)->sum('nf_modal')}}
+                    {{$data->sum('nf_modal')}}
                 </th>
                 <th class="text-center align-middle"></th>
             </tr>
@@ -117,18 +125,21 @@
                 <th class="text-center align-middle">ACT</th>
             </tr>
         </thead>
+        @php
+            $n = 1;
+        @endphp
         <tbody>
             @foreach ($non_konversi as $kategori_nama => $bahanBakus)
                 @foreach ($bahanBakus as $index => $bahanBaku)
                     <tr>
-                        <td class="text-center align-middle">{{$loop->iteration}}</td>
+                        <td class="text-center align-middle">{{$n++}}</td>
                         @if ($index === 0)
                             <td rowspan="{{ count($bahanBakus) }}" class="text-center align-middle">{{ $kategori_nama }}</td>
                         @endif
                         <td class="text-center align-middle">{{ $bahanBaku->nama }}</td>
                         <td class="text-center align-middle">{{ $bahanBaku->stock }}</td>
                         <td class="text-center align-middle">{{ $bahanBaku->satuan->nama }}</td>
-                        <td class="text-center align-middle">{{ $bahanBaku->nf_modal }}</td>
+                        <td class="text-end align-middle">{{ $bahanBaku->nf_modal }}</td>
                         <td class="text-center align-middle">
                             <div class="d-flex justify-content-center m-2">
                                 <button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal"
