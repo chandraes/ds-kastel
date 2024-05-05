@@ -52,6 +52,8 @@
         @php
             $kg = 0;
             $nk = 1;
+            $stock = 0;
+            $modal=0;
         @endphp
         <tbody>
             @foreach ($data as $kategori_nama => $konversi)
@@ -63,14 +65,24 @@
                         @endif
                         <td class="text-center align-middle">{{ $k->nama }}</td>
                         <td class="text-center align-middle">1 : {{ $k->konversi }}</td>
-                        <td class="text-center align-middle">{{ $k->stock }}</td>
+                        <td class="text-center align-middle">
+                            @php
+                                $stock += $k->stock;
+                            @endphp
+                            {{ $k->stock }}
+                        </td>
                         <td class="text-center align-middle">
                             @php
                                 $kg += $k->stock * $k->konversi;
                             @endphp
                             {{ $k->stock * $k->konversi }}
                         </td>
-                        <td class="text-end align-middle">{{ $k->nf_modal }}</td>
+                        <td class="text-end align-middle">
+                            @php
+                                $modal += $k->modal;
+                            @endphp
+                            {{ $k->nf_modal }}
+                        </td>
                         <td class="text-center align-middle">
                             <div class="d-flex justify-content-center m-2">
                                 <button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal"
@@ -96,13 +108,13 @@
                     Grand Total
                 </th>
                 <th class="text-center align-middle">
-                    {{$data->sum('stock')}}
+                    {{number_format($stock,0,',','.')}}
                 </th>
                 <th class="text-center align-middle">
-                    {{$kg}}
+                    {{number_format($kg,0,',','.')}}
                 </th>
                 <th class="text-end align-middle">
-                    {{$data->sum('nf_modal')}}
+                    {{number_format($modal,0,',','.')}}
                 </th>
                 <th class="text-center align-middle"></th>
             </tr>

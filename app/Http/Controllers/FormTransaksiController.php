@@ -50,6 +50,13 @@ class FormTransaksiController extends Controller
         return redirect()->route('billing.form-transaksi.bahan-baku.beli')->with('success', 'Berhasil ditambahkan ke keranjang');
     }
 
+    public function keranjang_delete(Keranjang $keranjang)
+    {
+        $keranjang->delete();
+
+        return redirect()->back()->with('success', 'Berhasil dihapus dari keranjang');
+    }
+
     public function keranjang_empty()
     {
         $count = Keranjang::where('user_id', auth()->id())->count();
@@ -61,6 +68,27 @@ class FormTransaksiController extends Controller
         Keranjang::where('user_id', auth()->id())->delete();
 
         return redirect()->route('billing.form-transaksi.bahan-baku.beli')->with('success', 'Keranjang berhasil dikosongkan');
+    }
+
+    public function keranjang_checkout(Request $request)
+    {
+        ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+        ini_set('memory_limit', '512M');
+        
+        $data = $request->validate([
+            'uraian' => 'required',
+            'ppn' => 'required',
+            'diskon' => 'required',
+            'nama_rek' => 'required',
+            'no_rek' => 'required',
+            'bank' => 'required',
+        ]);
+
+        $db = new Keranjang();
+
+        $store = $db->checkout($data);
+
+        return redirect()->back()->with($store['status'], $store['message']);
     }
 
 

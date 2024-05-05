@@ -150,6 +150,7 @@
             document.getElementById('grand_total').textContent = tF;
             document.getElementById('tdPpn').textContent = vF;
         } else {
+            document.getElementById('tdPpn').textContent = 0;
             add_diskon();
         }
     }
@@ -178,6 +179,24 @@
 
         confirmAndSubmit('#kosongKeranjang', 'Apakah anda Yakin?');
         confirmAndSubmit('#beliBarang', 'Apakah anda Yakin?');
+
+        $('.delete-form').submit(function(e){
+            e.preventDefault();
+            var formId = $(this).data('id');
+            Swal.fire({
+                title: 'Apakah Anda Yakin?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, simpan!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(`#deleteForm${formId}`).unbind('submit').submit();
+                    $('#spinner').show();
+                }
+            });
+        });
 
         // funGetBarang
         function funGetBarang() {

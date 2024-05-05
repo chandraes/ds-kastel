@@ -11,7 +11,7 @@ class BahanBaku extends Model
 
     protected $guarded = ['id'];
 
-    protected $appends = ['modal'];
+    protected $appends = ['modal', 'nf_modal'];
 
     public function kategori()
     {
@@ -30,10 +30,8 @@ class BahanBaku extends Model
 
     public function getModalAttribute()
     {
-        // sum jumlah * harga + add_fee
-        return $this->rekap->sum(function ($item) {
-            return $item->jumlah * $item->harga + $item->add_fee;
-        });
+        // max harga + latest add_fee
+        return $this->rekap->max('harga') + $this->rekap->max('add_fee');
 
     }
 

@@ -38,11 +38,11 @@
                             <td class="text-end align-middle">{{number_format($b->total + $b->add_fee, 0, ',','.')}}
                             </td>
                             <td class="text-center align-middle">
-                                <form action="" method="post">
+                                <form action="{{ route('billing.form-transaksi.bahan-baku.keranjang.delete', $b->id) }}" method="post" id="deleteForm{{ $b->id }}"
+                                    class="delete-form" data-id="{{ $b->id }}">
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" class="btn btn-danger btn-sm"><i
-                                            class="fa fa-trash"></i></button>
+                                    <button type="submit" class="btn btn-danger">Hapus</button>
                                 </form>
                             </td>
                         </tr>
@@ -100,13 +100,14 @@
                         </tr>
                     </tfoot>
                 </table>
-                <form action="" method="get" id="beliBarang">
+                <form action="{{route('billing.form-transaksi.bahan-baku.keranjang.checkout')}}" method="post" id="beliBarang">
+                    @csrf
                     <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="uraian" class="form-label">Uraian</label>
                                 <input type="text" class="form-control" name="uraian" id="uraian"
-                                    aria-describedby="helpId" placeholder="" required maxlength="20">
+                                    aria-describedby="helpId" placeholder="" required maxlength="20" value="{{old('uraian')}}">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -137,13 +138,13 @@
                     <br>
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <label for="transfer_ke" class="form-label">Nama Rekening</label>
-                            <input type="text" class="form-control @if ($errors->has('transfer_ke'))
+                            <label for="nama_rek" class="form-label">Nama Rekening</label>
+                            <input type="text" class="form-control @if ($errors->has('nama_rek'))
                         is-invalid
-                    @endif" name="transfer_ke" id="transfer_ke" value="{{old('transfer_ke')}}" maxlength="15" required>
-                            @if ($errors->has('transfer_ke'))
+                    @endif" name="nama_rek" id="nama_rek" value="{{old('nama_rek')}}" maxlength="15" required value="{{old('nama_rek')}}">
+                            @if ($errors->has('nama_rek'))
                             <div class="invalid-feedback">
-                                {{$errors->first('transfer_ke')}}
+                                {{$errors->first('nama_rek')}}
                             </div>
                             @endif
                         </div>
@@ -151,7 +152,7 @@
                             <label for="bank" class="form-label">Bank</label>
                             <input type="text" class="form-control @if ($errors->has('bank'))
                         is-invalid
-                    @endif" name="bank" id="bank" value="{{old('bank')}}" maxlength="10" required>
+                    @endif" name="bank" id="bank" value="{{old('bank')}}" maxlength="10" required value="{{old('bank')}}">
                             @if ($errors->has('bank'))
                             <div class="invalid-feedback">
                                 {{$errors->first('bank')}}
@@ -159,13 +160,13 @@
                             @endif
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="no_rekening" class="form-label">Nomor Rekening</label>
-                            <input type="text" class="form-control @if ($errors->has('no_rekening'))
+                            <label for="no_rek" class="form-label">Nomor Rekening</label>
+                            <input type="text" class="form-control @if ($errors->has('no_rek'))
                         is-invalid
-                    @endif" name="no_rekening" id="no_rekening" value="{{old('no_rekening')}}" required>
-                            @if ($errors->has('no_rekening'))
+                    @endif" name="no_rek" id="no_rek" value="{{old('no_rek')}}" required value="{{old('no_rek')}}">
+                            @if ($errors->has('no_rek'))
                             <div class="invalid-feedback">
-                                {{$errors->first('no_rekening')}}
+                                {{$errors->first('no_rek')}}
                             </div>
                             @endif
                         </div>
