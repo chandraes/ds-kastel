@@ -3,12 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rekening;
-use App\Services\StarSender;
-use App\Models\PesanWa;
-use App\Models\GroupWa;
 use App\Models\InvestorModal;
 use App\Models\KasBesar;
-use App\Models\KasProject;
 use Illuminate\Http\Request;
 
 class FormDepositController extends Controller
@@ -52,11 +48,7 @@ class FormDepositController extends Controller
 
     public function getModalInvestorProject(Request $request)
     {
-        $db = new KasProject;
-        $result = $db->modal_investor_project_terakhir($request->project_id) * -1;
-        $result = number_format($result, 0, ',', '.');
-
-        return response()->json($result);
+        
     }
 
     public function keluar_store(Request $request)
