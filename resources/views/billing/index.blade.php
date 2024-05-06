@@ -63,6 +63,14 @@
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
+            <a href="{{route('nota-ppn-masukan')}}" class="text-decoration-none">
+                <img src="{{asset('images/form-ppn.svg')}}" alt="" width="80">
+                <h3 class="mt-2">NOTA PPn MASUKAN
+                    @if($np != 0) <span class="text-danger">({{$np}})</span> @endif
+                </h3>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="80">
                 <h3 class="mt-2">DASHBOARD</h3>
@@ -77,12 +85,7 @@
                 <h3 class="mt-2">NOTA TAGIHAN @if($nt != 0) <span class="text-danger">({{$nt}})</span> @endif</h3>
             </a>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="{{route('nota-ppn-masukan')}}" class="text-decoration-none">
-                <img src="{{asset('images/form-ppn.svg')}}" alt="" width="80">
-                <h3 class="mt-2">NOTA PPn MASUKAN @if($np != 0) <span class="text-danger">({{$np}})</span> @endif</h3>
-            </a>
-        </div>
+
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('invoice-tagihan')}}" class="text-decoration-none">
                 <img src="{{asset('images/invoice-tagihan.svg')}}" alt="" width="80">

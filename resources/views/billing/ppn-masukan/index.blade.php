@@ -40,8 +40,6 @@
             <thead class="table-success">
                 <tr>
                 <th class="text-center align-middle">Tanggal</th>
-                <th class="text-center align-middle">Customer</th>
-                <th class="text-center align-middle">Project</th>
                 <th class="text-center align-middle">Uraian</th>
                 <th class="text-center align-middle">Nominal</th>
                 <th class="text-center align-middle">ACT</th>
@@ -51,14 +49,13 @@
                 @foreach ($data as $d)
                 <tr>
                     <td class="text-center align-middle">{{$d->tanggal}}</td>
-                    <td class="text-center align-middle">{{$d->project->customer->nama}}</td>
-                    <td class="text-start align-middle">{{$d->project->nama}}</td>
                     <td class="text-start align-middle">{{$d->uraian}}</td>
-                    <td class="text-end align-middle">{{$d->nf_nominal}}</td>
+                    <td class="text-center align-middle">{{$d->nf_ppn}}</td>
                     <td class="text-center align-middle">
-                        <form action="{{route('nota-ppn-masukan.claim', ['kasProject' => $d])}}" method="post" id="masukForm">
+                        <form action="{{ route('nota-ppn-masukan.claim', $d->id) }}" method="post" id="claim{{ $d->id }}"
+                            class="claim-form" data-id="{{ $d->id }}">
                             @csrf
-                            <button type="submit" class="btn btn-success">Claim</button>
+                            <button type="submit" class="btn btn-primary">Claim</button>
                         </form>
                     </td>
                 </tr>
@@ -97,23 +94,22 @@
             // } ).draw();
         });
 
-
-
-        $('#masukForm').submit(function(e){
+        $('.claim-form').submit(function(e){
             e.preventDefault();
+            var formId = $(this).data('id');
             Swal.fire({
-                title: 'Apakah anda Yakin?',
+                title: 'Apakah Anda Yakin?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Ya, simpan!'
-                }).then((result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
+                    $(`#claim${formId}`).unbind('submit').submit();
                     $('#spinner').show();
-                    this.submit();
                 }
-            })
+            });
         });
 
 </script>

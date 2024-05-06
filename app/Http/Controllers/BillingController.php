@@ -2,23 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
 use App\Models\Investor;
 use App\Models\InvestorModal;
-use App\Models\InvoiceTagihan;
 use App\Models\KasBesar;
-use App\Models\KasProject;
+use App\Models\transaksi\InvoiceBelanja;
 use Illuminate\Http\Request;
 
 class BillingController extends Controller
 {
     public function index()
     {
+        $np = InvoiceBelanja::where('ppn_masukan', 0)->count();
 
         return view('billing.index', [
-
-
+            'np' => $np,
         ]);
+    }
+
+    public function nota_ppn_masukan()
+    {
+        $data = InvoiceBelanja::where('ppn_masukan', 0)->get();
+
+        return view('billing.ppn-masukan.index', [
+            'data' => $data,
+        ]);
+    }
+
+    public function claim_ppn(InvoiceBelanja $invoice)
+    {
+        $db = new InvoiceBelanja();
+
+        $store = $db->claim_ppn($invoice);
+
+        return redirect()->back()->with($store['status'], $store['message']);
     }
 
     // public function invoice_tagihan()
@@ -29,15 +45,6 @@ class BillingController extends Controller
     //                 ->get();
 
     //     return view('billing.invoice-tagihan.index', [
-    //         'data' => $data,
-    //     ]);
-    // }
-
-    // public function nota_ppn_masukan()
-    // {
-    //     $data = KasProject::with(['project', 'project.customer'])->where('ppn_masuk', 1)->get();
-
-    //     return view('billing.ppn-masukan.index', [
     //         'data' => $data,
     //     ]);
     // }

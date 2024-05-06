@@ -150,6 +150,8 @@ class Keranjang extends Model
     {
         $db = new InvoiceBelanja();
 
+        $data['ppn_masukan'] = $data['ppn'] == 0 ? 1 : 0;
+
         $invoice = [
             'uraian' => $data['uraian'],
             'ppn' => str_replace('.', '', $data['ppn']),
@@ -158,6 +160,7 @@ class Keranjang extends Model
             'nama_rek' => $data['nama_rek'],
             'no_rek' => $data['no_rek'],
             'bank' => $data['bank'],
+            'ppn_masukan' => $data['ppn_masukan'],
         ];
 
         $store = $db->create($invoice);
