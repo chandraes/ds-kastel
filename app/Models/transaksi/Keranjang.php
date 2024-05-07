@@ -52,6 +52,7 @@ class Keranjang extends Model
             $data['ppn'] = 0.11 * ($belanja->sum('total') + $belanja->sum('add_fee'));
 
         }
+        $data['diskon'] = str_replace('.', '', $data['diskon']);
 
         $data['total'] = $belanja->sum('total') + $belanja->sum('add_fee') + $data['ppn'] - $data['diskon'];
 
