@@ -66,6 +66,12 @@
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 my-4 text-center">
+            <a href="#" class="text-decoration-none">
+                <img src="{{asset('images/product.svg')}}" alt="" width="80">
+                <h4 class="mt-2">DAFTAR PRODUCT</h4>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 my-4 text-center">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="80">
                 <h4 class="mt-2">DASHBOARD</h4>
