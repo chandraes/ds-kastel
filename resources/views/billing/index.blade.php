@@ -71,12 +71,6 @@
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="#" class="text-decoration-none">
-                <img src="{{asset('images/nota-belanja.svg')}}" alt="" width="80">
-                <h3 class="mt-2">HUTANG BELANJA</h3>
-            </a>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="80">
                 <h3 class="mt-2">DASHBOARD</h3>
