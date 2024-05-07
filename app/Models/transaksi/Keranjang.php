@@ -81,8 +81,10 @@ class Keranjang extends Model
 
             DB::commit();
 
+            $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 1)->sum('ppn');
+
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
-                        "*Form Bahan Baku*\n".
+                        "*FORM BELI BAHAN BAKU*\n".
                         "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
                         "Uraian :  *".$store->uraian."*\n\n".
                         "Nilai    :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
@@ -95,6 +97,8 @@ class Keranjang extends Model
                         "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
                         "Total Modal Investor : \n".
                         "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                        "Total PPn Masukan : \n".
+                        "Rp. ".number_format($ppnMasukan, 0, ',', '.')."\n\n".
                         "Terima kasih 🙏🙏🙏\n";
 
             $group = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
