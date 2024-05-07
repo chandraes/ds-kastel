@@ -5,6 +5,7 @@ namespace App\Models\transaksi;
 use App\Models\db\BahanBaku;
 use App\Models\db\RekapBahanBaku;
 use App\Models\db\Satuan;
+use App\Models\GroupWa;
 use App\Models\KasBesar;
 use App\Models\PesanWa;
 use App\Models\User;
@@ -94,6 +95,10 @@ class Keranjang extends Model
                         "Total Modal Investor : \n".
                         "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                         "Terima kasih 🙏🙏🙏\n";
+
+            $group = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
+
+            $this->sendWa($group, $pesan);
 
             $result = [
                 'status' => 'success',
