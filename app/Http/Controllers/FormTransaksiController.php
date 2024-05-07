@@ -38,7 +38,7 @@ class FormTransaksiController extends Controller
             'add_fee' => 'required'
         ]);
 
-        $data['user_id'] = auth()->id();
+        $data['user_id'] = auth()->user()->id;
         $data['harga'] = str_replace('.', '', $data['harga']);
         $data['total'] = $data['jumlah'] * $data['harga'];
         $data['add_fee'] = str_replace('.', '', $data['add_fee']);
@@ -74,7 +74,7 @@ class FormTransaksiController extends Controller
     {
         ini_set('max_execution_time', 300); //300 seconds = 5 minutes
         ini_set('memory_limit', '512M');
-        
+
         $data = $request->validate([
             'uraian' => 'required',
             'ppn' => 'required',
