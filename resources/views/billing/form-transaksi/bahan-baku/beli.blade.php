@@ -4,6 +4,7 @@
     <div class="row justify-content-center mb-5">
         <div class="col-md-12 text-center">
             <h1><u>Form Beli Bahan Baku</u></h1>
+            <h1><u>CASH</u></h1>
         </div>
     </div>
     <div class="row justify-content-left mt-3 mb-3">
