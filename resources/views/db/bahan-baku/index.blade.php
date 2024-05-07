@@ -34,7 +34,7 @@
 </div>
 <div class="container mt-5 table-responsive ">
     <div class="text-center">
-        <h2>KONVERSI</h2>
+        <h2>KONVERSI (KG)</h2>
     </div>
     <table class="table table-bordered" id="dataTable">
         <thead class="table-success">
@@ -123,7 +123,7 @@
 </div>
 <div class="container mt-5 table-responsive ">
     <div class="text-center">
-        <h2>NON KONVERSI</h2>
+        <h2>NON KONVERSI (SELAIN KG)</h2>
     </div>
     <table class="table table-bordered" id="dataTable2">
         <thead class="table-success">
