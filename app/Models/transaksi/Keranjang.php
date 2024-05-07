@@ -6,7 +6,9 @@ use App\Models\db\BahanBaku;
 use App\Models\db\RekapBahanBaku;
 use App\Models\db\Satuan;
 use App\Models\KasBesar;
+use App\Models\PesanWa;
 use App\Models\User;
+use App\Services\StarSender;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -77,7 +79,21 @@ class Keranjang extends Model
 
             DB::commit();
 
-            $pesan =
+            $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
+                        "*Form Bahan Baku*\n".
+                        "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
+                        "Uraian :  *".$store->uraian."*\n\n".
+                        "Nilai    :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
+                        "Ditransfer ke rek:\n\n".
+                        "Bank      : ".$store->bank."\n".
+                        "Nama    : ".$store->nama_rek."\n".
+                        "No. Rek : ".$store->no_rek."\n\n".
+                        "==========================\n".
+                        "Sisa Saldo Kas Besar : \n".
+                        "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                        "Total Modal Investor : \n".
+                        "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                        "Terima kasih 🙏🙏🙏\n";
 
             $result = [
                 'status' => 'success',
@@ -184,6 +200,22 @@ class Keranjang extends Model
                 'rekap_bahan_baku_id' => $rekap->id,
             ]);
         }
+
+        return true;
+    }
+
+    private function sendWa($tujuan, $pesan)
+    {
+        $send = new StarSender($tujuan, $pesan);
+        $res = $send->sendGroup();
+
+        $status = ($res == 'true') ? 1 : 0;
+
+        PesanWa::create([
+            'pesan' => $pesan,
+            'tujuan' => $tujuan,
+            'status' => $status,
+        ]);
 
         return true;
     }

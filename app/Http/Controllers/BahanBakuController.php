@@ -12,11 +12,11 @@ class BahanBakuController extends Controller
     public function index()
     {
         $kategori = KategoriBahan::with(['bahanBaku'])->get();
-        $data = BahanBaku::with(['kategori', 'satuan'])->where('apa_konversi', 1)
+        $data = BahanBaku::with(['kategori', 'satuan', 'rekap'])->where('apa_konversi', 1)
                             ->get()
                             ->groupBy('kategori.nama');
                             // dd($data);
-        $non_konversi = BahanBaku::with(['kategori', 'satuan'])
+        $non_konversi = BahanBaku::with(['kategori', 'satuan','rekap'])
                         ->where('apa_konversi', 0)
                         ->get()
                         ->groupBy('kategori.nama');
