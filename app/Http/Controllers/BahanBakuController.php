@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\db\BahanBaku;
 use App\Models\db\KategoriBahan;
 use App\Models\db\Satuan;
+use App\Models\db\Supplier;
 use Illuminate\Http\Request;
 
 class BahanBakuController extends Controller
@@ -73,7 +74,7 @@ class BahanBakuController extends Controller
         ]);
 
         if ($data['apa_konversi'] == 1) {
-            $data['satuan_id'] = 1;
+            $data['satuan_id'] = 2;
         }
 
         BahanBaku::create($data);
@@ -98,6 +99,10 @@ class BahanBakuController extends Controller
 
     public function destroy(BahanBaku $bahan)
     {
+        if ($bahan->stock > 0) {
+            return redirect()->back()->with('error', 'Bahan baku tidak bisa dihapus karena masih ada stok');
+        }
+
         $bahan->delete();
         return redirect()->route('db.bahan-baku')->with('success', 'Bahan baku berhasil dihapus');
     }
@@ -106,6 +111,14 @@ class BahanBakuController extends Controller
     {
         $data = BahanBaku::where('kategori_bahan_id', $request->kategori_bahan_id)
                             ->where('apa_konversi', $request->apa_konversi)->get()->toArray();
+        return response()->json($data);
+    }
+
+    public function get_supplier(Request $request)
+    {
+        
+        $data = Supplier::find($request->id);
+
         return response()->json($data);
     }
 }

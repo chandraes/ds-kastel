@@ -48,7 +48,7 @@
             </a>
         </div> --}}
         <div class="col-lg-3 col-md-3 col-sm-6 my-4 text-center">
-            <a href="#" class="text-decoration-none">
+            <a href="{{route('db.supplier')}}" class="text-decoration-none">
                 <img src="{{asset('images/supplier.svg')}}" alt="" width="80">
                 <h4 class="mt-2">SUPPLIER<br>BAHAN BAKU</h4>
             </a>

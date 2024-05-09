@@ -132,21 +132,16 @@
                         </div>
                     </div>
                     <hr>
+                    <h2>
+                        Transfer Ke
+                    </h2>
+                    <br>
                     <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="supplier_id" class="form-label">Supplier Bahan Baku</label>
-                            <select class="form-select" name="supplier_id" id="supplier_id" onchange="funSupplier()">
-                                <option value="">-- Pilih Supplier --</option>
-                                @foreach ($supplier as $s)
-                                <option value="{{$s->id}}">{{$s->nama}}</option>
-                                @endforeach
-                            </select>
-                        </div>
                         <div class="col-md-4 mb-3">
                             <label for="nama_rek" class="form-label">Nama Rekening</label>
                             <input type="text" class="form-control @if ($errors->has('nama_rek'))
                         is-invalid
-                    @endif" name="nama_rek" id="nama_rek" value="{{old('nama_rek')}}" maxlength="15" required value="{{old('nama_rek')}}" readonly>
+                    @endif" name="nama_rek" id="nama_rek" value="{{old('nama_rek')}}" maxlength="15" required value="{{old('nama_rek')}}">
                             @if ($errors->has('nama_rek'))
                             <div class="invalid-feedback">
                                 {{$errors->first('nama_rek')}}
@@ -157,7 +152,7 @@
                             <label for="bank" class="form-label">Bank</label>
                             <input type="text" class="form-control @if ($errors->has('bank'))
                         is-invalid
-                    @endif" name="bank" id="bank" value="{{old('bank')}}" maxlength="10" required value="{{old('bank')}}" readonly>
+                    @endif" name="bank" id="bank" value="{{old('bank')}}" maxlength="10" required value="{{old('bank')}}">
                             @if ($errors->has('bank'))
                             <div class="invalid-feedback">
                                 {{$errors->first('bank')}}
@@ -168,7 +163,7 @@
                             <label for="no_rek" class="form-label">Nomor Rekening</label>
                             <input type="text" class="form-control @if ($errors->has('no_rek'))
                         is-invalid
-                    @endif" name="no_rek" id="no_rek" value="{{old('no_rek')}}" required value="{{old('no_rek')}}" readonly>
+                    @endif" name="no_rek" id="no_rek" value="{{old('no_rek')}}" required value="{{old('no_rek')}}">
                             @if ($errors->has('no_rek'))
                             <div class="invalid-feedback">
                                 {{$errors->first('no_rek')}}
@@ -186,23 +181,3 @@
         </div>
     </div>
 </div>
-@push('js')
-    <script>
-        function funSupplier()
-        {
-            var supplier_id = document.getElementById('supplier_id').value;
-            $.ajax({
-                url: "{{route('billing.form-transaksi.bahan-baku.get-supplier')}}",
-                type: "GET",
-                data: {
-                    id: supplier_id
-                },
-                success: function(data){
-                    document.getElementById('nama_rek').value = data.nama_rek;
-                    document.getElementById('bank').value = data.bank;
-                    document.getElementById('no_rek').value = data.no_rek;
-                }
-            });
-        }
-    </script>
-@endpush

@@ -197,8 +197,6 @@
 <script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
 <script>
 
-
-
     function createFun() {
         var apa_konversi = document.getElementById('apa_konversi').value;
         if (apa_konversi == 1) {

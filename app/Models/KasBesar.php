@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\transaksi\InvoiceBelanja;
 use App\Services\StarSender;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,11 @@ class KasBesar extends Model
     protected $guarded = ['id'];
 
     protected $appends = ['nf_nominal', 'tanggal', 'kode_deposit', 'kode_kas_kecil', 'nf_saldo', 'nf_modal_investor'];
+
+    public function invoice_belanja()
+    {
+        return $this->belongsTo(InvoiceBelanja::class, 'invoice_belanja_id');
+    }
 
     public function investorModal()
     {
@@ -67,7 +73,7 @@ class KasBesar extends Model
 
     public function kasBesar($month, $year)
     {
-        return $this->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
+        return $this->with(['invoice_belanja'])->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
     }
 
     public function kasBesarByMonth($month, $year)

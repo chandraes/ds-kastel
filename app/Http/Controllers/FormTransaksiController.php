@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\db\KategoriBahan;
 use App\Models\db\Satuan;
+use App\Models\db\Supplier;
 use App\Models\transaksi\Keranjang;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,10 @@ class FormTransaksiController extends Controller
 
     public function bahan_baku_beli()
     {
+        if (Supplier::where('status', 1)->count() == 0) {
+            return redirect()->route('db.supplier')->with('error', 'Supplier belum ada, silahkan tambahkan supplier terlebih dahulu');
+        }
+        $supplier = Supplier::where('status', 1)->get();
         $kategori = KategoriBahan::all();
         $keranjang = Keranjang::with(['bahan_baku'])->where('user_id', auth()->id())->get();
         $satuan = Satuan::all();
@@ -23,7 +28,8 @@ class FormTransaksiController extends Controller
         return view('billing.form-transaksi.bahan-baku.beli', [
             'kategori' => $kategori,
             'keranjang' => $keranjang,
-            'satuan' => $satuan
+            'satuan' => $satuan,
+            'supplier' => $supplier
         ]);
     }
 
@@ -82,9 +88,14 @@ class FormTransaksiController extends Controller
             'nama_rek' => 'required',
             'no_rek' => 'required',
             'bank' => 'required',
+            'supplier_id' => 'required|exists:suppliers,id'
         ]);
 
         $db = new Keranjang();
+
+        if ($db->where('user_id', auth()->id())->count() == 0) {
+            return redirect()->back()->with('error', 'Keranjang kosong');
+        }
 
         $store = $db->checkout($data);
 

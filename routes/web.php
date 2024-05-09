@@ -106,7 +106,13 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'satuan_store'])->name('db.satuan.store');
                 Route::patch('/update/{satuan}', [App\Http\Controllers\DatabaseController::class, 'satuan_update'])->name('db.satuan.update');
                 Route::delete('/delete/{satuan}', [App\Http\Controllers\DatabaseController::class, 'satuan_delete'])->name('db.satuan.delete');
+            });
 
+            Route::prefix('supplier')->group(function(){
+                Route::get('/', [App\Http\Controllers\DatabaseController::class, 'supplier'])->name('db.supplier');
+                Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'supplier_store'])->name('db.supplier.store');
+                Route::patch('/update/{supplier}', [App\Http\Controllers\DatabaseController::class, 'supplier_update'])->name('db.supplier.update');
+                Route::delete('/delete/{supplier}', [App\Http\Controllers\DatabaseController::class, 'supplier_delete'])->name('db.supplier.delete');
             });
         });
     });
@@ -183,12 +189,16 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::prefix('form-bahan-baku')->group(function(){
                     Route::get('/beli', [App\Http\Controllers\FormTransaksiController::class, 'bahan_baku_beli'])->name('billing.form-transaksi.bahan-baku.beli');
                     Route::get('/get-barang', [App\Http\Controllers\BahanBakuController::class, 'get_barang'])->name('billing.form-transaksi.bahan-baku.get-barang');
+                    Route::get('/get-supplier', [App\Http\Controllers\BahanBakuController::class, 'get_supplier'])->name('billing.form-transaksi.bahan-baku.get-supplier');
+
                     Route::prefix('keranjang')->group(function(){
                         Route::delete('/delete/{keranjang}', [App\Http\Controllers\FormTransaksiController::class, 'keranjang_delete'])->name('billing.form-transaksi.bahan-baku.keranjang.delete');
                         Route::post('/store', [App\Http\Controllers\FormTransaksiController::class, 'keranjang_store'])->name('billing.form-transaksi.bahan-baku.keranjang.store');
                         Route::post('/empty', [App\Http\Controllers\FormTransaksiController::class, 'keranjang_empty'])->name('billing.form-transaksi.bahan-baku.keranjang.empty');
                         Route::post('/checkout', [App\Http\Controllers\FormTransaksiController::class, 'keranjang_checkout'])->name('billing.form-transaksi.bahan-baku.keranjang.checkout');
                     });
+
+                    Route::get('/beli-tempo', [App\Http\Controllers\FormTransaksiController::class, 'bahan_baku_beli_tempo'])->name('billing.form-transaksi.bahan-baku.beli-tempo');
 
                 });
             });

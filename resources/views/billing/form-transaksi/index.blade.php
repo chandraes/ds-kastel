@@ -6,11 +6,12 @@
 <div class="container mt-3">
     <div class="row justify-content-left">
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="{{route('billing.form-transaksi.bahan-baku.beli')}}" class="text-decoration-none">
+            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#bahanBakuModal">
                 <img src="{{asset('images/form-bahan-baku.svg')}}" alt="" width="80">
                 <h3 class="mt-2">FORM BAHAN BAKU</h3>
             </a>
         </div>
+        @include('billing.form-transaksi.modal-bahan-baku')
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="#" class="text-decoration-none">
                 <img src="{{asset('images/nota-belanja.svg')}}" alt="" width="80">

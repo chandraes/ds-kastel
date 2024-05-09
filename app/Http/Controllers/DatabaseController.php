@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\db\Satuan;
+use App\Models\db\Supplier;
 use App\Models\Konsumen;
 use App\Models\Pengelola;
 use App\Models\Product;
@@ -201,5 +202,61 @@ class DatabaseController extends Controller
         $satuan->delete();
 
         return redirect()->route('db.satuan')->with('success', 'Data berhasil dihapus');
+    }
+
+    public function supplier()
+    {
+        $data = Supplier::all();
+
+        return view('db.supplier.index', [
+            'data' => $data
+        ]);
+    }
+
+    public function supplier_store(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+            'alamat' => 'required',
+            'npwp' => 'required',
+            'cp' => 'required',
+            'no_hp' => 'required',
+            'no_rek' => 'required',
+            'bank' => 'required',
+            'nama_rek' => 'required',
+            'status' => 'required',
+        ]);
+
+        $db = new Supplier();
+
+        $store = $db->createSupplier($data);
+
+        return redirect()->route('db.supplier')->with($store['status'], $store['message']);
+    }
+
+    public function supplier_update(Request $request, Supplier $supplier)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+            'alamat' => 'required',
+            'npwp' => 'required',
+            'cp' => 'required',
+            'no_hp' => 'required',
+            'no_rek' => 'required',
+            'bank' => 'required',
+            'nama_rek' => 'required',
+            'status' => 'required',
+        ]);
+
+        $supplier->update($data);
+
+        return redirect()->route('db.supplier')->with('success', 'Data berhasil diupdate');
+    }
+
+    public function supplier_delete(Supplier $supplier)
+    {
+        $supplier->delete();
+
+        return redirect()->route('db.supplier')->with('success', 'Data berhasil dihapus');
     }
 }

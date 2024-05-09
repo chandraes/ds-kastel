@@ -17,7 +17,19 @@ class InvoiceBelanja extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    protected $appends = ['tanggal', 'nf_diskon', 'nf_ppn', 'nf_total', 'id_jatuh_tempo'];
+    protected $appends = ['tanggal', 'nf_diskon', 'nf_ppn', 'nf_total', 'id_jatuh_tempo', 'kode'];
+
+    public function generateKode()
+    {
+        $kode = $this->max('nomor_bb') + 1;
+
+        return $kode;
+    }
+
+    public function getKodeAttribute()
+    {
+        return 'BB'.sprintf('%02d', $this->nomor_bb);
+    }
 
     public function getTanggalAttribute()
     {

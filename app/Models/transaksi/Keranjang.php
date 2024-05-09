@@ -71,9 +71,9 @@ class Keranjang extends Model
 
             DB::beginTransaction();
 
-            $store = $this->kas_checkout($data);
+            $store_inv = $this->invoice_checkout($data);
 
-            $this->invoice_checkout($data);
+            $store = $this->kas_checkout($data, $store_inv->id);
 
             $this->update_bahan();
 
@@ -81,7 +81,7 @@ class Keranjang extends Model
 
             DB::commit();
 
-            $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 1)->sum('ppn');
+            $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 0)->sum('ppn');
 
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                         "*FORM BELI BAHAN BAKU*\n".
@@ -126,7 +126,7 @@ class Keranjang extends Model
 
     }
 
-    private function kas_checkout($data)
+    private function kas_checkout($data, $invoice_id)
     {
         $db = new KasBesar();
 
@@ -139,6 +139,7 @@ class Keranjang extends Model
             'nama_rek' => $data['nama_rek'],
             'bank' => $data['bank'],
             'modal_investor_terakhir' => $db->modalInvestorTerakhir(),
+            'invoice_belanja_id' => $invoice_id,
         ];
 
         $store = $db->create($kas);
@@ -160,12 +161,7 @@ class Keranjang extends Model
         foreach ($keranjang as $item) {
             $bahan = $bahan_bakus[$item->bahan_baku_id];
 
-            if($bahan->apa_konversi == 1 && $item->satuan_id != 1) {
-                $bahan->stock += $item->jumlah * $bahan->konversi;
-            } else {
-                $bahan->stock += $item->jumlah;
-            }
-
+            $bahan->stock += $item->jumlah;
             $bahan->save();
         }
 
@@ -176,17 +172,21 @@ class Keranjang extends Model
     {
         $db = new InvoiceBelanja();
 
+        $data['ppn'] = str_replace('.', '', $data['ppn']);
+
         $data['ppn_masukan'] = $data['ppn'] == 0 ? 1 : 0;
 
         $invoice = [
+            'nomor_bb' => $db->generateKode(),
             'uraian' => $data['uraian'],
-            'ppn' => str_replace('.', '', $data['ppn']),
+            'ppn' => $data['ppn'],
             'diskon' => str_replace('.', '', $data['diskon']),
             'total' => $data['total'],
             'nama_rek' => $data['nama_rek'],
             'no_rek' => $data['no_rek'],
             'bank' => $data['bank'],
             'ppn_masukan' => $data['ppn_masukan'],
+            'supplier_id' => $data['supplier_id'],
         ];
 
         $store = $db->create($invoice);
@@ -211,7 +211,7 @@ class Keranjang extends Model
             ]);
         }
 
-        return true;
+        return $store;
     }
 
     private function sendWa($tujuan, $pesan)

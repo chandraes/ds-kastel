@@ -72,16 +72,17 @@
                 <th class="text-center align-middle">Tanggal</th>
                 <th class="text-center align-middle">Uraian</th>
                 <th class="text-center align-middle">Deposit</th>
-                <th class="text-center align-middle">Kas Kecil</th>
+                <th class="text-center align-middle">Kas<br>Kecil</th>
+                <th class="text-center align-middle">Beli<br>bahan</th>
                 <th class="text-center align-middle">Masuk</th>
                 <th class="text-center align-middle">Keluar</th>
                 <th class="text-center align-middle">Saldo</th>
                 <th class="text-center align-middle">Transfer Ke Rekening</th>
                 <th class="text-center align-middle">Bank</th>
-                <th class="text-center align-middle">Modal Investor</th>
+                <th class="text-center align-middle">Modal<br>Investor</th>
             </tr>
             <tr class="table-warning">
-                <td colspan="5" class="text-center align-middle">Saldo Bulan
+                <td colspan="6" class="text-center align-middle">Saldo Bulan
                     {{$stringBulan}} {{$tahunSebelumnya}}</td>
                 <td></td>
                 <td class="text-end align-middle">Rp. {{$dataSebelumnya ? $dataSebelumnya->nf_saldo : ''}}</td>
@@ -103,11 +104,14 @@
                         @else
                         {{$d->uraian}}
                         @endif
-
                     </td>
-
                     <td class="text-center align-middle">{{$d->kode_deposit}}</td>
                     <td class="text-center align-middle">{{$d->kode_kas_kecil}}</td>
+                    <td class="text-center align-middle">
+                        @if ($d->invoice_belanja_id)
+                            {{$d->invoice_belanja->kode}}
+                        @endif
+                    </td>
                     <td class="text-end align-middle">{{$d->jenis === 1 ?
                        $d->nf_nominal : ''}}
                     </td>
@@ -120,11 +124,10 @@
                     <td class="text-end align-middle">{{$d->nf_modal_investor}}</td>
                 </tr>
                 @endforeach
-
             </tbody>
             <tfoot>
                 <tr>
-                    <td class="text-center align-middle" colspan="4"><strong>GRAND TOTAL</strong></td>
+                    <td class="text-center align-middle" colspan="5"><strong>GRAND TOTAL</strong></td>
                     <td class="text-end align-middle"><strong>{{number_format($data->where('jenis',
                             1)->sum('nominal'), 0, ',', '.')}}</strong></td>
                     <td class="text-end align-middle text-danger"><strong>{{number_format($data->where('jenis',
