@@ -140,6 +140,10 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/statistik/{customer}', [App\Http\Controllers\StatistikController::class, 'index'])->name('statistik.index');
             Route::get('/statistik/{customer}/print', [App\Http\Controllers\StatistikController::class, 'print'])->name('statistik.print');
 
+            Route::prefix('invoice-belanja')->group(function(){
+                Route::get('/', [App\Http\Controllers\InvoiceController::class, 'index'])->name('rekap.invoice-belanja');
+            });
+
             Route::get('kas-project', [App\Http\Controllers\RekapController::class, 'kas_project'])->name('rekap.kas-project');
             Route::post('/kas-project/void/{kasProject}', [App\Http\Controllers\RekapController::class, 'void_kas_project'])->name('rekap.kas-project.void');
             Route::get('/kas-project/print/{project}/{bulan}/{tahun}', [App\Http\Controllers\RekapController::class, 'kas_project_print'])->name('rekap.kas-project.print');

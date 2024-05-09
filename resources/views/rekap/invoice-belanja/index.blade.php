@@ -1,13 +1,13 @@
 @extends('layouts.app')
+
 @section('content')
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
-            <h1><u>REKAP KAS BESAR</u></h1>
+            <h1><u>REKAP KAS KECIL</u></h1>
             <h1>{{$stringBulanNow}} {{$tahun}}</h1>
         </div>
     </div>
-    @include('swal')
     <div class="flex-row justify-content-between mt-3">
         <div class="col-md-6">
             <table class="table">
@@ -16,18 +16,15 @@
                                 width="30"> Dashboard</a></td>
                     <td><a href="{{route('rekap')}}"><img src="{{asset('images/rekap.svg')}}" alt="dokumen"
                                 width="30"> REKAP</a></td>
-                    <td>
-                        <a href="{{route('rekap.kas-besar.print', ['bulan' => $bulan, 'tahun' => $tahun])}}" target="_blank"><img src="{{asset('images/print.svg')}}" alt="dokumen"
-                            width="30"> PRINT PDF</a>
-                    </td>
                 </tr>
             </table>
         </div>
     </div>
 </div>
 <div class="container-fluid mt-5">
-    <form action="{{route('rekap.kas-besar')}}" method="get">
+    <form action="{{route('rekap.invoice-belanja')}}" method="get">
         <div class="row">
+
             <div class="col-md-3 mb-3">
                 <label for="bulan" class="form-label">Bulan</label>
                 <select class="form-select" name="bulan" id="bulan">
@@ -57,10 +54,10 @@
                 <label for="tahun" class="form-label">&nbsp;</label>
                 <button type="submit" class="btn btn-primary form-control" id="btn-cari">Tampilkan</button>
             </div>
-            {{-- <div class="col-md-3 mb-3">
+            <div class="col-md-3 mb-3">
                 <label for="showPrint" class="form-label">&nbsp;</label>
-                <a href="{{route('rekap.kas-besar.preview', ['bulan' => $bulan, 'tahun' => $tahun])}}" target="_blank" class="btn btn-secondary form-control" id="btn-cari">Print Preview</a>
-            </div> --}}
+                <a href="{{route('rekap.kas-kecil.print', ['bulan' => $bulan, 'tahun' => $tahun])}}" target="_blank" class="btn btn-secondary form-control" id="btn-cari">Print Preview</a>
+            </div>
         </div>
     </form>
 </div>
@@ -70,83 +67,45 @@
             <thead class=" table-success">
             <tr>
                 <th class="text-center align-middle">Tanggal</th>
+                <th class="text-center align-middle">Supplier</th>
+                <th class="text-center align-middle">Nota</th>
                 <th class="text-center align-middle">Uraian</th>
-                <th class="text-center align-middle">Deposit</th>
-                <th class="text-center align-middle">Kas<br>Kecil</th>
-                <th class="text-center align-middle">Beli<br>bahan</th>
-                <th class="text-center align-middle">Masuk</th>
-                <th class="text-center align-middle">Keluar</th>
-                <th class="text-center align-middle">Saldo</th>
-                <th class="text-center align-middle">Transfer Ke Rekening</th>
-                <th class="text-center align-middle">Bank</th>
-                <th class="text-center align-middle">Modal<br>Investor</th>
-            </tr>
-            <tr class="table-warning">
-                <td colspan="6" class="text-center align-middle">Saldo Bulan
-                    {{$stringBulan}} {{$tahunSebelumnya}}</td>
-                <td></td>
-                <td class="text-end align-middle">Rp. {{$dataSebelumnya ? $dataSebelumnya->nf_saldo : ''}}</td>
-                <td></td>
-                <td></td>
-                <td class="text-end align-middle">Rp. {{$dataSebelumnya ?
-                    number_format($dataSebelumnya->modal_investor_terakhir, 0,',','.') : ''}}</td>
+                <th class="text-center align-middle">Diskon</th>
+                <th class="text-center align-middle">PPn</th>
+                <th class="text-center align-middle">Total Belanja</th>
+
             </tr>
             </thead>
             <tbody>
                 @foreach ($data as $d)
                 <tr>
                     <td class="text-center align-middle">{{$d->tanggal}}</td>
-                    <td class="text-start align-middle">
-                        @if ($d->invoice_tagihan_id)
-                        <a href="{{route('rekap.kas-besar.detail-tagihan', ['invoice' => $d->invoice_tagihan_id])}}">{{$d->uraian}}</a>
-                        @elseif($d->invoice_bayar_id)
-                        <a href="{{route('rekap.kas-besar.detail-bayar', ['invoice' => $d->invoice_bayar_id])}}">{{$d->uraian}}</a>
-                        @else
-                        {{$d->uraian}}
-                        @endif
-                    </td>
-                    <td class="text-center align-middle">{{$d->kode_deposit}}</td>
-                    <td class="text-center align-middle">{{$d->kode_kas_kecil}}</td>
-                    <td class="text-center align-middle">
-                        @if ($d->invoice_belanja_id)
-                            {{$d->invoice_belanja->kode}}
-                        @endif
-                    </td>
-                    <td class="text-end align-middle">{{$d->jenis === 1 ?
-                       $d->nf_nominal : ''}}
-                    </td>
-                    <td class="text-end align-middle text-danger">{{$d->jenis === 0 ?
-                        $d->nf_nominal : ''}}
-                    </td>
-                    <td class="text-end align-middle">{{$d->nf_saldo}}</td>
-                    <td class="text-center align-middle">{{$d->nama_rek}}</td>
-                    <td class="text-center align-middle">{{$d->bank}}</td>
-                    <td class="text-end align-middle">{{$d->nf_modal_investor}}</td>
+                    <td class="text-center align-middle">{{$d->supplier->nama}}</td>
+                    <td class="text-center align-middle">{{$d->kode}}</td>
+                    <td class="text-start align-middle">{{$d->uraian}}</td>
+                    <td class="text-end align-middle">
+                     </td>
                 </tr>
                 @endforeach
+
             </tbody>
-            <tfoot>
+            {{-- <tfoot>
                 <tr>
-                    <td class="text-center align-middle" colspan="5"><strong>GRAND TOTAL</strong></td>
+                    <td colspan="3" class="text-center align-middle"><strong>GRAND TOTAL</strong></td>
                     <td class="text-end align-middle"><strong>{{number_format($data->where('jenis',
                             1)->sum('nominal'), 0, ',', '.')}}</strong></td>
                     <td class="text-end align-middle text-danger"><strong>{{number_format($data->where('jenis',
                             0)->sum('nominal'), 0, ',', '.')}}</strong></td>
-                    {{-- latest saldo --}}
                     <td class="text-end align-middle">
                         <strong>
-                            {{$data->last() ? $data->last()->nf_saldo : ''}}
+                            {{$data->last() ? number_format($data->last()->saldo, 0, ',', '.') : ''}}
                         </strong>
                     </td>
                     <td></td>
                     <td></td>
-                    <td class="text-end align-middle">
-                        <strong>
-                            {{$data->last() ? number_format($data->last()->modal_investor_terakhir, 0, ',', '.') : ''}}
-                        </strong>
-                    </td>
+                    <td></td>
                 </tr>
-            </tfoot>
+            </tfoot> --}}
         </table>
     </div>
 </div>
@@ -165,14 +124,61 @@
             "searching": false,
             "scrollCollapse": true,
             "scrollY": "550px",
-            "fixedColumns": {
-                "leftColumns": 4,
-                "rightColumns": 2
-            },
 
         });
 
     });
+
+    function voidKas(id){
+        Swal.fire({
+                title: 'Masukkan Password',
+                input: 'password',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                showLoaderOnConfirm: true,
+                preConfirm: (password) => {
+                    return new Promise((resolve, reject) => {
+                        $.ajax({
+                            url: '{{route('pengaturan.password-konfirmasi-cek')}}',
+                            type: 'POST',
+                            data: JSON.stringify({ password: password }),
+                            contentType: 'application/json',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    resolve();
+                                } else {
+                                    // swal show error message\
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: data.message
+                                    });
+                                }
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: textStatus+' '+errorThrown
+                                    });
+                            }
+                        });
+                    });
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#spinner').show();
+                    window.location.href = "/rekap/kas-kecil/"+id+"/void";
+                }
+            });
+    }
 
 </script>
 @endpush

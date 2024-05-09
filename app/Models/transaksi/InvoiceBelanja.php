@@ -3,6 +3,7 @@
 namespace App\Models\transaksi;
 
 use App\Models\db\RekapBahanBaku;
+use App\Models\db\Supplier;
 use App\Models\GroupWa;
 use App\Models\KasBesar;
 use App\Models\PesanWa;
@@ -18,6 +19,24 @@ class InvoiceBelanja extends Model
     protected $guarded = ['id'];
 
     protected $appends = ['tanggal', 'nf_diskon', 'nf_ppn', 'nf_total', 'id_jatuh_tempo', 'kode'];
+
+
+    public function dataTahun()
+    {
+        return $this->selectRaw('YEAR(created_at) as tahun')->groupBy('tahun')->get();
+    }
+
+    public function invoiceByMonth($month, $year, $filter = null)
+    {
+        return $this->with(['supplier'])->whereMonth('created_at', $month)
+                    ->whereYear('created_at', $year)
+                    ->where('tempo', 0)->get();
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
 
     public function generateKode()
     {

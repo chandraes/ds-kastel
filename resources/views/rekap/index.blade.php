@@ -26,12 +26,12 @@
         </div>
     </div>
     <div class="row justify-content-left">
-        {{-- <div class="col-lg-4 mt-3 mb-3 text-center">
-            <a href="{{route('rekap.invoice')}}" class="text-decoration-none">
+        <div class="col-lg-4 mt-3 mb-3 text-center">
+            <a href="{{route('rekap.invoice-belanja')}}" class="text-decoration-none">
                 <img src="{{asset('images/rekap-invoice.svg')}}" alt="" width="80">
-                <h3 class="mt-2">INVOICE</h3>
+                <h3 class="mt-2">INVOICE BELANJA</h3>
             </a>
-        </div> --}}
+        </div>
         <div class="col-lg-4 mt-3 mb-3 text-center">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="80">
