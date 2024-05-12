@@ -35,4 +35,11 @@ class InvoiceController extends Controller
             'stringBulanNow' => $stringBulanNow,
         ]);
     }
+
+    public function detail(InvoiceBelanja $invoice)
+    {
+        return view('rekap.invoice-belanja.detail', [
+            'data' => $invoice->load(['rekap', 'rekap.bahan_baku', 'rekap.satuan', 'rekap.bahan_baku.kategori']),
+        ]);
+    }
 }

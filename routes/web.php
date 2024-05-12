@@ -142,6 +142,7 @@ Route::group(['middleware' => ['auth']], function() {
 
             Route::prefix('invoice-belanja')->group(function(){
                 Route::get('/', [App\Http\Controllers\InvoiceController::class, 'index'])->name('rekap.invoice-belanja');
+                Route::get('/detail/{invoice}', [App\Http\Controllers\InvoiceController::class, 'detail'])->name('rekap.invoice-belanja.detail');
             });
 
             Route::get('kas-project', [App\Http\Controllers\RekapController::class, 'kas_project'])->name('rekap.kas-project');
