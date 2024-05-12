@@ -107,7 +107,8 @@
                     <td class="text-center align-middle">{{$d->kode_kas_kecil}}</td>
                     <td class="text-center align-middle">
                         @if ($d->invoice_belanja_id)
-                            {{$d->invoice_belanja->kode}}
+                        <a href="{{route('rekap.kas-besar.detail-belanja', ['invoice' => $d->invoice_belanja_id])}}">{{$d->invoice_belanja->kode}}</a>
+
                         @endif
                     </td>
                     <td class="text-end align-middle">{{$d->jenis === 1 ?
@@ -124,6 +125,7 @@
                 @endforeach
             </tbody>
             <tfoot>
+
                 <tr>
                     <td class="text-center align-middle" colspan="5"><strong>GRAND TOTAL</strong></td>
                     <td class="text-end align-middle"><strong>{{number_format($data->where('jenis',
@@ -151,6 +153,11 @@
 @endsection
 @push('css')
 <link href="{{asset('assets/css/dt.min.css')}}" rel="stylesheet">
+<style>
+    .dataTables_wrapper {
+        width: 100%;
+    }
+</style>
 @endpush
 @push('js')
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
@@ -159,16 +166,15 @@
     $(document).ready(function() {
         $('#rekapTable').DataTable({
             "paging": false,
+            "info": true,
             "ordering": false,
             "searching": false,
             "scrollCollapse": true,
             "scrollY": "550px",
-            "fixedColumns": {
-                "leftColumns": 4,
-                "rightColumns": 2
-            },
-
+            "scrollX": true,
+            "autoWidth": false,
         });
+
 
     });
 

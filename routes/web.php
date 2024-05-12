@@ -125,7 +125,7 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::get('/', [App\Http\Controllers\RekapController::class, 'kas_besar'])->name('rekap.kas-besar');
                 Route::get('/print/{bulan}/{tahun}', [App\Http\Controllers\RekapController::class, 'kas_besar_print'])->name('rekap.kas-besar.print');
                 Route::get('/detail-tagihan/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_tagihan'])->name('rekap.kas-besar.detail-tagihan');
-                Route::get('/detail-bayar/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_bayar'])->name('rekap.kas-besar.detail-bayar');
+                Route::get('/detail-belanja/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_belanja'])->name('rekap.kas-besar.detail-belanja');
             });
 
             Route::prefix('kas-kecil')->group(function(){

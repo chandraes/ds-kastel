@@ -11,6 +11,7 @@ use App\Models\KasKecil;
 use App\Models\KasProject;
 use App\Models\PesanWa;
 use App\Models\Project;
+use App\Models\transaksi\InvoiceBelanja;
 use App\Services\StarSender;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -304,5 +305,12 @@ class RekapController extends Controller
         }
 
         return abort(404);
+    }
+
+    public function detail_belanja(InvoiceBelanja $invoice)
+    {
+        return view('rekap.kas-besar.detail-belanja', [
+            'data' => $invoice->load(['rekap', 'rekap.bahan_baku', 'rekap.satuan', 'rekap.bahan_baku.kategori']),
+        ]);
     }
 }
