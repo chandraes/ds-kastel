@@ -1,216 +1,173 @@
 @extends('layouts.app')
+
 @section('content')
-<div class="container-fluid">
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
-            <h1><u>PRODUCT</u></h1>
+            <h1><u>DAFTAR PRODUCT</u></h1>
         </div>
     </div>
+    @include('swal')
+    @include('db.product.create')
+    @include('db.product.create-kategori')
+    @include('db.product.edit')
     <div class="flex-row justify-content-between mt-3">
-        <div class="col-md-6">
-            <table class="table" id="data-table">
-                <tr>
+        <div class="col-md-12">
+            <table class="table">
+                <tr class="text-center">
                     <td><a href="{{route('home')}}"><img src="{{asset('images/dashboard.svg')}}" alt="dashboard"
                                 width="30"> Dashboard</a></td>
-                    <td><a href="{{route('db')}}"><img src="{{asset('images/database.svg')}}" alt="dokumen" width="30">
-                            Database</a></td>
-                    <td><a href="#" data-bs-toggle="modal" data-bs-target="#createCustomer"><img
-                                src="{{asset('images/project.svg')}}" width="30"> Tambah Product</a>
-
+                    <td><a href="{{route('db')}}"><img src="{{asset('images/database.svg')}}" alt="dokumen"
+                                width="30"> Database</a></td>
+                    <td>
+                        <td><a href="#" data-bs-toggle="modal" data-bs-target="#create-category"><img src="{{asset('images/kategori.svg')}}" alt="dokumen"
+                            width="30"> Tambah Kategori</a></td>
+                    </td>
+                    <td>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#createModal"">
+                            <img src=" {{asset('images/product.svg')}}" alt="dokumen" width="30"> Tambah Product</a>
                     </td>
                 </tr>
             </table>
         </div>
     </div>
 </div>
-@include('db.product.create')
-@include('db.product.edit')
-<div class="container-fluid mt-5 table-responsive">
-    <table class="table table-bordered table-hover" id="data">
-        <thead class="table-warning bg-gradient">
+<div class="container mt-5 table-responsive ">
+    <table class="table table-bordered" id="dataTable">
+        <thead class="table-success">
             <tr>
-                <th class="text-center align-middle" style="width: 5%">NO</th>
-                <th class="text-center align-middle">NAMA PRODUCT</th>
+                <th class="text-center align-middle">No</th>
+                <th class="text-center align-middle">Kategori</th>
+                <th class="text-center align-middle">Bahan Baku</th>
+                <th class="text-center align-middle">Konversi</th>
+                <th class="text-center align-middle">Liter</th>
+                <th class="text-center align-middle">Kg</th>
+                <th class="text-center align-middle">Modal</th>
                 <th class="text-center align-middle">ACT</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($data as $d)
-            <tr>
-                <td class="text-center align-middle">{{$loop->iteration}}</td>
-                <td class="text-center align-middle">{{$d->nama}}</td>
-                <td class="text-center align-middle">
-                    <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
-                            data-bs-target="#editProject" onclick="editProject({{$d}}, {{$d->id}})"><i
-                                class="fa fa-edit"></i></button>
-                        <form action="{{route('db.project.delete', $d)}}" method="post" id="deleteForm-{{$d->id}}">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-danger m-2"><i class="fa fa-trash"></i></button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-            <script>
-                 $('#deleteForm-{{$d->id}}').submit(function(e){
-                    e.preventDefault();
-                    Swal.fire({
-                        title: 'Apakah anda yakin?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#6c757d',
-                        confirmButtonText: 'Ya, hapus!'
-                        }).then((result) => {
-                        if (result.isConfirmed) {
-                            $('#spinner').show();
-                            this.submit();
-                        }
-                    })
-            });
-            </script>
-            @endforeach
+
         </tbody>
+        <tfoot>
+
+        </tfoot>
     </table>
 </div>
 
 @endsection
 @push('css')
 <link href="{{asset('assets/css/dt.min.css')}}" rel="stylesheet">
-<link rel="stylesheet" href="{{asset('assets/js/flatpickr/flatpickr.min.css')}}">
-<link rel="stylesheet" href="{{asset('assets/plugins/select2/select2.bootstrap5.css')}}">
-<link rel="stylesheet" href="{{asset('assets/plugins/select2/select2.min.css')}}">
 @endpush
 @push('js')
-<script src="{{asset('assets/js/flatpickr/flatpickr.js')}}"></script>
-<script src="{{asset('assets/js/cleave.min.js')}}"></script>
-<script src="{{asset('assets/plugins/select2/select2.full.min.js')}}"></script>
-<script src="{{asset('assets/js/dt5.min.js')}}"></script>
+<script src="{{asset('assets/plugins/datatable/datatables.min.js')}}"></script>
+<script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
 <script>
-    $('#createForm').submit(function(e){
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Apakah data sudah benar?',
-                    text: "Pastikan data sudah benar sebelum disimpan!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Ya, simpan!'
-                    }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#spinner').show();
-                        this.submit();
-                    }
-                })
-            });
 
-    function editProject(data, id) {
-        document.getElementById('edit_nama').value = data.nama;
-        document.getElementById('editForm').action = '/db/product/' + id + '/update';
-    };
+    function createFun() {
+        var apa_konversi = document.getElementById('apa_konversi').value;
+        if (apa_konversi == 1) {
+            document.getElementById('konversi').setAttribute('required', true);
+            document.getElementById('satuan_id').removeAttribute('required');
+            document.getElementById('divKonversi').removeAttribute('hidden');
+            document.getElementById('divSatuan').setAttribute('hidden', true);
+        } else {
+            document.getElementById('konversi').removeAttribute('required');
+            document.getElementById('satuan_id').setAttribute('required', true);
+            document.getElementById('divKonversi').setAttribute('hidden', true);
+            document.getElementById('divSatuan').removeAttribute('hidden');
+        }
+    }
 
-    $('#customer_id').select2({
-        theme: 'bootstrap-5',
-        width: '100%',
-        dropdownParent: $('#createCustomer')
-    });
+    function createFunEdit() {
+        var edit_apa_konversi = document.getElementById('edit_apa_konversi').value;
+        if (edit_apa_konversi == 1) {
+            document.getElementById('edit_konversi').setAttribute('required', true);
+            document.getElementById('edit_satuan_id').removeAttribute('required');
+            document.getElementById('edit_satuan_id').value = '';
 
-    $('#data').DataTable({
-        paging: false,
-        scrollCollapse: true,
-        scrollY: "550px",
-    });
+            document.getElementById('divKonversiEdit').removeAttribute('hidden');
+            document.getElementById('divSatuanEdit').setAttribute('hidden', true);
+        } else {
+            document.getElementById('edit_konversi').removeAttribute('required');
+            document.getElementById('edit_konversi').value = '';
+            document.getElementById('edit_satuan_id').setAttribute('required', true);
+            document.getElementById('divKonversiEdit').setAttribute('hidden', true);
+            document.getElementById('divSatuanEdit').removeAttribute('hidden');
+        }
+    }
 
+   function editFun(data, id) {
 
-    var harga = new Cleave('#nilai', {
-        numeral: true,
-        numeralThousandsGroupStyle: 'thousand',
-        numeralDecimalMark: ',',
-        delimiter: '.'
-    });
+            document.getElementById('edit_apa_konversi').value = data.apa_konversi;
+            document.getElementById('edit_satuan_id').value = data.satuan_id;
+            document.getElementById('edit_nama').value = data.nama;
+            document.getElementById('edit_konversi').value = data.konversi;
+            document.getElementById('edit_kategori_bahan_id').value = data.kategori_bahan_id;
+            // Populate other fields...
+            document.getElementById('editForm').action = '/db/bahan-baku/update/' + id;
 
-    var editNilai = new Cleave('#edit_nilai', {
-        numeral: true,
-        numeralThousandsGroupStyle: 'thousand',
-        numeralDecimalMark: ',',
-        delimiter: '.'
-    });
+            if (data.apa_konversi == 1) {
+                document.getElementById('edit_konversi').setAttribute('required', true);
+                document.getElementById('edit_satuan_id').removeAttribute('required');
+                document.getElementById('divKonversiEdit').removeAttribute('hidden');
+                document.getElementById('divSatuanEdit').setAttribute('hidden', true);
+            } else {
+                document.getElementById('edit_konversi').removeAttribute('required');
+                document.getElementById('edit_satuan_id').setAttribute('required', true);
+                document.getElementById('divKonversiEdit').setAttribute('hidden', true);
+                document.getElementById('divSatuanEdit').removeAttribute('hidden');
+            }
+        }
 
-    flatpickr("#tanggal_mulai", {
-            dateFormat: "d-m-Y",
+        function toggleNamaJabatan(id) {
+
+            // check if input is readonly
+            if ($('#nama_jabatan-'+id).attr('readonly')) {
+                // remove readonly
+                $('#nama_jabatan-'+id).removeAttr('readonly');
+                // show button
+                $('#buttonJabatan-'+id).removeAttr('hidden');
+            } else {
+                // add readonly
+                $('#nama_jabatan-'+id).attr('readonly', true);
+                // hide button
+                $('#buttonJabatan-'+id).attr('hidden', true);
+            }
+        }
+
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            "paging": false,
+            "scrollCollapse": true,
+            "scrollY": "550px",
         });
-
-    flatpickr("#jatuh_tempo", {
-        dateFormat: "d-m-Y",
-    });
-
-    flatpickr("#edit_tanggal_mulai", {
-            dateFormat: "d-m-Y",
+        $('#dataTable2').DataTable({
+            "paging": false,
+            "scrollCollapse": true,
+            "scrollY": "550px",
         });
+    } );
 
-    flatpickr("#edit_jatuh_tempo", {
-        dateFormat: "d-m-Y",
-    });
+    confirmAndSubmit('#masukForm', 'Apakah anda Yakin?');
+    confirmAndSubmit('#editForm', 'Apakah anda Yakin?');
 
-    $('#editForm').submit(function(e){
+        $('.delete-form').submit(function(e){
             e.preventDefault();
-            var form = this; // Store a reference to the form
-
-            // Close the Bootstrap modal
-            $('#editProject').modal('hide');
+            var formId = $(this).data('id');
             Swal.fire({
-                title: 'Enter Password',
-                input: 'password',
-                inputAttributes: {
-                    autocapitalize: 'off'
-                },
+                title: 'Apakah Anda Yakin?',
+                icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Submit',
-                showLoaderOnConfirm: true,
-                preConfirm: (password) => {
-                    return new Promise((resolve, reject) => {
-                        $.ajax({
-                            url: '{{route('pengaturan.password-konfirmasi-cek')}}',
-                            type: 'POST',
-                            data: JSON.stringify({ password: password }),
-                            contentType: 'application/json',
-                            headers: {
-                                'X-CSRF-TOKEN': $('#editForm').data('csrf-token')
-                            },
-                            success: function(data) {
-                                if (data.status === 'success') {
-                                    resolve();
-                                } else {
-                                    // swal show error message\
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Oops...',
-                                        text: data.message
-                                    });
-                                }
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                Swal.fire({
-                                        icon: 'error',
-                                        title: 'Oops...',
-                                        text: textStatus
-                                    });
-                            }
-                        });
-                    });
-                },
-                allowOutsideClick: () => !Swal.isLoading()
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, simpan!'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    $(`#deleteForm${formId}`).unbind('submit').submit();
                     $('#spinner').show();
-                    this.submit();
                 }
-                $('#editProject').modal('show');
             });
         });
-
-
 </script>
 @endpush

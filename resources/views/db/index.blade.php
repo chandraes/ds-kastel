@@ -35,18 +35,6 @@
         @endif
     </div>
     <div class="row justify-content-left">
-        {{-- <div class="col-lg-3 col-md-3 col-sm-6 my-4 text-center">
-            <a href="{{route('db.konsumen')}}" class="text-decoration-none">
-                <img src="{{asset('images/customer.svg')}}" alt="" width="80">
-                <h4 class="mt-2">KONSUMEN</h4>
-            </a>
-        </div> --}}
-        {{-- <div class="col-lg-3 col-md-3 col-sm-6 my-4 text-center">
-            <a href="#" class="text-decoration-none">
-                <img src="{{asset('images/project.svg')}}" alt="" width="80">
-                <h4 class="mt-2">PRODUCT</h4>
-            </a>
-        </div> --}}
         <div class="col-lg-3 col-md-3 col-sm-6 my-4 text-center">
             <a href="{{route('db.supplier')}}" class="text-decoration-none">
                 <img src="{{asset('images/supplier.svg')}}" alt="" width="80">
@@ -66,7 +54,7 @@
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 my-4 text-center">
-            <a href="#" class="text-decoration-none">
+            <a href="{{route('db.product')}}" class="text-decoration-none">
                 <img src="{{asset('images/product.svg')}}" alt="" width="80">
                 <h4 class="mt-2">DAFTAR PRODUCT</h4>
             </a>

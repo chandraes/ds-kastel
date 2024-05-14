@@ -12,7 +12,7 @@ class BillingController extends Controller
 {
     public function index()
     {
-        $np = InvoiceBelanja::where('ppn_masukan', 0)->count();
+        $np = InvoiceBelanja::where('ppn_masukan', 0)->where('tempo', 0)->count();
 
         return view('billing.index', [
             'np' => $np,
@@ -21,7 +21,7 @@ class BillingController extends Controller
 
     public function nota_ppn_masukan()
     {
-        $data = InvoiceBelanja::where('ppn_masukan', 0)->get();
+        $data = InvoiceBelanja::where('ppn_masukan', 0)->where('tempo', 0)->get();
 
         return view('billing.ppn-masukan.index', [
             'data' => $data,

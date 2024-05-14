@@ -36,9 +36,9 @@
         {
             window.location.href = "{{route('billing.form-transaksi.bahan-baku.beli')}}";
         }
-        else
+        else if(bahanBakuSelect == 'tempo')
         {
-            window.location.href = "#";
+            window.location.href = "{{route('billing.form-transaksi.bahan-baku.beli-tempo')}}";
         }
     }
 </script>

@@ -13,9 +13,13 @@
         </div>
         @include('billing.form-transaksi.modal-bahan-baku')
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="#" class="text-decoration-none">
+            <a href="{{route('billing.form-transaksi.bahan-baku.hutang-belanja')}}" class="text-decoration-none">
                 <img src="{{asset('images/nota-belanja.svg')}}" alt="" width="80">
-                <h3 class="mt-2">HUTANG BELANJA</h3>
+                <h3 class="mt-2">HUTANG BELANJA
+                    @if ($hb > 0)
+                    <span class="text-danger">({{$hb}})</span>
+                    @endif
+                </h3>
             </a>
         </div>
     </div>

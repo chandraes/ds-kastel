@@ -203,6 +203,7 @@
         function funGetBarang() {
             var kategori_bahan_id = $('#kategori_bahan_id').val();
             var apa_konversi = $('#apa_konversi').val();
+
             $.ajax({
                 url: "{{route('billing.form-transaksi.bahan-baku.get-barang')}}",
                 type: "GET",
@@ -216,8 +217,22 @@
                     $.each(data, function(index, value){
                         $('#bahan_baku_id').append('<option value="'+value.id+'">'+value.nama+'</option>');
                     });
+
+
                 }
             });
+
+            console.log(apa_konversi)
+            if (apa_konversi == 1) {
+                // set selected value satuan_id to 2 and make it readonly
+                $('#satuan_id').val(2);
+                $('#satuan_id').attr('disabled', true);
+            } else {
+                // set selected value satuan_id to null and remove readonly
+                $('#satuan_id').val('');
+                $('#satuan_id').removeAttr('disabled');
+            }
+
         }
 
     </script>

@@ -55,10 +55,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::group(['middleware' => ['role:su,admin']], function() {
 
             Route::prefix('product')->group(function(){
-                Route::get('/', [App\Http\Controllers\DatabaseController::class, 'product'])->name('db.product');
-                Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'product_store'])->name('db.product.store');
-                Route::patch('/{product}/update', [App\Http\Controllers\DatabaseController::class, 'product_update'])->name('db.product.update');
-                Route::delete('/{product}/delete', [App\Http\Controllers\DatabaseController::class, 'product_destroy'])->name('db.product.delete');
+                Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('db.product');
             });
 
             Route::prefix('konsumen')->group(function(){
@@ -204,6 +201,16 @@ Route::group(['middleware' => ['auth']], function() {
                     });
 
                     Route::get('/beli-tempo', [App\Http\Controllers\FormTransaksiController::class, 'bahan_baku_beli_tempo'])->name('billing.form-transaksi.bahan-baku.beli-tempo');
+
+                    Route::prefix('keranjang-tempo')->group(function(){
+                        Route::post('/store', [App\Http\Controllers\FormTransaksiController::class, 'keranjang_tempo_store'])->name('billing.form-transaksi.bahan-baku.keranjang-tempo.store');
+                        Route::post('/empty', [App\Http\Controllers\FormTransaksiController::class, 'keranjang_tempo_empty'])->name('billing.form-transaksi.bahan-baku.keranjang-tempo.empty');
+                        Route::post('/checkout', [App\Http\Controllers\FormTransaksiController::class, 'keranjang_tempo_checkout'])->name('billing.form-transaksi.bahan-baku.keranjang-tempo.checkout');
+                    });
+
+                    Route::prefix('hutang-belanja')->group(function(){
+                        Route::get('/', [App\Http\Controllers\FormTransaksiController::class, 'hutang_belanja'])->name('billing.form-transaksi.bahan-baku.hutang-belanja');
+                    });
 
                 });
             });
