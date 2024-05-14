@@ -185,4 +185,79 @@ class InvoiceBelanja extends Model
             'status' => $status,
         ]);
     }
+
+    public function bayar_hutang($data)
+    {
+        $db = new KasBesar();
+
+        $invoice = $this->find($data['id']);
+
+        if ($db->saldoTerakhir() < $invoice->sisa) {
+            return [
+                'status' => 'error',
+                'message' => 'Saldo kas besar tidak mencukupi'
+            ];
+        }
+
+        DB::beginTransaction();
+
+        try {
+
+            $store = $db->create([
+                'uraian' => 'Pelunasan '.$invoice->uraian,
+                'jenis' => 0,
+                'nominal' => $invoice->sisa,
+                'saldo' => $db->saldoTerakhir() - $invoice->sisa,
+                'no_rek' => $invoice->no_rek,
+                'nama_rek' => $invoice->nama_rek,
+                'bank' => $invoice->bank,
+                'modal_investor_terakhir' => $db->modalInvestorTerakhir(),
+                'invoice_belanja_id' => $invoice->id
+            ]);
+
+            $invoice->sisa = 0;
+            $invoice->tempo = 0;
+            $invoice->save();
+
+            DB::commit();
+
+            $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 0)->sum('ppn');
+
+            $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
+                        "*FORM BELI BAHAN BAKU*\n".
+                        "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
+                        "Uraian :  *".$store->uraian."*\n\n".
+                        "Nilai    :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
+                        "Ditransfer ke rek:\n\n".
+                        "Bank      : ".$store->bank."\n".
+                        "Nama    : ".$store->nama_rek."\n".
+                        "No. Rek : ".$store->no_rek."\n\n".
+                        "==========================\n".
+                        "Sisa Saldo Kas Besar : \n".
+                        "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                        "Total Modal Investor : \n".
+                        "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                        "Total PPn Masukan : \n".
+                        "Rp. ".number_format($ppnMasukan, 0, ',', '.')."\n\n".
+                        "Terima kasih 🙏🙏🙏\n";
+
+            $group = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
+
+            $this->sendWa($group, $pesan);
+
+            $result = [
+                'status' => 'success',
+                'message' => 'Berhasil membayar hutang'
+            ];
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return [
+                'status' => 'error',
+                'message' => $th->getMessage()
+            ];
+        }
+
+        return $result;
+    }
 }

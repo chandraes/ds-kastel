@@ -72,7 +72,11 @@
                         {{$d->id_jatuh_tempo}}
                     </td>
                     <td class="text-center align-middle">
-
+                        <form action="{{route('billing.form-transaksi.bahan-baku.hutang-belanja.bayar', ['invoice' => $d])}}" method="post" id="bayarForm{{ $d->id }}"
+                            class="bayar-form" data-id="{{ $d->id }}" data-nominal="{{$d->nf_sisa}}">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-success">Bayar</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach
@@ -113,6 +117,25 @@
             "scrollCollapse": true,
             "scrollY": "550px",
 
+        });
+
+        $('.bayar-form').submit(function(e){
+            e.preventDefault();
+            var formId = $(this).data('id');
+            var nominal = $(this).data('nominal');
+            Swal.fire({
+                title: 'Apakah Anda Yakin? Sisa Tagihan Sebesar: Rp. ' + nominal,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, simpan!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(`#bayarForm${formId}`).unbind('submit').submit();
+                    $('#spinner').show();
+                }
+            });
         });
 
     });

@@ -28,6 +28,16 @@ class FormTransaksiController extends Controller
         ]);
     }
 
+    public function hutang_belanja_bayar(InvoiceBelanja $invoice)
+    {
+
+        $db = new InvoiceBelanja();
+
+        $store = $db->bayar_hutang($invoice);
+
+        return redirect()->back()->with($store['status'], $store['message']);
+    }
+
     public function bahan_baku_beli()
     {
         if (Supplier::where('status', 1)->count() == 0) {

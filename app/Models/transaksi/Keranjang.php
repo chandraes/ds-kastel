@@ -281,7 +281,7 @@ class Keranjang extends Model
                 $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                             "*FORM BELI BAHAN BAKU*\n".
                             "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
-                            "Uraian :  *DP ".$store->uraian."*\n\n".
+                            "Uraian :  *".$store->uraian."*\n\n".
                             "Nilai    :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
                             "Ditransfer ke rek:\n\n".
                             "Bank      : ".$store->bank."\n".
