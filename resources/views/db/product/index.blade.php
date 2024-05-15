@@ -126,11 +126,13 @@
             if ($('#nama_jabatan-'+id).attr('readonly')) {
                 // remove readonly
                 $('#nama_jabatan-'+id).removeAttr('readonly');
+                $('#kode-'+id).removeAttr('readonly');
                 // show button
                 $('#buttonJabatan-'+id).removeAttr('hidden');
             } else {
                 // add readonly
                 $('#nama_jabatan-'+id).attr('readonly', true);
+                $('#kode-'+id).attr('readonly', true);
                 // hide button
                 $('#buttonJabatan-'+id).attr('hidden', true);
             }

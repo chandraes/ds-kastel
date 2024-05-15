@@ -111,6 +111,13 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::patch('/update/{supplier}', [App\Http\Controllers\DatabaseController::class, 'supplier_update'])->name('db.supplier.update');
                 Route::delete('/delete/{supplier}', [App\Http\Controllers\DatabaseController::class, 'supplier_delete'])->name('db.supplier.delete');
             });
+
+            Route::prefix('product')->group(function(){
+                Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('db.product');
+                Route::post('/kategori/store', [App\Http\Controllers\ProductController::class, 'kategori_store'])->name('db.product.kategori.store');
+                Route::delete('/kategori/delete/{kategori}', [App\Http\Controllers\ProductController::class, 'kategori_delete'])->name('db.product.kategori.delete');
+                Route::patch('/kategori/update/{kategori}', [App\Http\Controllers\ProductController::class, 'kategori_update'])->name('db.product.kategori.update');
+            });
         });
     });
 
