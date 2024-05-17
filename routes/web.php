@@ -114,6 +114,11 @@ Route::group(['middleware' => ['auth']], function() {
 
             Route::prefix('product')->group(function(){
                 Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('db.product');
+                Route::get('/create', [App\Http\Controllers\ProductController::class, 'create'])->name('db.product.create');
+                Route::post('/store', [App\Http\Controllers\ProductController::class, 'store'])->name('db.product.store');
+                Route::post('/store-komposisi', [App\Http\Controllers\ProductController::class, 'store_komposisi'])->name('db.product.store-komposisi');
+                Route::delete('/delete/{product}', [App\Http\Controllers\ProductController::class, 'delete'])->name('db.product.delete');
+
                 Route::post('/kategori/store', [App\Http\Controllers\ProductController::class, 'kategori_store'])->name('db.product.kategori.store');
                 Route::delete('/kategori/delete/{kategori}', [App\Http\Controllers\ProductController::class, 'kategori_delete'])->name('db.product.kategori.delete');
                 Route::patch('/kategori/update/{kategori}', [App\Http\Controllers\ProductController::class, 'kategori_update'])->name('db.product.kategori.update');

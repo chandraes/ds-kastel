@@ -9,6 +9,7 @@ class Product extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    protected $appends = ['total_komposisi'];
 
     public function kategori()
     {
@@ -18,5 +19,10 @@ class Product extends Model
     public function komposisi()
     {
         return $this->hasMany(ProductKomposisi::class, 'product_id');
+    }
+
+    public function getTotalKomposisiAttribute()
+    {
+        return $this->komposisi->sum('jumlah');
     }
 }
