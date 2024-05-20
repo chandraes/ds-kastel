@@ -54,6 +54,13 @@ Route::group(['middleware' => ['auth']], function() {
 
         Route::group(['middleware' => ['role:su,admin']], function() {
 
+            Route::prefix('kemasan')->group(function(){
+                Route::get('/', [App\Http\Controllers\DatabaseController::class, 'kemasan'])->name('db.kemasan');
+                Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'kemasan_store'])->name('db.kemasan.store');
+                Route::patch('/update/{kemasan}', [App\Http\Controllers\DatabaseController::class, 'kemasan_update'])->name('db.kemasan.update');
+                Route::delete('/delete/{kemasan}', [App\Http\Controllers\DatabaseController::class, 'kemasan_delete'])->name('db.kemasan.delete');
+            });
+
             Route::prefix('product')->group(function(){
                 Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('db.product');
             });

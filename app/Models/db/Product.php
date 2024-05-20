@@ -25,4 +25,9 @@ class Product extends Model
     {
         return $this->komposisi->sum('jumlah');
     }
+
+    public function product_jadi()
+    {
+        return $this->hasMany(ProductKemasan::class, 'product_id');
+    }
 }

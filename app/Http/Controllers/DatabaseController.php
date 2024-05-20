@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\db\Kemasan;
 use App\Models\db\Satuan;
 use App\Models\db\Supplier;
 use App\Models\Konsumen;
@@ -221,5 +222,53 @@ class DatabaseController extends Controller
         $supplier->delete();
 
         return redirect()->route('db.supplier')->with('success', 'Data berhasil dihapus');
+    }
+
+    public function kemasan()
+    {
+        $data = Kemasan::all();
+        $satuan = Satuan::all();
+
+        return view('db.kemasan.index', [
+            'data' => $data,
+            'satuan' => $satuan,
+        ]);
+    }
+
+    public function kemasan_store(Request $request)
+    {
+        $data= $request->validate([
+            'nama' => 'required',
+            'satuan_id' => 'required',
+            'konversi_liter' => 'required',
+        ]);
+
+        Kemasan::create($data);
+
+        return redirect()->route('db.kemasan')->with('success', 'Data berhasil ditambahkan');
+    }
+
+    public function kemasan_update(Kemasan $kemasan, Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+            'satuan_id' => 'required',
+            'konversi_liter' => 'required',
+        ]);
+
+        $kemasan->update($data);
+
+        return redirect()->route('db.kemasan')->with('success', 'Data berhasil diupdate');
+    }
+
+    public function kemasan_delete(Kemasan $kemasan)
+    {
+        if ($kemasan->stok > 0) {
+            return redirect()->route('db.kemasan')->with('error', 'Data tidak bisa dihapus karena masih ada stok');
+        }
+
+        $kemasan->delete();
+
+        return redirect()->route('db.kemasan')->with('success', 'Data berhasil dihapus');
     }
 }
