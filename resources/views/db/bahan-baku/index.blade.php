@@ -41,11 +41,12 @@
             <tr>
                 <th class="text-center align-middle">No</th>
                 <th class="text-center align-middle">Kategori</th>
-                <th class="text-center align-middle">Bahan Baku</th>
+                <th class="text-center align-middle">Jenis</th>
                 <th class="text-center align-middle">Konversi</th>
                 <th class="text-center align-middle">Kg</th>
                 <th class="text-center align-middle">Liter</th>
                 <th class="text-center align-middle">Harga Modal</th>
+                <th class="text-center align-middle">Total Modal</th>
                 <th class="text-center align-middle">ACT</th>
             </tr>
         </thead>
@@ -76,6 +77,12 @@
                                 $stock += $k->stock;
                             @endphp
                             {{ number_format($k->stock, 0, ',', '.') }}
+                        </td>
+                        <td class="text-end align-middle">
+                            @php
+                                $modal += $k->modal;
+                            @endphp
+                            {{ $k->nf_modal }}
                         </td>
                         <td class="text-end align-middle">
                             @php
@@ -114,7 +121,10 @@
                     {{number_format($kg,0,',','.')}}
                 </th>
                 <th class="text-end align-middle">
-                    {{number_format($modal,0,',','.')}}
+
+                </th>
+                <th class="text-end align-middle">
+
                 </th>
                 <th class="text-center align-middle"></th>
             </tr>
@@ -130,7 +140,7 @@
             <tr>
                 <th class="text-center align-middle">No</th>
                 <th class="text-center align-middle">Kategori</th>
-                <th class="text-center align-middle">Bahan Baku</th>
+                <th class="text-center align-middle">Jenis</th>
                 <th class="text-center align-middle">Stok</th>
                 <th class="text-center align-middle">Satuan</th>
                 <th class="text-center align-middle">Modal</th>
