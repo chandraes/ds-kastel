@@ -45,7 +45,7 @@
                 <th class="text-center align-middle">Konversi</th>
                 <th class="text-center align-middle">Kg</th>
                 <th class="text-center align-middle">Liter</th>
-                <th class="text-center align-middle">Modal</th>
+                <th class="text-center align-middle">Harga Modal</th>
                 <th class="text-center align-middle">ACT</th>
             </tr>
         </thead>
