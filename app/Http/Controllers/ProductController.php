@@ -127,4 +127,14 @@ class ProductController extends Controller
 
         return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
+
+    public function product_jadi()
+    {
+        $data = KategoriProduct::has('product.product_jadi')->with(['product', 'product.product_jadi', 'product.product_jadi.kemasan'])->get();
+        $product = Product::all();
+        // dd($data);
+        return view('db.product-jadi.index', [
+            'data' => $data
+        ]);
+    }
 }

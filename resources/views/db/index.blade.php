@@ -66,7 +66,7 @@
             </a>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
-            <a href="{{route('db.product')}}" class="text-decoration-none">
+            <a href="{{route('db.product-jadi')}}" class="text-decoration-none">
                 <img src="{{asset('images/product-jadi.svg')}}" alt="" width="80">
                 <h4 class="mt-2">PRODUCT JADI</h4>
             </a>

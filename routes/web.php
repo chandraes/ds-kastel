@@ -129,6 +129,11 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::delete('/kategori/delete/{kategori}', [App\Http\Controllers\ProductController::class, 'kategori_delete'])->name('db.product.kategori.delete');
                 Route::patch('/kategori/update/{kategori}', [App\Http\Controllers\ProductController::class, 'kategori_update'])->name('db.product.kategori.update');
             });
+
+            Route::prefix('product-jadi')->group(function(){
+                Route::get('/', [App\Http\Controllers\ProductController::class, 'product_jadi'])->name('db.product-jadi');
+                Route::post('/store', [App\Http\Controllers\ProductController::class, 'product_jadi_store'])->name('db.product-jadi.store');
+            });
         });
     });
 
