@@ -69,7 +69,7 @@
                             @php
                                 $stock += $k->stock;
                             @endphp
-                            {{ $k->stock }}
+                            {{ number_format($k->stock, 0, ',', '.') }}
                         </td>
                         <td class="text-center align-middle">
                             @php
