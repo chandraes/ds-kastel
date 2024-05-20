@@ -36,12 +36,25 @@ class ProductController extends Controller
             'kode' => 'required',
             'kategori_product_id' => 'required',
             'konversi_liter' => 'required',
-            'konversi_dus' => 'required',
         ]);
 
         $store = Product::create($data);
 
         return redirect()->route('db.product')->with('success', 'Data berhasil disimpan');
+    }
+
+    public function update(Product $product, Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+            'kode' => 'required',
+            'kategori_product_id' => 'required',
+            'konversi_liter' => 'required',
+        ]);
+
+        $product->update($data);
+
+        return redirect()->route('db.product')->with('success', 'Data berhasil diupdate');
     }
 
     public function delete(Product $product)
@@ -59,9 +72,23 @@ class ProductController extends Controller
             'jumlah' => 'required',
         ]);
 
+        $check = ProductKomposisi::where('product_id', $data['product_id'])->sum('jumlah');
+
+        if(($check + $data['jumlah']) > 100)
+        {
+            return redirect()->back()->with('error', 'Jumlah komposisi tidak boleh melebihi 100%');
+        }
+
         $store = ProductKomposisi::create($data);
 
         return redirect()->back()->with('success', 'Data berhasil disimpan');
+    }
+
+    public function delete_komposisi(Product $product, BahanBaku $bahan)
+    {
+        ProductKomposisi::where('product_id', $product->id)->where('bahan_baku_id', $bahan->id)->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 
     public function kategori_store(Request $request)

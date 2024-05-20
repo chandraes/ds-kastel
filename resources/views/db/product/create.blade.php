@@ -12,7 +12,7 @@
     <form action="{{route('db.product.store')}}" method="post" id="masukForm">
         @csrf
         <div class="row">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
                 <label for="kategori_product_id" class="form-label">Kategori Barang</label>
                 <select class="form-select" name="kategori_product_id" id="kategori_product_id" required>
                     <option value="">-- Pilih Kategori Barang --</option>
@@ -21,15 +21,15 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
                 <label for="nama" class="form-label">Nama Product</label>
                 <input type="text" class="form-control" name="nama" id="nama" aria-describedby="helpId" required value="{{old('nama')}}"/>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
                 <label for="kode" class="form-label">Kode Product</label>
                 <input type="text" class="form-control" name="kode" id="kode" aria-describedby="helpId" required value="{{old('kode')}}"/>
             </div>
-            <div class="col-md-4 mb-3" id="divKonversi">
+            <div class="col-md-3 mb-3" id="divKonversi">
                 <label for="konversi" class="form-label">Konversi KG -> Liter</label>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">1</span>
@@ -37,14 +37,6 @@
                     <input type="text" class="form-control" name="konversi_liter" id="konversi_liter" required value="{{old('konversi_liter')}}">
                 </div>
                 <small class="text-danger">Gunakan "." untuk nilai desimal!!</small>
-            </div>
-            <div class="col-md-4 mb-3" id="divKonversi">
-                <label for="konversi" class="form-label">Konversi Dus -> Liter</label>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">1</span>
-                    <span class="input-group-text" id="basic-addon1">:</span>
-                    <input type="text" class="form-control" name="konversi_dus" id="konversi_dus" required value="{{old('konversi_dus')}}">
-                </div>
             </div>
             <div class="col-md-12 mb-3">
                 {{-- submit button --}}

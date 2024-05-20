@@ -67,15 +67,25 @@
                                     @if ($p->konversi_liter)
                                     1 KG = {{$p->konversi_liter}} Liter
                                     @endif
-                                    <br>
-                                    @if ($p->konversi_dus)
-                                    1 Dus = {{$p->konversi_dus}} Liter
-                                    @endif
                                 </td>
-                                <td class="text-center align-middle">
-                                    <div class="row">
+                                <td class="text-start align-middle">
+                                    @if ($p->komposisi->count() > 0)
+                                    <ul>
+                                        @foreach ($p->komposisi as $k)
+                                        <li class="mb-2">
+                                            {{$k->bahan_baku->nama}} ({{$k->jumlah}}%)
+                                            <form action="{{ route('db.product.delete-komposisi', ['product' => $p->id, 'bahan' => $k->bahan_baku_id]) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i></button>
+                                            </form>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                    @endif
+                                    <div class="row text-center">
                                         <div class="col-md-12">
-                                            <a href="#" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#komposisiModal">Tambah Komposisi</a>
+                                            <a href="#" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#komposisiModal" data-id="{{$p->id}}">Tambah Komposisi</a>
                                         </div>
                                     </div>
                                 </td>
@@ -114,6 +124,15 @@
 <script src="{{asset('assets/plugins/datatable/datatables.min.js')}}"></script>
 <script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
 <script>
+
+    $('#komposisiModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var id = button.data('id'); // Extract info from data-* attributes
+
+        // Update the modal's content.
+        var modal = $(this);
+        modal.find('#product_id').val(id);
+    });
     function editFun(data, id) {
         document.getElementById('edit_apa_konversi').value = data.apa_konversi;
         document.getElementById('edit_satuan_id').value = data.satuan_id;
@@ -156,7 +175,7 @@
             // hide button
             $('#buttonJabatan-'+id).attr('hidden', true);
         }
-        }
+    }
 
     $(document).ready(function() {
         $('#dataTable').DataTable({
@@ -169,6 +188,7 @@
 
     confirmAndSubmit('#masukForm', 'Apakah anda Yakin?');
     confirmAndSubmit('#editForm', 'Apakah anda Yakin?');
+    confirmAndSubmit('#komposisiForm', 'Apakah anda Yakin?');
 
     $('.delete-form').submit(function(e){
         e.preventDefault();

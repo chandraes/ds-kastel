@@ -38,14 +38,6 @@
                 </div>
                 <small class="text-danger">Gunakan "." untuk nilai desimal!!</small>
             </div>
-            <div class="col-md-4 mb-3" id="divKonversi">
-                <label for="konversi" class="form-label">Konversi Dus -> Liter</label>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">1</span>
-                    <span class="input-group-text" id="basic-addon1">:</span>
-                    <input type="text" class="form-control" name="konversi_dus" id="konversi_dus" required value="{{old('konversi_dus')}}">
-                </div>
-            </div>
             <div class="col-md-12 mb-3">
                 {{-- submit button --}}
                 <button type="submit" class="btn btn-primary form-control">Simpan</button>
