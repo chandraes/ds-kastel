@@ -53,8 +53,8 @@
                             <tr>
                                 <th class="text-center align-middle">Nama Product</th>
                                 <th class="text-center align-middle">Kode</th>
-                                <th class="text-center align-middle">Konversi</th>
                                 <th class="text-center align-middle">Komposisi</th>
+                                <th class="text-center align-middle">Konversi</th>
                                 <th class="text-center align-middle">Action</th>
                             </tr>
                         </thead>
@@ -63,11 +63,7 @@
                             <tr>
                                 <td class="text-center align-middle" style="width: 130px">{{$p->nama}}</td>
                                 <td class="text-center align-middle" style="width: 18px">{{$p->kode}}</td>
-                                <td class="text-center align-middle">
-                                    @if ($p->konversi_liter)
-                                    1 KG = {{$p->konversi_liter}} Liter
-                                    @endif
-                                </td>
+
                                 <td class="text-start align-middle">
                                     @if ($p->komposisi->count() > 0)
                                     <ul>
@@ -88,6 +84,11 @@
                                             <a href="#" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#komposisiModal" data-id="{{$p->id}}">Tambah Komposisi</a>
                                         </div>
                                     </div>
+                                </td>
+                                <td class="text-center align-middle">
+                                    @if ($p->konversi_liter)
+                                    1 KG = {{$p->konversi_liter}} Liter
+                                    @endif
                                 </td>
                                 <td class="text-center align-middle" style="width: 90px">
                                     <div class="row">
