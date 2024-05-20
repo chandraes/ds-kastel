@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\db\BahanBaku;
 use App\Models\db\KategoriProduct;
+use App\Models\db\Kemasan;
 use App\Models\db\Product;
 use App\Models\db\ProductKomposisi;
 use Illuminate\Http\Request;
@@ -132,9 +133,12 @@ class ProductController extends Controller
     {
         $data = KategoriProduct::has('product.product_jadi')->with(['product', 'product.product_jadi', 'product.product_jadi.kemasan'])->get();
         $product = Product::all();
+        $kemasan = Kemasan::all();
         // dd($data);
         return view('db.product-jadi.index', [
-            'data' => $data
+            'data' => $data,
+            'product' => $product,
+            'kemasan' => $kemasan
         ]);
     }
 }

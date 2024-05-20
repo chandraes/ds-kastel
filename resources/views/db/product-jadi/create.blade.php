@@ -12,43 +12,25 @@
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label for="nama" class="form-label">Product</label>
-                            <select
-                            class="form-select"
-                            name="product_id"
-                            id="product_id"
-                        >
-                            <option value="">-- Pilih Product --</option>
-                            <option value="">New Delhi</option>
-                            <option value="">Istanbul</option>
-                            <option value="">Jakarta</option>
-                        </select>
-
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="cp" class="form-label">Kemasan</label>
-                            <input type="text" class="form-control" name="cp" id="cp" aria-describedby="helpId"
-                                placeholder="" required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="no_hp" class="form-label">No HP</label>
-                            <input type="text" class="form-control" name="no_hp" id="no_hp" aria-describedby="helpId"
-                                placeholder="" required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="npwp" class="form-label">NPWP</label>
-                            <input type="text" class="form-control" name="npwp" id="npwp" aria-describedby="helpId"
-                                placeholder="" required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select class="form-select" name="status" id="status" required>
-                                <option value="1" selected>Aktif</option>
-                                <option value="0">Tidak Aktif</option>
+                            <select class="form-select" name="product_id" id="product_id">
+                                <option value="">-- Pilih Product --</option>
+                                @foreach ($product as $p)
+                                <option value="{{$p->id}}">{{$p->kategori->nama}} - {{$p->nama}}</option>
+                                @endforeach
                             </select>
                         </div>
-                        <div class="col-12 mb-3">
-                            <label for="alamat" class="form-label">Alamat</label>
-                            <textarea name="alamat" id="alamat" class="form-control" required></textarea>
+                        <div class="col-md-4 mb-3">
+                            <label for="kemasan_id" class="form-label">Kemasan</label>
+                            <select class="form-select" name="kemasan_id" id="kemasan_id">
+                                <option value="">-- Pilih Kemasan --</option>
+                                @foreach ($kemasan as $k)
+                                <option value="{{$k->id}}">{{$k->nama}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="nama" class="form-label">Product</label>
+
                         </div>
                     </div>
                 </div>
