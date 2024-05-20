@@ -75,7 +75,7 @@
                             @php
                                 $kg += $k->stock * $k->konversi;
                             @endphp
-                            {{ $k->stock * $k->konversi }}
+                            {{ number_format($k->stock * $k->konversi, 0, ',', '.') }}
                         </td>
                         <td class="text-end align-middle">
                             @php
