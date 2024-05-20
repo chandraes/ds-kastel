@@ -29,8 +29,12 @@
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="nama" class="form-label">Product</label>
-
+                            <label for="konversi" class="form-label">Konversi KG -> Liter</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">1</span>
+                                <span class="input-group-text" id="basic-addon1">:</span>
+                                <input type="text" class="form-control" name="konversi_liter" id="konversi_liter" required value="{{old('konversi_liter')}}">
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -19,7 +19,7 @@
                                 <select class="form-select" name="bahan_baku_id" id="bahan_baku_id" required>
                                     <option selected>-- Pilih Bahan Baku --</option>
                                     @foreach ($bahan as $i)
-                                    <option value="{{$i->id}}">{{$i->nama}}</option>
+                                    <option value="{{$i->id}}">{{$i->kategori->nama}} - {{$i->nama}}</option>
                                     @endforeach
                                 </select>
                             </div>
