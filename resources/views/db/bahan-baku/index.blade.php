@@ -67,15 +67,15 @@
                         <td class="text-center align-middle">1 : {{ $k->konversi }}</td>
                         <td class="text-center align-middle">
                             @php
-                                $stock += $k->stock;
-                            @endphp
-                            {{ number_format($k->stock, 0, ',', '.') }}
-                        </td>
-                        <td class="text-center align-middle">
-                            @php
                                 $kg += $k->stock * $k->konversi;
                             @endphp
                             {{ number_format($k->stock * $k->konversi, 0, ',', '.') }}
+                        </td>
+                        <td class="text-center align-middle">
+                            @php
+                                $stock += $k->stock;
+                            @endphp
+                            {{ number_format($k->stock, 0, ',', '.') }}
                         </td>
                         <td class="text-end align-middle">
                             @php
