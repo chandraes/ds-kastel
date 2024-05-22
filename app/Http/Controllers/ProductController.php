@@ -8,13 +8,14 @@ use App\Models\db\Kemasan;
 use App\Models\db\Product;
 use App\Models\db\ProductKomposisi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     public function index()
     {
 
-        $data = KategoriProduct::has('product')->with(['product', 'product.komposisi'])->get();
+        $data = KategoriProduct::has('product')->with(['product', 'product.komposisi', 'product.komposisi.bahan_baku', 'product.komposisi.bahan_baku.kategori'])->get();
         $bahan = BahanBaku::all();
         return view('db.product.index', [
             'data' => $data,
@@ -65,24 +66,60 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 
+    public function create_komposisi(Product $product)
+    {
+        $bahan = BahanBaku::all();
+
+        return view('db.product.create-komposisi', [
+            'product' => $product,
+            'bahan' => $bahan
+        ]);
+    }
+
     public function store_komposisi(Request $request)
     {
         $data = $request->validate([
             'product_id' => 'required|exists:products,id',
-            'bahan_baku_id' => 'required|exists:bahan_bakus,id',
-            'jumlah' => 'required',
+            'bahan_baku_id' => 'required|array',
+            'bahan_baku_id.*' => 'required|exists:bahan_bakus,id', // '*' untuk array, '.' untuk 'bahan_baku_id.0
+            'jumlah' => 'required|array',
+            'jumlah.*' => 'required|numeric',
         ]);
 
-        $check = ProductKomposisi::where('product_id', $data['product_id'])->sum('jumlah');
+        // check if jumlah is 100
+        $total = array_sum($data['jumlah']);
 
-        if(($check + $data['jumlah']) > 100)
-        {
-            return redirect()->back()->with('error', 'Jumlah komposisi tidak boleh melebihi 100%');
+        if ($total != 100) {
+            return redirect()->back()->with('error', 'Total persentase jumlah harus 100');
         }
 
-        $store = ProductKomposisi::create($data);
+        $konversi = 0;
 
-        return redirect()->back()->with('success', 'Data berhasil disimpan');
+        try {
+            DB::beginTransaction();
+            foreach ($data['bahan_baku_id'] as $key => $bahan) {
+                ProductKomposisi::create([
+                    'product_id' => $data['product_id'],
+                    'bahan_baku_id' => $bahan,
+                    'jumlah' => $data['jumlah'][$key]
+                ]);
+
+                $konversi += BahanBaku::find($bahan)->konversi * ($data['jumlah'][$key]/100);
+            }
+
+            Product::find($data['product_id'])->update([
+                'konversi_liter' => $konversi
+            ]);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
+        }
+
+        return redirect()->route('db.product')->with('success', 'Data berhasil disimpan');
     }
 
     public function delete_komposisi(Product $product, BahanBaku $bahan)
@@ -90,6 +127,17 @@ class ProductController extends Controller
         ProductKomposisi::where('product_id', $product->id)->where('bahan_baku_id', $bahan->id)->delete();
 
         return redirect()->back()->with('success', 'Data berhasil dihapus');
+    }
+
+    public function kosongkan_komposisi(Product $product)
+    {
+        ProductKomposisi::where('product_id', $product->id)->delete();
+        
+        Product::find($product->id)->update([
+            'konversi_liter' => 0
+        ]);
+
+        return redirect()->back()->with('success', 'Data berhasil dikosongkan');
     }
 
     public function kategori_store(Request $request)

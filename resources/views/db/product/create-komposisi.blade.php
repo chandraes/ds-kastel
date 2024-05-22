@@ -1,46 +1,103 @@
-<div class="modal fade" id="komposisiModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-    role="dialog" aria-labelledby="komposisiTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="komposisiTitle">
-                    Tambah Komposisi
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{route('db.product.store-komposisi')}}" method="post" id="komposisiForm">
-                @csrf
-                <div class="modal-body">
-                    <div class="row">
-                        <input type="hidden" name="product_id" id="product_id">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="bahan_baku_id" class="form-label">Bahan Baku</label>
-                                <select class="form-select" name="bahan_baku_id" id="bahan_baku_id" required>
-                                    <option selected>-- Pilih Bahan Baku --</option>
-                                    @foreach ($bahan as $i)
-                                    <option value="{{$i->id}}">{{$i->kategori->nama}} - {{$i->nama}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="konversi" class="form-label">Persentase Komposisi</label>
-                            <div class="input-group mb-3">
-                                <input type="number" class="form-control" name="jumlah" id="jumlah" required
-                                    value="{{old('jumlah')}}" required>
-                                <span class="input-group-text" id="basic-addon1">%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Tutup
-                    </button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
+@extends('layouts.app')
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12 text-center">
+            <h1><u>TAMBAH KOMPOSISI PRODUCT</u></h1>
+            <h1><u>{{$product->kategori->nama}} - {{$product->nama}}</u></h1>
         </div>
     </div>
+    @include('swal')
 </div>
+<div class="container mt-5">
+    <form action="{{route('db.product.store-komposisi')}}" method="post" id="masukForm">
+        @csrf
+        <input type="hidden" name="product_id" value="{{$product->id}}">
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <label for="bahanSelect" class="form-label">Pilih Bahan</label>
+                <select id="bahanSelect" class="form-select">
+                    <option value="">Tambahkan Bahan</option>
+                    @foreach($bahan as $bahan)
+                        <option value="{{ $bahan->id }}" data-nama="{{$bahan->kategori->nama}} - {{ $bahan->nama }}">{{$bahan->kategori->nama}} - {{ $bahan->nama }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div id="bahanContainer"></div>
+            <div id="saveButton" class="col-md-12" hidden>
+                <button type="submit" class="btn btn-primary d-block w-100">Simpan</button>
+            </div>
+
+        </div>
+    </form>
+</div>
+@endsection
+@push('js')
+<script>
+    confirmAndSubmit('#masukForm', 'Pastikan data sudah benar dan jumlah persentase sudah 100%?');
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const bahanSelect = document.getElementById('bahanSelect');
+    const bahanContainer = document.getElementById('bahanContainer');
+    const selectedBahan = new Set();
+
+    bahanSelect.addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        const bahanId = selectedOption.value;
+        const bahanNama = selectedOption.getAttribute('data-nama');
+
+        if (bahanId && !selectedBahan.has(bahanId)) {
+            selectedBahan.add(bahanId);
+
+            const row = document.createElement('div');
+            row.classList.add('mb-3', 'bahan-row');
+            row.innerHTML = `
+                <div class="row">
+                    <input type="hidden" name="bahan_baku_id[]" value="${bahanId}">
+                    <div class="col-md-6">
+                        <label class="form-label">&nbsp;</label>
+                        <label class="form-control">${bahanNama}</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="persentase_${bahanId}" class="form-label">Persentase Jumlah</label>
+                        <input type="number" name="jumlah[]" id="persentase_${bahanId}" class="form-control" required>
+                    </div>
+                    <div class="col-md-2 d-flex d-block align-items-end">
+                        <button type="button" class="btn btn-danger remove-bahan w-100" data-id="${bahanId}">Hapus</button>
+                    </div>
+                </div>
+            `;
+            bahanContainer.appendChild(row);
+
+            // Remove selected option from dropdown
+            selectedOption.style.display = 'none';
+
+            // Show the save button
+            document.getElementById('saveButton').hidden = false;
+
+            row.querySelector('.remove-bahan').addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+                selectedBahan.delete(id);
+                row.remove();
+
+                // Show the removed option back in the dropdown
+                const optionToShow = bahanSelect.querySelector(`option[value="${id}"]`);
+                if (optionToShow) {
+                    optionToShow.style.display = 'block';
+                }
+
+                            // Hide the save button if there are no bahanIds left
+                if (selectedBahan.size === 0) {
+                    document.getElementById('saveButton').hidden = true;
+                }
+            });
+
+        }
+
+        // Reset the select box
+        this.value = '';
+    });
+});
+</script>
+@endpush

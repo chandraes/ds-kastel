@@ -9,7 +9,6 @@
     </div>
     @include('swal')
     @include('db.product.create-kategori')
-    @include('db.product.create-komposisi')
 
     <div class="flex-row justify-content-between mt-3">
         <div class="col-md-12">
@@ -61,38 +60,40 @@
                         <tbody>
                             @foreach ($d->product as $p)
                             <tr>
-                                <td class="text-center align-middle" style="width: 130px">{{$p->nama}}</td>
-                                <td class="text-center align-middle" style="width: 18px">{{$p->kode}}</td>
+                                <td class="text-center align-middle" style="width: 20%">{{$p->nama}}</td>
+                                <td class="text-center align-middle" style="width: 10%">{{$p->kode}}</td>
 
                                 <td class="text-start align-middle">
                                     @if ($p->komposisi->count() > 0)
                                     <ul>
                                         @foreach ($p->komposisi as $k)
                                         <li class="mb-2">
-                                            {{$k->bahan_baku->nama}} ({{$k->jumlah}}%)
-                                            <form action="{{ route('db.product.delete-komposisi', ['product' => $p->id, 'bahan' => $k->bahan_baku_id]) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i></button>
-                                            </form>
+                                            {{$k->bahan_baku->kategori->nama}} - {{$k->bahan_baku->nama}} ({{$k->jumlah}}%)
                                         </li>
                                         @endforeach
                                     </ul>
-                                    @endif
+                                    @else
                                     <div class="row text-center">
                                         <div class="col-md-12">
-                                            <a href="#" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#komposisiModal" data-id="{{$p->id}}">Tambah Komposisi</a>
+                                            <a href="{{route('db.product.create-komposisi', ['product' => $p->id])}}" class="btn btn-primary m-2">Tambah Komposisi</a>
                                         </div>
                                     </div>
+                                    @endif
                                 </td>
                                 <td class="text-center align-middle">
                                     @if ($p->konversi_liter)
                                     1 KG = {{$p->konversi_liter}} Liter
                                     @endif
                                 </td>
-                                <td class="text-center align-middle" style="width: 90px">
+                                <td class="text-center align-middle" style="width: 20%">
                                     <div class="row">
-                                        <div class="d-block">
+                                        @if ($p->komposisi->count() > 0)
+                                        <form action="{{route('db.product.kosongkan-komposisi', $p->id)}}" method="post" class="d-block mt-2 w-100 delete-form"  id="deleteForm{{ $p->id }}" data-id="{{ $p->id }}">
+                                            @csrf
+                                            <button type="submit" class="btn btn-primary w-100"><i class="fa fa-trash"></i> Kosongkan Komposisi</button>
+                                        </form>
+                                        @endif
+                                        <div class="d-block mt-2">
                                             <a href="#" class="btn btn-warning w-100"><i class="fa fa-edit"></i> Edit</a>
                                         </div>
                                         <form action="{{route('db.product.delete', $p->id)}}" method="post" class="d-block mt-2 w-100">
@@ -126,14 +127,8 @@
 <script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
 <script>
 
-    $('#komposisiModal').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        var id = button.data('id'); // Extract info from data-* attributes
 
-        // Update the modal's content.
-        var modal = $(this);
-        modal.find('#product_id').val(id);
-    });
+
     function editFun(data, id) {
         document.getElementById('edit_apa_konversi').value = data.apa_konversi;
         document.getElementById('edit_satuan_id').value = data.satuan_id;
@@ -183,6 +178,15 @@
             "paging": false,
             "scrollCollapse": true,
             "scrollY": "550px",
+        });
+
+        $('#komposisiModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var id = button.data('id'); // Extract info from data-* attributes
+
+            // Update the modal's content.
+            var modal = $(this);
+            modal.find('#product_id').val(id);
         });
 
     } );

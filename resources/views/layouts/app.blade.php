@@ -26,6 +26,17 @@
             justify-content: center;
             align-items: center;
         }
+        #scrollableTable tbody {
+            display: block;
+            height: 550px;
+            overflow-y: auto;
+        }
+
+        #scrollableTable thead, #scrollableTable tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
     </style>
 
     <!-- Scripts -->

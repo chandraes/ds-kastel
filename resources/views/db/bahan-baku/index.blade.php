@@ -32,7 +32,7 @@
         </div>
     </div>
 </div>
-<div class="container mt-5 table-responsive ">
+<div class="container mt-5" >
     <div class="text-center">
         <h2>KONVERSI (KG)</h2>
     </div>
