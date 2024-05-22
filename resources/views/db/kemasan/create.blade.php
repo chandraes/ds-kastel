@@ -10,12 +10,12 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="nama" class="form-label">Nama Kemasan</label>
                             <input type="text" class="form-control" name="nama" id="nama" aria-describedby="helpId"
                                 placeholder="" required value="{{old('nama')}}">
                         </div>
-                        <div class="col-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="cp" class="form-label">Satuan</label>
                             <select name="satuan_id" id="satuan_id" class="form-select" required>
                                 <option value="" selected disabled>Pilih Satuan</option>
@@ -24,7 +24,17 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-4 mb-3">
+                        <div class="col-md-6 mb-3">
+                            <label for="packaging_id" class="form-label">Packaging</label>
+                            <select name="packaging_id" id="packaging_id" class="form-select" required>
+                                <option value="" selected disabled>Pilih Packaging</option>
+                                <option value="0">Tanpa Packaging</option>
+                                @foreach ($packaging as $p)
+                                <option value="{{$p->id}}">{{$p->nama}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
                             <label for="konversi_liter" class="form-label">Konversi Liter</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon1">1</span>

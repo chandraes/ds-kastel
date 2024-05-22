@@ -101,6 +101,7 @@
     function editInvestor(data, id) {
         document.getElementById('edit_nama').value = data.nama;
         document.getElementById('edit_satuan_id').value = data.satuan_id;
+        document.getElementById('edit_packaging_id').value = data.packaging_id;
         document.getElementById('edit_konversi_liter').value = data.konversi_liter;
         // Populate other fields...
         document.getElementById('editForm').action = '/db/kemasan/update/' + id;

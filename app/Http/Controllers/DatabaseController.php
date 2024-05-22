@@ -229,10 +229,12 @@ class DatabaseController extends Controller
     {
         $data = Kemasan::all();
         $satuan = Satuan::all();
+        $packaging = Packaging::all();
 
         return view('db.kemasan.index', [
             'data' => $data,
             'satuan' => $satuan,
+            'packaging' => $packaging,
         ]);
     }
 
@@ -242,7 +244,12 @@ class DatabaseController extends Controller
             'nama' => 'required',
             'satuan_id' => 'required',
             'konversi_liter' => 'required',
+            'packaging_id' => 'required',
         ]);
+
+        if ($data['packaging_id'] == 0) {
+            $data['packaging_id'] = null;
+        }
 
         Kemasan::create($data);
 
@@ -255,7 +262,12 @@ class DatabaseController extends Controller
             'nama' => 'required',
             'satuan_id' => 'required',
             'konversi_liter' => 'required',
+            'packaging_id' => 'required',
         ]);
+
+        if ($data['packaging_id'] == 0) {
+            $data['packaging_id'] = null;
+        }
 
         $kemasan->update($data);
 
