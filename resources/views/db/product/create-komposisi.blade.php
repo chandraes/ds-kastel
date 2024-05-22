@@ -25,10 +25,12 @@
             </div>
 
             <div id="bahanContainer"></div>
-            <div id="saveButton" class="col-md-12" hidden>
+            <div id="saveButton" class="col-md-12 mt-2" hidden>
                 <button type="submit" class="btn btn-primary d-block w-100">Simpan</button>
             </div>
-
+            <div class="col-md-12 mt-2">
+                <a href="{{route('db.product')}}" class="btn btn-secondary d-block w-100">Kembali</a>
+            </div>
         </div>
     </form>
 </div>

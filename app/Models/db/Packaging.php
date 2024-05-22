@@ -5,7 +5,7 @@ namespace App\Models\db;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Kemasan extends Model
+class Packaging extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
@@ -13,10 +13,5 @@ class Kemasan extends Model
     public function satuan()
     {
         return $this->belongsTo(Satuan::class);
-    }
-
-    public function packaging()
-    {
-        return $this->belongsTo(Packaging::class);
     }
 }

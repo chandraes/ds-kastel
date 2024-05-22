@@ -101,6 +101,13 @@ Route::group(['middleware' => ['auth']], function() {
                 });
             });
 
+            Route::prefix('packaging')->group(function(){
+                Route::get('/', [App\Http\Controllers\DatabaseController::class, 'packaging'])->name('db.packaging');
+                Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'packaging_store'])->name('db.packaging.store');
+                Route::patch('/update/{packaging}', [App\Http\Controllers\DatabaseController::class, 'packaging_update'])->name('db.packaging.update');
+                Route::delete('/delete/{packaging}', [App\Http\Controllers\DatabaseController::class, 'packaging_delete'])->name('db.packaging.delete');
+            });
+
             Route::prefix('satuan')->group(function(){
                 Route::get('/', [App\Http\Controllers\DatabaseController::class, 'satuan'])->name('db.satuan');
                 Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'satuan_store'])->name('db.satuan.store');

@@ -37,8 +37,10 @@ class ProductController extends Controller
             'nama' => 'required',
             'kode' => 'required',
             'kategori_product_id' => 'required',
-            'konversi_liter' => 'required',
+
         ]);
+
+        $data['konversi_liter'] = 0; // [TODO] konversi liter
 
         $store = Product::create($data);
 
@@ -51,7 +53,6 @@ class ProductController extends Controller
             'nama' => 'required',
             'kode' => 'required',
             'kategori_product_id' => 'required',
-            'konversi_liter' => 'required',
         ]);
 
         $product->update($data);
@@ -132,7 +133,7 @@ class ProductController extends Controller
     public function kosongkan_komposisi(Product $product)
     {
         ProductKomposisi::where('product_id', $product->id)->delete();
-        
+
         Product::find($product->id)->update([
             'konversi_liter' => 0
         ]);

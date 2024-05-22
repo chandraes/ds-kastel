@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\db\Kemasan;
+use App\Models\db\Packaging;
 use App\Models\db\Satuan;
 use App\Models\db\Supplier;
 use App\Models\Konsumen;
@@ -270,5 +271,53 @@ class DatabaseController extends Controller
         $kemasan->delete();
 
         return redirect()->route('db.kemasan')->with('success', 'Data berhasil dihapus');
+    }
+
+    public function packaging()
+    {
+        $data = Packaging::all();
+        $satuan = Satuan::all();
+
+        return view('db.packaging.index', [
+            'data' => $data,
+            'satuan' => $satuan,
+        ]);
+    }
+
+    public function packaging_store(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+            'satuan_id' => 'required',
+            'konversi_kemasan' => 'required',
+        ]);
+
+        Packaging::create($data);
+
+        return redirect()->route('db.packaging')->with('success', 'Data berhasil ditambahkan');
+    }
+
+    public function packaging_update(Packaging $packaging, Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+            'satuan_id' => 'required',
+            'konversi_kemasan' => 'required',
+        ]);
+
+        $packaging->update($data);
+
+        return redirect()->route('db.packaging')->with('success', 'Data berhasil diupdate');
+    }
+
+    public function packaging_delete(Packaging $packaging)
+    {
+        if ($packaging->stok > 0) {
+            return redirect()->route('db.packaging')->with('error', 'Data tidak bisa dihapus karena masih ada stok');
+        }
+
+        $packaging->delete();
+
+        return redirect()->route('db.packaging')->with('success', 'Data berhasil dihapus');
     }
 }
