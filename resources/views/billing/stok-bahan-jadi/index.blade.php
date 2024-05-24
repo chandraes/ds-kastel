@@ -48,9 +48,24 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="text-center align-middle">1</td>
-                        <td class="text-center align-middle">VERNIZ</td>
-                        <td class="text-center align-middle">STONE CARE</td>
+                        <td rowspan="3" class="text-center align-middle">1</td>
+                        <td rowspan="3" class="text-center align-middle">VERNIZ</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center align-middle">
+                            <a href="">STONE CARE</a>
+                        </td>
+                        <td class="text-center align-middle">0</td>
+                        <td class="text-center align-middle">0</td>
+                        <td class="text-center align-middle">0</td>
+                        <td class="text-center align-middle">
+                            <button class="btn btn-primary btn-sm">AKSI</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center align-middle">
+                            <a href="">BLACK</a>
+                        </td>
                         <td class="text-center align-middle">0</td>
                         <td class="text-center align-middle">0</td>
                         <td class="text-center align-middle">0</td>
@@ -68,8 +83,6 @@
 
     <script src="{{asset('assets/js/cleave.min.js')}}"></script>
     <script>
-        $('#barangJadi').DataTable({
-            searching: false,
-        });
+
     </script>
 @endpush
