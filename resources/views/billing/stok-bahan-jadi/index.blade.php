@@ -18,9 +18,6 @@
                             PRODUCT
                         </th>
                         <th class="text-center align-middle">
-                            RENCANA<br>PRODUKSI
-                        </th>
-                        <th class="text-center align-middle">
                             KODE<br>PRODUKSI
                         </th>
                         <th class="text-center align-middle">
