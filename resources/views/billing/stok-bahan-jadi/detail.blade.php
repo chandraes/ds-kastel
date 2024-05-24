@@ -44,6 +44,15 @@
                         <th class="text-center align-middle">
                             JUMLAH<br>PRODUKSI
                         </th>
+                        <th class="text-center align-middle">
+                            REAL<br>KEMASAN
+                        </th>
+                        <th class="text-center align-middle">
+                            REAL<br>PACKAGING
+                        </th>
+                        <th class="text-center align-middle">
+                            ACT
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,39 +103,35 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
+                                        <form action="{{route('billing.stok-bahan-jadi.produksi-ke')}}" method="get"></form>
                                         <div class="modal-body">
                                             <div class="mb-3">
-                                                <label for="jumlah_produksi" class="form-label">Masukan Jumlah Produksi</label>
-                                                <input
-                                                    type="number"
-                                                    class="form-control"
-                                                    name="jumlah_produksi"
-                                                    id="jumlah_produksi"
-                                                    aria-describedby="helpId"
-                                                    placeholder=""
-                                                />
+                                                <label for="jumlah_produksi" class="form-label">Masukan Jumlah
+                                                    Produksi</label>
+                                                <input type="number" class="form-control" name="jumlah_produksi"
+                                                    id="jumlah_produksi" aria-describedby="helpId" placeholder="" />
 
                                             </div>
-
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                                 Tutup
                                             </button>
-                                            <button type="button" class="btn btn-primary">Simpan</button>
+                                            <button type="button" class="btn btn-primary">Lanjutkan</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Optional: Place to the bottom of scripts -->
-                            <script>
-                                const myModal = new bootstrap.Modal(
-                                    document.getElementById("modalId"),
-                                    options,
-                                );
-                            </script>
-
+                        </td>
+                        <td class="text-center align-middle">
+                            32
+                        </td>
+                        <td class="text-center align-middle">
+                            32
+                        </td>
+                        <td class="text-center align-middle">
+                            <button class="btn btn-sm btn-warning my-2">Edit</button>
+                            <button class="btn btn-sm btn-primary my-2">OK</button>
                         </td>
                     </tr>
                 </tbody>

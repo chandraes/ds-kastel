@@ -15,4 +15,14 @@ class StokBahanJadiController extends Controller
     {
         return view('billing.stok-bahan-jadi.detail');
     }
+
+    public function produksi_ke(Request $request)
+    {
+        $product = $request->jumlah_produksi;
+        
+        return view('billing.stok-bahan-jadi.test',
+        [
+            'product' => $product
+        ]);
+    }
 }
