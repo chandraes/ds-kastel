@@ -46,6 +46,19 @@
                         </th>
                     </tr>
                 </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center align-middle">1</td>
+                        <td class="text-center align-middle">VERNIZ</td>
+                        <td class="text-center align-middle">STONE CARE</td>
+                        <td class="text-center align-middle">0</td>
+                        <td class="text-center align-middle">0</td>
+                        <td class="text-center align-middle">0</td>
+                        <td class="text-center align-middle">
+                            <button class="btn btn-primary btn-sm">AKSI</button>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
