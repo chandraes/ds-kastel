@@ -28,7 +28,7 @@
         </div>
         <div class="col-md-2">
             <div class="mb-3">
-                <label for="rencana_produksi" class="form-label">Rencana Produksi</label>
+                <label for="rencana_produksi" class="form-label">Rencana Produksi (Kemasan)</label>
                 <input type="text" name="rencana_produksi" id="rencana_produksi" class="form-control" required oninput="checkInput()">
             </div>
         </div>
@@ -197,8 +197,8 @@
                 '<td class="text-center align-middle">'+no+'</td>'+
                 '<td class="text-start align-middle">'+value.bahan_baku.kategori.nama+' - '+value.bahan_baku.nama+'</td>'+
                 '<td class="text-center align-middle">'+value.jumlah+'%</td>'+
-                '<td class="text-center align-middle">'+totalBahan+' '+value.bahan_baku.satuan.nama+'</td>'+
-                '<td class="text-center align-middle">'+value.bahan_baku.stock+' '+value.bahan_baku.satuan.nama+'</td>'+
+                '<td class="text-center align-middle">'+parseFloat(totalBahan).toLocaleString('id-ID')+' '+value.bahan_baku.satuan.nama+'</td>'+
+                '<td class="text-center align-middle">'+parseFloat(value.bahan_baku.stock).toLocaleString('id-ID')+' '+value.bahan_baku.satuan.nama+'</td>'+
             '</tr>');
             total += totalBahan;
             no++;
