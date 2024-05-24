@@ -6,6 +6,12 @@
             <h1><u>STONE CARE</u></h1>
         </div>
     </div>
+    {{-- back button --}}
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <a href="{{route('billing.stok-bahan-jadi')}}" class="btn btn-primary">Kembali</a>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-bordered table-sm" id="barangJadi" style="font-size: 11px">
