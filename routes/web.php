@@ -225,6 +225,7 @@ Route::group(['middleware' => ['auth']], function() {
 
             Route::prefix('stok-bahan-jadi')->group(function(){
                 Route::get('/', [App\Http\Controllers\StokBahanJadiController::class, 'index'])->name('billing.stok-bahan-jadi');
+                Route::get('/detail', [App\Http\Controllers\StokBahanJadiController::class, 'detail'])->name('billing.stok-bahan-jadi.detail');
             });
 
             Route::prefix('transaksi')->group(function(){

@@ -70,6 +70,10 @@
             <label for="stok_packaging" class="form-label">Stock Packaging</label>
             <input type="text" class="form-control" name="stok_pack" id="stok_packaging" disabled>
         </div>
+        <div class="col-md-4 mt-2">
+            <label for="stok_packaging" class="form-label">Expired Dalam (bulan)</label>
+            <input type="number" class="form-control" name="stok_pack" id="stok_packaging" disabled>
+        </div>
     </div>
     <div class="row mt-2">
         <a href="{{route('billing')}}" class="btn btn-block btn-secondary">Kembali</a>

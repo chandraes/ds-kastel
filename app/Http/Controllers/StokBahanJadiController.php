@@ -10,4 +10,9 @@ class StokBahanJadiController extends Controller
     {
         return view('billing.stok-bahan-jadi.index');
     }
+
+    public function detail(Request $request)
+    {
+        return view('billing.stok-bahan-jadi.detail');
+    }
 }

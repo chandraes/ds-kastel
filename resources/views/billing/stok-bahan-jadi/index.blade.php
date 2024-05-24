@@ -53,7 +53,7 @@
                     </tr>
                     <tr>
                         <td class="text-center align-middle">
-                            <a href="">STONE CARE</a>
+                            <a href="{{route('billing.stok-bahan-jadi.detail')}}">STONE CARE</a>
                         </td>
                         <td class="text-center align-middle">0</td>
                         <td class="text-center align-middle">0</td>
@@ -64,7 +64,7 @@
                     </tr>
                     <tr>
                         <td class="text-center align-middle">
-                            <a href="">BLACK</a>
+                            <a href="{{route('billing.stok-bahan-jadi.detail')}}">BLACK</a>
                         </td>
                         <td class="text-center align-middle">0</td>
                         <td class="text-center align-middle">0</td>
