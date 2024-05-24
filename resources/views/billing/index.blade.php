@@ -71,9 +71,23 @@
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('billing.stok-bahan-jadi')}}" class="text-decoration-none">
                 <img src="{{asset('images/product-jadi.svg')}}" alt="" width="80">
+                <h4 class="mt-2">RENCANA STOCK BAHAN JADI</h4>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
+            <a href="{{route('billing.stok-bahan-jadi')}}" class="text-decoration-none">
+                <img src="{{asset('images/product-jadi.svg')}}" alt="" width="80">
                 <h4 class="mt-2">STOCK BAHAN JADI</h4>
             </a>
         </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
+            <a href="{{route('billing.stok-bahan-jadi')}}" class="text-decoration-none">
+                <img src="{{asset('images/product-jadi.svg')}}" alt="" width="80">
+                <h4 class="mt-2">PENJUALAN BAHAN JADI</h4>
+            </a>
+        </div>
+    </div>
+    <div class="row justify-content-left">
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('nota-ppn-masukan')}}" class="text-decoration-none">
                 <img src="{{asset('images/form-ppn.svg')}}" alt="" width="80">
@@ -88,9 +102,6 @@
                 <h4 class="mt-2">DASHBOARD</h4>
             </a>
         </div>
-    </div>
-    <div class="row justify-content-left">
-
         {{-- <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('nota-tagihan.index')}}" class="text-decoration-none">
                 <img src="{{asset('images/nota-tagihan.svg')}}" alt="" width="80">
