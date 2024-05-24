@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center mb-5">
         <div class="col-md-12 text-center">
             <h1><u>STOK BAHAN JADI</u></h1>
@@ -29,7 +29,12 @@
                         <th class="text-center align-middle">
                             RENCANA<br>PACKAGING
                         </th>
-                        
+                        <th class="text-center align-middle">
+                            CETAKAN
+                        </th>
+                        <th class="text-center align-middle">
+                            ACT
+                        </th>
                     </tr>
                 </thead>
             </table>
@@ -41,6 +46,8 @@
 
     <script src="{{asset('assets/js/cleave.min.js')}}"></script>
     <script>
-        $('#barangJadi').DataTable();
+        $('#barangJadi').DataTable({
+            searching: false,
+        });
     </script>
 @endpush
