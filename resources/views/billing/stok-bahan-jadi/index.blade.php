@@ -20,7 +20,7 @@
                         <th class="text-center align-middle">
                             JENIS<br>PRODUCT
                         </th>
-                        <th class="text-center align-middle">
+                        {{-- <th class="text-center align-middle">
                             KODE<br>PRODUKSI
                         </th>
                         <th class="text-center align-middle">
@@ -31,7 +31,7 @@
                         </th>
                         <th class="text-center align-middle">
                             CETAKAN
-                        </th>
+                        </th> --}}
                         <th class="text-center align-middle">
                             STOK<br>KEMASAN
                         </th>
