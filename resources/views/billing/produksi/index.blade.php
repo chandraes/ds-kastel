@@ -60,15 +60,15 @@
         </div>
         <div class="col-md-4 mt-2">
             <label for="packaging_id" class="form-label">Packaging</label>
-            <input type="text" class="form-control" name="packaging" id="packaging_id">
+            <input type="text" class="form-control" name="packaging" id="packaging_id" disabled>
         </div>
         <div class="col-md-4 mt-2">
             <label for="total_packaging" class="form-label">Total Packaging</label>
-            <input type="text" class="form-control" name="total_pack" id="total_packaging">
+            <input type="text" class="form-control" name="total_pack" id="total_packaging" disabled>
         </div>
         <div class="col-md-4 mt-2">
-            <label for="total_packaging" class="form-label">Stock Packaging</label>
-            <input type="text" class="form-control" name="total_pack" id="total_packaging">
+            <label for="stok_packaging" class="form-label">Stock Packaging</label>
+            <input type="text" class="form-control" name="stok_pack" id="stok_packaging" disabled>
         </div>
     </div>
 </div>
@@ -188,7 +188,7 @@
 
         var no = 1;
         $.each(data, function (key, value) {
-            var totalBahan = (((value.jumlah * rencanaProduksi) / 100 / value.product.konversi_liter).toFixed(2));
+            var totalBahan = ((((value.jumlah * rencanaProduksi) / 100) * kemasan.konversi_liter / value.product.konversi_liter).toFixed(2));
             var rowClass = '';
             if (value.bahan_baku.stock < totalBahan) {
                 rowClass = 'table-danger';
@@ -205,11 +205,18 @@
         });
 
         if(kemasan.packaging_id) {
+            var totalPackaging = rencanaProduksi / kemasan.packaging.konversi_kemasan;
             $('#packaging_id').val(kemasan.packaging.nama);
-            $('#total_packaging').val(rencanaProduksi/kemasan.packaging.konversi_kemasan);
+            $('#total_packaging').val(totalPackaging);
+            $('#stok_packaging').val(kemasan.packaging.stok);
+            if (totalPackaging > kemasan.packaging.stok) {
+                $('#total_packaging').addClass('is-invalid');
+                $('#stok_packaging').addClass('is-invalid');
+            }
         } else {
             $('#packaging_id').val('-');
             $('#total_packaging').val(0);
+            $('#stok_packaging').val(0);
         }
 
     }
