@@ -223,6 +223,10 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::get('/get-komposisi', [App\Http\Controllers\ProduksiController::class, 'getKomposisi'])->name('billing.produksi.get-komposisi');
             });
 
+            Route::prefix('stok-bahan-jadi')->group(function(){
+                Route::get('/', [App\Http\Controllers\StokBahanJadiController::class, 'index'])->name('billing.stok-bahan-jadi');
+            });
+
             Route::prefix('transaksi')->group(function(){
                 Route::get('/', [App\Http\Controllers\FormTransaksiController::class, 'index'])->name('billing.form-transaksi');
 
