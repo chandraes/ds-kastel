@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="product_id" class="form-label">Satuan</label>
+                            <label for="product_id" class="form-label">Product</label>
                             <select name="product_id" id="product_id" class="form-select" required>
                                 <option value="" selected disabled>Pilih Product</option>
                                 @foreach ($product as $prod)
