@@ -41,7 +41,8 @@ class ProduksiController extends Controller
 
     public function getKomposisi(Request $request)
     {
-        $komposisi = ProductKomposisi::with(['bahan_baku', 'bahan_baku.kategori'])->where('product_id', $request->product_id)->get();
+        $komposisi = ProductKomposisi::with(['product','bahan_baku', 'bahan_baku.kategori', 'bahan_baku.satuan'])->where('product_id', $request->product_id)->get();
+        $kemasan = Kemasan::with(['packaging'])->find($request->kemasan_id);
 
         $data = $komposisi->map(function ($item) {
             return $item;
@@ -50,7 +51,8 @@ class ProduksiController extends Controller
         $result = [
             'status' => $data->isEmpty() ? 0 : 1,
             'message' => $data->isEmpty() ? 'Data komposisi tidak ditemukan' : 'Data komposisi ditemukan',
-            'data' => $data->isEmpty() ? null : $data
+            'data' => $data->isEmpty() ? null : $data,
+            'kemasan' => $kemasan
         ];
 
         return response()->json($result);

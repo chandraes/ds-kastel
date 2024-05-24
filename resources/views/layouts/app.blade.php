@@ -16,6 +16,7 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link id="style" href="{{asset('assets/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{asset('assets/plugins/select2/select2.bootstrap5.css')}}">
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/sweetalert.js')}}"></script>
     <link href="{{asset('assets/css/dt.min.css')}}" rel="stylesheet">

@@ -39,17 +39,16 @@
             </div>
         </div>
     </div>
-    <div class="row mt-3" id="komposisiDiv" hidden>
+    <div class="row mt-3" id="komposisiDiv" style="display: none;">
         <div class="col-md-12">
             <table class="table table-bordered">
                 <thead class="table-primary">
                     <tr>
-                        <th class="text-center align middle">No</th>
-                        <th class="text-center align middle">Bahan Baku</th>
-                        <th class="text-center align middle">Qty</th>
-                        <th class="text-center align middle">Satuan</th>
-                        <th class="text-center align middle">Qty Per Unit</th>
-                        <th class="text-center align middle">Satuan Per Unit</th>
+                        <th class="text-center align-middle">NO</th>
+                        <th class="text-center align-middle">BAHAN BAKU</th>
+                        <th class="text-center align-middle">KADAR(%)</th>
+                        <th class="text-center align-middle">Jumlah<br>Bahan</th>
+                        <th class="text-center align-middle">Jumlah<br>Stok</th>
                     </tr>
                 </thead>
                 <tbody id="komposisiBody">
@@ -59,23 +58,31 @@
                 </tbody>
             </table>
         </div>
+        <div class="col-md-4 mt-2">
+            <label for="packaging_id" class="form-label">Packaging</label>
+            <input type="text" class="form-control" name="packaging" id="packaging_id">
+        </div>
+        <div class="col-md-4 mt-2">
+            <label for="total_packaging" class="form-label">Total Packaging</label>
+            <input type="text" class="form-control" name="total_pack" id="total_packaging">
+        </div>
+        <div class="col-md-4 mt-2">
+            <label for="total_packaging" class="form-label">Stock Packaging</label>
+            <input type="text" class="form-control" name="total_pack" id="total_packaging">
+        </div>
     </div>
 </div>
 @endsection
 @push('css')
-<link rel="stylesheet" href="{{asset('assets/plugins/select2/select2.bootstrap5.css')}}">
 <link rel="stylesheet" href="{{asset('assets/plugins/select2/select2.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/plugins/select2/select2.bootstrap5.css')}}">
 @endpush
 @push('js')
 <script src="{{asset('assets/plugins/select2/select2.full.min.js')}}"></script>
 <script src="{{asset('assets/js/cleave.min.js')}}"></script>
 <script>
-    $(document).ready(function() {
-        $('#product_id').select2({
-            theme: 'bootstrap5'
-        });
-        $('#kemasan_id').select2();
-    });
+
+
     function checkInput() {
         const rencanaProduksi = document.getElementById('rencana_produksi').value;
         const tampilkanButton = document.getElementById('tampilkanButton');
@@ -87,6 +94,14 @@
             tampilkanButton.disabled = false;
         }
     }
+
+    $(document).ready(function() {
+        $('#product_id').select2({
+            theme: 'bootstrap-5',});
+        $('#kemasan_id').select2({
+            theme: 'bootstrap-5',});
+    });
+
     function kemasan() {
         var product_id = $('#product_id').val();
         $.ajax({
@@ -106,6 +121,7 @@
                     $('#product_id').val('');
                     $('#kemasan_id').val('');
                     $('#rencana_produksi').val('');
+                    checkInput();
                     Swal.fire({
                         title: data.message ,
                         icon: 'warning',
@@ -119,6 +135,7 @@
                             window.location.reload();
                         }
                     })
+
                 }
             }
         });
@@ -139,7 +156,7 @@
             success: function (data) {
                 if(data.status == '1') {
                     console.log(data.data);
-                    displayData(data.data);
+                    displayData(data.data, data.kemasan);
                 } else {
                     $('#product_id').val('');
                     Swal.fire({
@@ -160,9 +177,41 @@
         });
     }
 
-    function displayData(data)
+    function displayData(data, kemasan)
     {
-        console.log('masuk sini');
+        console.log(kemasan);
+        $('#komposisiBody').empty();
+        $('#komposisiDiv').show();
+
+        var rencanaProduksi = $('#rencana_produksi').val();
+        var total = 0;
+
+        var no = 1;
+        $.each(data, function (key, value) {
+            var totalBahan = (((value.jumlah * rencanaProduksi) / 100 / value.product.konversi_liter).toFixed(2));
+            var rowClass = '';
+            if (value.bahan_baku.stock < totalBahan) {
+                rowClass = 'table-danger';
+            }
+            $('#komposisiBody').append('<tr class="'+rowClass+'">'+
+                '<td class="text-center align-middle">'+no+'</td>'+
+                '<td class="text-start align-middle">'+value.bahan_baku.kategori.nama+' - '+value.bahan_baku.nama+'</td>'+
+                '<td class="text-center align-middle">'+value.jumlah+'%</td>'+
+                '<td class="text-center align-middle">'+totalBahan+' '+value.bahan_baku.satuan.nama+'</td>'+
+                '<td class="text-center align-middle">'+value.bahan_baku.stock+' '+value.bahan_baku.satuan.nama+'</td>'+
+            '</tr>');
+            total += totalBahan;
+            no++;
+        });
+
+        if(kemasan.packaging_id) {
+            $('#packaging_id').val(kemasan.packaging.nama);
+            $('#total_packaging').val(rencanaProduksi/kemasan.packaging.konversi_kemasan);
+        } else {
+            $('#packaging_id').val('-');
+            $('#total_packaging').val(0);
+        }
+
     }
 
 </script>
