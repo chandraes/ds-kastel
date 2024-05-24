@@ -30,6 +30,12 @@
                             CETAKAN
                         </th>
                         <th class="text-center align-middle">
+                            STOK<br>KEMASAN
+                        </th>
+                        <th class="text-center align-middle">
+                            STOK<br>PACKAGING
+                        </th>
+                        <th class="text-center align-middle">
                             ACT
                         </th>
                     </tr>
