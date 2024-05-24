@@ -71,7 +71,9 @@
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('billing.stok-bahan-jadi.detail')}}" class="text-decoration-none">
                 <img src="{{asset('images/product-jadi.svg')}}" alt="" width="80">
-                <h4 class="mt-2">RENCANA STOCK BAHAN JADI</h4>
+                <h4 class="mt-2">RENCANA STOCK BAHAN JADI
+                    <span class=""></span>
+                </h4>
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">

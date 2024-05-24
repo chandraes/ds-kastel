@@ -18,6 +18,9 @@
                 <thead class="table-primary">
                     <tr>
                         <th class="text-center align-middle">
+                            NO
+                        </th>
+                        <th class="text-center align-middle">
                             KATEGORI<br>PRODUCT
                         </th>
                         <th class="text-center align-middle">
