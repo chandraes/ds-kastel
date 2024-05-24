@@ -42,12 +42,93 @@
                             RENCANA<br>PACKAGING
                         </th>
                         <th class="text-center align-middle">
-                            PRODUKSI KE
+                            JUMLAH<br>PRODUKSI
                         </th>
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td class="text-center align-middle">
+                            1
+                        </td>
+                        <td class="text-center align-middle">
+                            VERNIZ
+                        </td>
+                        <td class="text-center align-middle">
+                            STONE CARE
+                        </td>
+                        <td class="text-center align-middle">
+                            VZ/SBC/01
+                        </td>
+                        <td class="text-center align-middle">
+                            10-10-2024
+                        </td>
+                        <td class="text-center align-middle">
+                            10-3-2025
+                        </td>
+                        <td class="text-center align-middle">
+                            3200
+                        </td>
+                        <td class="text-center align-middle">
+                            32
+                        </td>
+                        <td class="text-center align-middle">
+                            <!-- Modal trigger button -->
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#modalId">
+                                Tambah
+                            </button>
 
+                            <!-- Modal Body -->
+                            <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+                            <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static"
+                                data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
+                                    role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalTitleId">
+
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="jumlah_produksi" class="form-label">Masukan Jumlah Produksi</label>
+                                                <input
+                                                    type="number"
+                                                    class="form-control"
+                                                    name="jumlah_produksi"
+                                                    id="jumlah_produksi"
+                                                    aria-describedby="helpId"
+                                                    placeholder=""
+                                                />
+
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Tutup
+                                            </button>
+                                            <button type="button" class="btn btn-primary">Simpan</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Optional: Place to the bottom of scripts -->
+                            <script>
+                                const myModal = new bootstrap.Modal(
+                                    document.getElementById("modalId"),
+                                    options,
+                                );
+                            </script>
+
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -56,8 +137,8 @@
 @endsection
 @push('js')
 
-    <script src="{{asset('assets/js/cleave.min.js')}}"></script>
-    <script>
+<script src="{{asset('assets/js/cleave.min.js')}}"></script>
+<script>
 
-    </script>
+</script>
 @endpush
