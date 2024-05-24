@@ -71,6 +71,9 @@
             <input type="text" class="form-control" name="stok_pack" id="stok_packaging" disabled>
         </div>
     </div>
+    <div class="row">
+        <a href="{{route('billing')}}" class="btn btn-block btn-secondary">Kembali</a>
+    </div>
 </div>
 @endsection
 @push('css')
