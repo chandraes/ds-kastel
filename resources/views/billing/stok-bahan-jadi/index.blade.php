@@ -6,36 +6,41 @@
             <h1><u>STOK BAHAN JADI</u></h1>
         </div>
     </div>
-    
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-sm" id="barangJadi" style="font-size: 11px">
+                <thead class="table-primary">
+                    <tr>
+                        <th class="text-center align-middle">
+                            NO
+                        </th>
+                        <th class="text-center align-middle">
+                            PRODUCT
+                        </th>
+                        <th class="text-center align-middle">
+                            RENCANA<br>PRODUKSI
+                        </th>
+                        <th class="text-center align-middle">
+                            KODE<br>PRODUKSI
+                        </th>
+                        <th class="text-center align-middle">
+                            RENCANA<br>KEMASAN
+                        </th>
+                        <th class="text-center align-middle">
+                            RENCANA<br>PACKAGING
+                        </th>
+                        
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
 </div>
 @endsection
 @push('js')
 
     <script src="{{asset('assets/js/cleave.min.js')}}"></script>
     <script>
-        var nominal = new Cleave('#nominal', {
-            numeral: true,
-            numeralThousandsGroupStyle: 'thousand',
-            numeralDecimalMark: ',',
-            delimiter: '.'
-        });
-        // masukForm on submit, sweetalert confirm
-        $('#masukForm').submit(function(e){
-            e.preventDefault();
-            Swal.fire({
-                title: 'Apakah anda yakin?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, simpan!'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#spinner').show();
-                    this.submit();
-
-                }
-            })
-        });
+        $('#barangJadi').DataTable();
     </script>
 @endpush
