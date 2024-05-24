@@ -15,7 +15,10 @@
                             NO
                         </th>
                         <th class="text-center align-middle">
-                            PRODUCT
+                            KATEGORI<br>PRODUCT
+                        </th>
+                        <th class="text-center align-middle">
+                            JENIS<br>PRODUCT
                         </th>
                         <th class="text-center align-middle">
                             KODE<br>PRODUKSI
