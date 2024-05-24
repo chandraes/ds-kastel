@@ -13,6 +13,11 @@ class BahanBaku extends Model
 
     protected $appends = ['modal', 'nf_modal'];
 
+    public function komposisi()
+    {
+        return $this->hasMany(ProductKomposisi::class, 'bahan_baku_id');
+    }
+
     public function kategori()
     {
         return $this->belongsTo(KategoriBahan::class, 'kategori_bahan_id');

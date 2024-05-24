@@ -31,11 +31,11 @@
             <tr>
                 <th class="text-center align-middle" style="width: 5%">NO</th>
                 <th class="text-center align-middle">NAMA</th>
-                <th class="text-center align-middle">SATUAN</th>
-                <th class="text-center align-middle">KONVERSI KE LITER</th>
+                <th class="text-center align-middle">KEMASAN</th>
+                {{-- <th class="text-center align-middle">KONVERSI KE LITER</th>
                 <th class="text-center align-middle">PACKAGING</th>
                 <th class="text-center align-middle">STOK</th>
-                <th class="text-center align-middle">ACT</th>
+                <th class="text-center align-middle">ACT</th> --}}
             </tr>
         </thead>
         <tbody>
@@ -43,50 +43,79 @@
             <tr>
                 <td class="text-center align-middle">{{$loop->iteration}}</td>
                 <td class="text-center align-middle">{{$d->nama}}</td>
-                <td class="text-center align-middle">{{$d->satuan->nama}}</td>
-                <td class="text-center align-middle">1 : {{$d->konversi_liter}}</td>
                 <td class="text-center align-middle">
-                    @if ($d->packaging_id)
-                    {{$d->packaging->nama}}
-                    @else
-                    -
-                    @endif
-                </td>
-                <td class="text-center align-middle">{{$d->stok}}</td>
-                <td class="text-center align-middle">
-                    <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
-                            data-bs-target="#editInvestor" onclick="editInvestor({{$d}}, {{$d->id}})"><i
-                                class="fa fa-edit"></i></button>
-                        <form action="{{route('db.kemasan.delete', $d)}}" method="post" id="deleteForm-{{$d->id}}">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-danger m-2"><i class="fa fa-trash"></i></button>
-                        </form>
-                    </div>
+                    @if ($d->kemasan)
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center align-middle">NAMA</th>
+                                <th class="text-center align-middle">SATUAN</th>
+                                <th class="text-center align-middle">KONVERSI KE LITER</th>
+                                <th class="text-center align-middle">PACKAGING</th>
+                                <th class="text-center align-middle">HARGA PER<br>PACKAGING</th>
+                                <th class="text-center align-middle">STOK KEMASAN</th>
+                                <th class="text-center align-middle">ACT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($d->kemasan as $k)
+                            <tr>
+                                <td class="text-center align-middle">{{$k->nama}}</td>
+                                <td class="text-center align-middle">{{$k->satuan->nama}}</td>
+                                <td class="text-center align-middle">1 : {{$k->konversi_liter}}</td>
+                                <td class="text-center align-middle">
+                                    @if ($k->packaging_id)
+                                    {{$k->packaging->nama}}
+                                    @else
+                                    -
+                                    @endif
+                                </td>
+                                <td class="text-end align-middle">{{$k->nf_harga}}</td>
+                                <td class="text-center align-middle">{{$k->stok}}</td>
+                                <td class="text-center align-middle">
+                                    <div class="d-flex justify-content-center">
+                                        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
+                                            data-bs-target="#editInvestor" onclick="editInvestor({{$k}}, {{$k->id}})"><i
+                                                class="fa fa-edit"></i></button>
+                                        <form action="{{route('db.kemasan.delete', $k)}}" method="post"
+                                            id="deleteForm-{{$k->id}}">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-danger m-2"><i
+                                                    class="fa fa-trash"></i></button>
+                                        </form>
+                                    </div>
 
-                </td>
+                                </td>
+                            </tr>
+                            <script>
+                                $('#deleteForm-{{$k->id}}').submit(function(e){
+                                       e.preventDefault();
+                                       Swal.fire({
+                                           title: 'Apakah data yakin untuk menghapus data ini?',
+                                           icon: 'warning',
+                                           showCancelButton: true,
+                                           confirmButtonColor: '#3085d6',
+                                           cancelButtonColor: '#6c757d',
+                                           confirmButtonText: 'Ya, hapus!'
+                                           }).then((result) => {
+                                           if (result.isConfirmed) {
+                                            $('#spinner').show();
+                                               this.submit();
+                                           }
+                                       })
+                                   });
+                            </script>
             </tr>
-            <script>
-                $('#deleteForm-{{$d->id}}').submit(function(e){
-                       e.preventDefault();
-                       Swal.fire({
-                           title: 'Apakah data yakin untuk menghapus data ini?',
-                           icon: 'warning',
-                           showCancelButton: true,
-                           confirmButtonColor: '#3085d6',
-                           cancelButtonColor: '#6c757d',
-                           confirmButtonText: 'Ya, hapus!'
-                           }).then((result) => {
-                           if (result.isConfirmed) {
-                            $('#spinner').show();
-                               this.submit();
-                           }
-                       })
-                   });
-            </script>
+
             @endforeach
         </tbody>
+    </table>
+    @endif
+    </td>
+
+    @endforeach
+    </tbody>
     </table>
 </div>
 
@@ -95,7 +124,7 @@
 <link href="{{asset('assets/css/dt.min.css')}}" rel="stylesheet">
 @endpush
 @push('js')
-<script src="{{asset('assets/js/cleave.min.js')}}"></script>
+
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
     function editInvestor(data, id) {
@@ -112,6 +141,13 @@
         scrollCollapse: true,
         scrollY: "550px",
     });
+
+    var harga = new Cleave('#harga', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        });
 
     confirmAndSubmit('#createForm', "Apakah anda yakin?");
     confirmAndSubmit('#editForm', "Apakah anda yakin?");

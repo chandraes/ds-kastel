@@ -54,6 +54,12 @@
             </a>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
+            <a href="{{route('db.product')}}" class="text-decoration-none">
+                <img src="{{asset('images/product.svg')}}" alt="" width="80">
+                <h4 class="mt-2">DAFTAR<br>PRODUCT</h4>
+            </a>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.packaging')}}" class="text-decoration-none">
                 <img src="{{asset('images/packaging.svg')}}" alt="" width="80">
                 <h4 class="mt-2">PACKAGING</h4>
@@ -65,12 +71,7 @@
                 <h4 class="mt-2">KEMASAN</h4>
             </a>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
-            <a href="{{route('db.product')}}" class="text-decoration-none">
-                <img src="{{asset('images/product.svg')}}" alt="" width="80">
-                <h4 class="mt-2">DAFTAR<br>PRODUCT</h4>
-            </a>
-        </div>
+
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="80">

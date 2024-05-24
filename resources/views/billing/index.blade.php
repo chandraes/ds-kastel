@@ -63,7 +63,7 @@
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="#" class="text-decoration-none">
+            <a href="{{route('billing.produksi')}}" class="text-decoration-none">
                 <img src="{{asset('images/produksi.svg')}}" alt="" width="80">
                 <h4 class="mt-2">PRODUKSI</h4>
             </a>

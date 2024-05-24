@@ -11,6 +11,23 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
+                            <label for="product_id" class="form-label">Satuan</label>
+                            <select name="product_id" id="product_id" class="form-select" required>
+                                <option value="" selected disabled>Pilih Product</option>
+                                @foreach ($product as $prod)
+                                <option value="{{$prod->id}}">{{$prod->kategori->nama}} - {{$prod->nama}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="harga" class="form-label">Harga Jual</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Rp</span>
+                                <input type="text" class="form-control" name="harga" id="harga" required value="{{old('harga')}}">
+                            </div>
+                            <small class="text-danger">Harga jual satuan per packaging</small>
+                        </div>
+                        <div class="col-md-6 mb-3">
                             <label for="nama" class="form-label">Nama Kemasan</label>
                             <input type="text" class="form-control" name="nama" id="nama" aria-describedby="helpId"
                                 placeholder="" required value="{{old('nama')}}">

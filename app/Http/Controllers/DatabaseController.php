@@ -8,7 +8,7 @@ use App\Models\db\Satuan;
 use App\Models\db\Supplier;
 use App\Models\Konsumen;
 use App\Models\Pengelola;
-use App\Models\Product;
+use App\Models\db\Product;
 use Illuminate\Http\Request;
 
 class DatabaseController extends Controller
@@ -227,29 +227,35 @@ class DatabaseController extends Controller
 
     public function kemasan()
     {
-        $data = Kemasan::all();
+        $data = Product::has('kemasan')->with(['kemasan'])->get();
         $satuan = Satuan::all();
+        $product = Product::all();
         $packaging = Packaging::all();
 
         return view('db.kemasan.index', [
             'data' => $data,
             'satuan' => $satuan,
             'packaging' => $packaging,
+            'product' => $product
         ]);
     }
 
     public function kemasan_store(Request $request)
     {
         $data= $request->validate([
+            'product_id' => 'required|exists:products,id',
             'nama' => 'required',
             'satuan_id' => 'required',
             'konversi_liter' => 'required',
             'packaging_id' => 'required',
+            'harga' => 'required',
         ]);
 
         if ($data['packaging_id'] == 0) {
             $data['packaging_id'] = null;
         }
+
+        $data['harga'] = str_replace('.', '', $data['harga']);
 
         Kemasan::create($data);
 
@@ -259,15 +265,19 @@ class DatabaseController extends Controller
     public function kemasan_update(Kemasan $kemasan, Request $request)
     {
         $data = $request->validate([
+            'product_id' => 'required|exists:products,id',
             'nama' => 'required',
             'satuan_id' => 'required',
             'konversi_liter' => 'required',
             'packaging_id' => 'required',
+            'harga' => 'required',
         ]);
 
         if ($data['packaging_id'] == 0) {
             $data['packaging_id'] = null;
         }
+
+        $data['harga'] = str_replace('.', '', $data['harga']);
 
         $kemasan->update($data);
 

@@ -17,6 +17,6 @@ class ProductKomposisi extends Model
 
     public function bahan_baku()
     {
-        return $this->belongsTo(BahanBaku::class);
+        return $this->belongsTo(BahanBaku::class, 'bahan_baku_id', 'id');
     }
 }

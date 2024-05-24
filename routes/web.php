@@ -217,6 +217,12 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::post('/keluar/store', [App\Http\Controllers\FormLainController::class, 'keluar_store'])->name('form-lain.keluar.store');
             });
 
+            Route::prefix('produksi')->group(function(){
+                Route::get('/', [App\Http\Controllers\ProduksiController::class, 'index'])->name('billing.produksi');
+                Route::get('/get-kemasan', [App\Http\Controllers\ProduksiController::class, 'getKemasan'])->name('billing.produksi.get-kemasan');
+                Route::get('/get-komposisi', [App\Http\Controllers\ProduksiController::class, 'getKomposisi'])->name('billing.produksi.get-komposisi');
+            });
+
             Route::prefix('transaksi')->group(function(){
                 Route::get('/', [App\Http\Controllers\FormTransaksiController::class, 'index'])->name('billing.form-transaksi');
 
