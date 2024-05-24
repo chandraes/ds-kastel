@@ -33,10 +33,13 @@
                             CETAKAN
                         </th> --}}
                         <th class="text-center align-middle">
+                            SATUAN<br>KEMASAN
+                        </th>
+                        <th class="text-center align-middle">
                             STOK<br>KEMASAN
                         </th>
                         <th class="text-center align-middle">
-                            STOK<br>PACKAGING
+                            STOK<br>PACKAGING (DUS)
                         </th>
                         <th class="text-center align-middle">
                             ACT
