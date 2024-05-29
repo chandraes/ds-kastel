@@ -42,9 +42,9 @@
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-4 my-4 text-center">
-            <a href="{{route('db.supplier')}}" class="text-decoration-none">
+            <a href="#" class="text-decoration-none">
                 <img src="{{asset('images/customer.svg')}}" alt="" width="80">
-                <h4 class="mt-2">KONSUMEN</h4>
+                <h4 class="mt-2">DAFTAR<br>KONSUMEN</h4>
             </a>
         </div>
     </div>
