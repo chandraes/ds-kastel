@@ -42,6 +42,14 @@
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-4 my-4 text-center">
+            <a href="{{route('db.supplier')}}" class="text-decoration-none">
+                <img src="{{asset('images/customer.svg')}}" alt="" width="80">
+                <h4 class="mt-2">KONSUMEN</h4>
+            </a>
+        </div>
+    </div>
+    <div class="row justify-content-left">
+        <div class="col-lg-3 col-md-3 col-sm-4 my-4 text-center">
             <a href="{{route('db.satuan')}}" class="text-decoration-none">
                 <img src="{{asset('images/satuan.svg')}}" alt="" width="80">
                 <h4 class="mt-2">SATUAN</h4>
@@ -59,6 +67,8 @@
                 <h4 class="mt-2">DAFTAR<br>PRODUCT</h4>
             </a>
         </div>
+    </div>
+    <div class="row justify-content-left">
         <div class="col-lg-3 col-md-3 col-sm-4 my-4 text-center">
             <a href="{{route('db.packaging')}}" class="text-decoration-none">
                 <img src="{{asset('images/packaging.svg')}}" alt="" width="80">
@@ -81,4 +91,3 @@
     </div>
 </div>
 @endsection
-
