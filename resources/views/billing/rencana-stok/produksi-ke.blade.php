@@ -55,6 +55,13 @@
                         </tr>
                         @endforeach
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="text-center align-middle">Grand Total</th>
+                            <th class="text-center align-middle">120</th>
+                            <th class="text-center align-middle"></th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
     </div>
