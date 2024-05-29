@@ -76,7 +76,7 @@
                             {{$d->kemasan->nf_harga ?? 0}}
                         </td>
                         <td class="text-center align-middle">
-                            <button class="btn btn-primary">JUAL</button>
+                            <button class="btn btn-primary">JUMLAH</button>
                         </td>
                     </tr>
                     @endforeach
@@ -93,7 +93,7 @@
                         <td class="text-center align-middle">Pill</td>
                         <td class="text-center align-middle">3.000.000</td>
                         <td class="text-center align-middle">
-                            <button class="btn btn-primary ">JUAL</button>
+                            <button class="btn btn-primary ">JUMLAH</button>
                         </td>
                     </tr>
 
