@@ -100,6 +100,10 @@
                 </tbody>
             </table>
         </div>
+
+            <a class="btn btn-success btn-block px-5 mt-3">Checkout</a>
+        </div
+
     </div>
 </div>
 @endsection
