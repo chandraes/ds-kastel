@@ -35,6 +35,9 @@
                             STOK<br>PACKAGING (DUS)
                         </th>
                         <th class="text-center align-middle">
+                            HARGA JUAL
+                        </th>
+                        <th class="text-center align-middle">
                             ACT
                         </th>
                     </tr>
@@ -60,37 +63,29 @@
                             {{$d->sum_packaging ?? 0}}
                         </td>
                         <td class="text-center align-middle">
+                            {{$d->kemasan->nf_harga ?? 0}}
+                        </td>
+                        <td class="text-center align-middle">
                             <button class="btn btn-primary">JUAL</button>
                         </td>
                     </tr>
                     @endforeach
                     @endforeach
-                    {{-- <tr>
-                        <td rowspan="3" class="text-center align-middle">1</td>
-                        <td rowspan="3" class="text-center align-middle">VERNIZ</td>
-                    </tr>
                     <tr>
+                        <td class="text-center align-middle">2</td>
+                        <td class="text-center align-middle">MAGMA</td>
                         <td class="text-center align-middle">
-                             <a href="#">STONE CARE</a>
+                            MAGMA 1
                         </td>
+                        <td class="text-center align-middle">10</td>
+                        <td class="text-center align-middle">Pill</td>
                         <td class="text-center align-middle">0</td>
-                        <td class="text-center align-middle">0</td>
-                        <td class="text-center align-middle">0</td>
+                        <td class="text-center align-middle">3.000.000</td>
                         <td class="text-center align-middle">
-                            <button class="btn btn-primary btn-sm">AKSI</button>
+                            <button class="btn btn-primary ">JUAL</button>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="text-center align-middle">
-                            <a href="">BLACK</a>
-                        </td>
-                        <td class="text-center align-middle">0</td>
-                        <td class="text-center align-middle">0</td>
-                        <td class="text-center align-middle">0</td>
-                        <td class="text-center align-middle">
-                            <button class="btn btn-primary btn-sm">AKSI</button>
-                        </td>
-                    </tr> --}}
+
                 </tbody>
             </table>
         </div>
