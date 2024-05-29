@@ -32,9 +32,9 @@
                             <th class="text-center align-middle">
                                 JUMLAH<br>PRODUKSI KEMASAN
                             </th>
-                            <th class="text-center align-middle">
+                            {{-- <th class="text-center align-middle">
                                 JUMLAH<br>PACKAGING
-                            </th>
+                            </th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -48,10 +48,10 @@
                                 <input type="number" name="total_kemasan[]" value="{{$group->total_kemasan}}"
                                     class="form-control">
                             </td>
-                            <td class="text-center align-middle px-5">
+                            {{-- <td class="text-center align-middle px-5">
                                 <input type="number" name="total_packaging[]" value="{{$group->total_packaging}}"
                                     class="form-control">
-                            </td>
+                            </td> --}}
                         </tr>
                         @endforeach
                     </tbody>
@@ -59,6 +59,16 @@
                         <tr>
                             <th class="text-center align-middle">Grand Total</th>
                             <th class="text-center align-middle">120</th>
+                            <th class="text-center align-middle"></th>
+                        </tr>
+                        <tr>
+                            <th class="text-center align-middle">Jumlah Packaging</th>
+                            <th class="text-center align-middle">12</th>
+                            <th class="text-center align-middle"></th>
+                        </tr>
+                        <tr>
+                            <th class="text-center align-middle">Sisa Kemasan</th>
+                            <th class="text-center align-middle">1</th>
                             <th class="text-center align-middle"></th>
                         </tr>
                     </tfoot>
