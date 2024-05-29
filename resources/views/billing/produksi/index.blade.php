@@ -6,78 +6,89 @@
             <h1><u>Produksi</u></h1>
         </div>
     </div>
-    <div class="row mt-3">
-        <div class="col-md-4">
-            <div class="mb-3">
-                <label for="product_id" class="form-label">Product</label>
-                <select class="form-select" name="product_id" id="product_id" required onchange="kemasan()">
-                    <option value="" disabled selected>-- Pilih Product --</option>
-                    @foreach ($data as $d)
-                    <option value="{{$d->id}}">{{$d->kategori->nama}} - {{$d->nama}}</option>
-                    @endforeach
-                </select>
+    <form action="{{route('billing.produksi.store')}}" method="post">
+        @csrf
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label for="product_id" class="form-label">Product</label>
+                    <select class="form-select" name="product_id" id="product_id" required onchange="kemasan()">
+                        <option value="" disabled selected>-- Pilih Product --</option>
+                        @foreach ($data as $d)
+                        <option value="{{$d->id}}">{{$d->kategori->nama}} - {{$d->nama}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label for="kemasan_id" class="form-label">Kemasan</label>
+                    <select class="form-select" name="kemasan_id" id="kemasan_id" required onchange="checkInput()">
+                        <option value="" disabled selected>-- Pilih Kemasan --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="mb-3">
+                    <label for="rencana_produksi" class="form-label">Rencana Produksi (Kemasan)</label>
+                    <input type="text" name="rencana_produksi" id="rencana_produksi" class="form-control" required
+                        oninput="checkInput()">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="mb-3">
+                    <label for="rencana_produksi" class="form-label">&nbsp;</label>
+                    <button type="button" id="tampilkanButton" class="btn btn-rounded btn-success form-control"
+                        onclick="komposisi()" disabled>Tampilkan</button>
+                </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="mb-3">
-                <label for="kemasan_id" class="form-label">Kemasan</label>
-                <select class="form-select" name="kemasan_id" id="kemasan_id" required onchange="checkInput()">
-                    <option value="" disabled selected>-- Pilih Kemasan --</option>
-                </select>
+        <div class="row mt-3" id="komposisiDiv" style="display: none;">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead class="table-primary">
+                        <tr>
+                            <th class="text-center align-middle">NO</th>
+                            <th class="text-center align-middle">BAHAN BAKU</th>
+                            <th class="text-center align-middle">KADAR(%)</th>
+                            <th class="text-center align-middle">Jumlah<br>Bahan</th>
+                            <th class="text-center align-middle">Jumlah<br>Stok</th>
+                        </tr>
+                    </thead>
+                    <tbody id="komposisiBody">
+                        <tr>
+                            <td colspan="6" class="text-center">Data Kosong</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="mb-3">
-                <label for="rencana_produksi" class="form-label">Rencana Produksi (Kemasan)</label>
-                <input type="text" name="rencana_produksi" id="rencana_produksi" class="form-control" required oninput="checkInput()">
+            <div class="col-md-4 mt-2">
+                <input type="hidden" name="packaging_id" readonly id="packaging_id">
+                <label for="packaging" class="form-label">Packaging</label>
+                <input type="text" class="form-control" name="packaging" id="packaging" readonly>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="mb-3">
-                <label for="rencana_produksi" class="form-label">&nbsp;</label>
-                <button type="button" id="tampilkanButton" class="btn btn-rounded btn-success form-control" onclick="komposisi()" disabled>Tampilkan</button>
+            <div class="col-md-4 mt-2">
+                <label for="total_packaging" class="form-label">Total Packaging</label>
+                <input type="text" class="form-control" name="total_pack" id="total_packaging" disabled>
             </div>
+            <div class="col-md-4 mt-2">
+                <label for="stok_packaging" class="form-label">Stock Packaging</label>
+                <input type="text" class="form-control" name="stok_pack" id="stok_packaging" disabled>
+            </div>
+            <div class="col-md-4 mt-2">
+                <label for="expired_dalam" class="form-label">Expired Dalam</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" name="expired_dalam" id="expired_dalam" required>
+                    <span class="input-group-text" id="basic-addon1">Bulan</span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-block btn-success mt-3">Simpan</button>
         </div>
-    </div>
-    <div class="row mt-3" id="komposisiDiv" style="display: none;">
-        <div class="col-md-12">
-            <table class="table table-bordered">
-                <thead class="table-primary">
-                    <tr>
-                        <th class="text-center align-middle">NO</th>
-                        <th class="text-center align-middle">BAHAN BAKU</th>
-                        <th class="text-center align-middle">KADAR(%)</th>
-                        <th class="text-center align-middle">Jumlah<br>Bahan</th>
-                        <th class="text-center align-middle">Jumlah<br>Stok</th>
-                    </tr>
-                </thead>
-                <tbody id="komposisiBody">
-                    <tr>
-                        <td colspan="6" class="text-center">Data Kosong</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="row mt-2">
+
+            <a href="{{route('billing')}}" class="btn btn-block btn-secondary">Kembali</a>
         </div>
-        <div class="col-md-4 mt-2">
-            <label for="packaging_id" class="form-label">Packaging</label>
-            <input type="text" class="form-control" name="packaging" id="packaging_id" disabled>
-        </div>
-        <div class="col-md-4 mt-2">
-            <label for="total_packaging" class="form-label">Total Packaging</label>
-            <input type="text" class="form-control" name="total_pack" id="total_packaging" disabled>
-        </div>
-        <div class="col-md-4 mt-2">
-            <label for="stok_packaging" class="form-label">Stock Packaging</label>
-            <input type="text" class="form-control" name="stok_pack" id="stok_packaging" disabled>
-        </div>
-        <div class="col-md-4 mt-2">
-            <label for="stok_packaging" class="form-label">Expired Dalam (bulan)</label>
-            <input type="number" class="form-control" name="stok_pack" id="stok_packaging" disabled>
-        </div>
-    </div>
-    <div class="row mt-2">
-        <a href="{{route('billing')}}" class="btn btn-block btn-secondary">Kembali</a>
-    </div>
+    </form>
 </div>
 @endsection
 @push('css')
@@ -88,8 +99,6 @@
 <script src="{{asset('assets/plugins/select2/select2.full.min.js')}}"></script>
 <script src="{{asset('assets/js/cleave.min.js')}}"></script>
 <script>
-
-
     function checkInput() {
         const rencanaProduksi = document.getElementById('rencana_produksi').value;
         const tampilkanButton = document.getElementById('tampilkanButton');
@@ -122,7 +131,7 @@
                     $('#kemasan_id').empty();
                     $('#kemasan_id').append('<option value="" disabled selected>-- Pilih Kemasan --</option>');
                     $.each(data.data, function (key, value) {
-                        $('#kemasan_id').append('<option value="'+value.id+'">'+value.nama+'</option>');
+                        $('#kemasan_id').append('<option value="'+value.id+'" required>'+value.nama+'</option>');
                     });
                 } else {
                     $('#product_id').val('');
@@ -213,7 +222,8 @@
 
         if(kemasan.packaging_id) {
             var totalPackaging = rencanaProduksi / kemasan.packaging.konversi_kemasan;
-            $('#packaging_id').val(kemasan.packaging.nama);
+            $('#packaging').val(kemasan.packaging.nama);
+            $('#packaging_id').val(kemasan.packaging.id);
             $('#total_packaging').val(totalPackaging);
             $('#stok_packaging').val(kemasan.packaging.stok);
             if (totalPackaging > kemasan.packaging.stok) {
@@ -221,7 +231,8 @@
                 $('#stok_packaging').addClass('is-invalid');
             }
         } else {
-            $('#packaging_id').val('-');
+            $('#packaging_id').val('');
+            $('#packaging').val('-');
             $('#total_packaging').val(0);
             $('#stok_packaging').val(0);
         }

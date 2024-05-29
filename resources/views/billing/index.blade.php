@@ -69,10 +69,10 @@
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="{{route('billing.stok-bahan-jadi.detail')}}" class="text-decoration-none">
-                <img src="{{asset('images/product-jadi.svg')}}" alt="" width="80">
-                <h4 class="mt-2">RENCANA STOCK BAHAN JADI
-                    <span class=""></span>
+            <a href="{{route('billing.stok-bahan-jadi.rencana')}}" class="text-decoration-none">
+                <img src="{{asset('images/rencana.svg')}}" alt="" width="80">
+                <h4 class="mt-2">RENCANA STOCK<br>BAHAN JADI
+                    @if($rp != 0) <span class="text-danger">({{$rp}})</span> @endif
                 </h4>
             </a>
         </div>
@@ -82,12 +82,12 @@
                 <h4 class="mt-2">STOCK BAHAN JADI</h4>
             </a>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
+        {{-- <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('billing.stok-bahan-jadi')}}" class="text-decoration-none">
                 <img src="{{asset('images/product-jadi.svg')}}" alt="" width="80">
                 <h4 class="mt-2">PENJUALAN BAHAN JADI</h4>
             </a>
-        </div>
+        </div> --}}
     </div>
     <div class="row justify-content-left">
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">

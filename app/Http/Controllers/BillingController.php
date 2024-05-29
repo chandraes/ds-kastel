@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Investor;
 use App\Models\InvestorModal;
 use App\Models\KasBesar;
+use App\Models\Produksi\RencanaProduksi;
 use App\Models\transaksi\InvoiceBelanja;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,10 @@ class BillingController extends Controller
     public function index()
     {
         $np = InvoiceBelanja::where('ppn_masukan', 0)->where('tempo', 0)->count();
-
+        $rp = RencanaProduksi::where('approved', 0)->count();
         return view('billing.index', [
             'np' => $np,
+            'rp' => $rp,
         ]);
     }
 

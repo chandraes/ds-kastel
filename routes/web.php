@@ -221,12 +221,24 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::get('/', [App\Http\Controllers\ProduksiController::class, 'index'])->name('billing.produksi');
                 Route::get('/get-kemasan', [App\Http\Controllers\ProduksiController::class, 'getKemasan'])->name('billing.produksi.get-kemasan');
                 Route::get('/get-komposisi', [App\Http\Controllers\ProduksiController::class, 'getKomposisi'])->name('billing.produksi.get-komposisi');
+                Route::post('/store', [App\Http\Controllers\ProduksiController::class, 'store'])->name('billing.produksi.store');
             });
 
             Route::prefix('stok-bahan-jadi')->group(function(){
                 Route::get('/', [App\Http\Controllers\StokBahanJadiController::class, 'index'])->name('billing.stok-bahan-jadi');
-                Route::get('/detail', [App\Http\Controllers\StokBahanJadiController::class, 'detail'])->name('billing.stok-bahan-jadi.detail');
-                Route::get('/produksi-ke', [App\Http\Controllers\StokBahanJadiController::class, 'produksi_ke'])->name('billing.stok-bahan-jadi.produksi-ke');
+
+                Route::prefix('/rencana')->group(function(){
+                    Route::get('/', [App\Http\Controllers\StokBahanJadiController::class, 'rencana_stok'])->name('billing.stok-bahan-jadi.rencana');
+                    Route::post('/lanjutkan/{rencanaProduksi}', [App\Http\Controllers\StokBahanJadiController::class, 'lanjut_stok'])->name('billing.stok-bahan-jadi.rencana.lanjutkan');
+                });
+
+                Route::prefix('produksi-ke')->group(function(){
+                    Route::post('/{rencanaProduksi}', [App\Http\Controllers\StokBahanJadiController::class, 'produksi_ke'])->name('billing.stok-bahan-jadi.produksi-ke');
+                    Route::post('/store/{rencanaProduksi}', [App\Http\Controllers\StokBahanJadiController::class, 'store_produksi_ke'])->name('billing.stok-bahan-jadi.produksi-ke.store');
+                    Route::get('/edit/{rencanaProduksi}', [App\Http\Controllers\StokBahanJadiController::class, 'edit_produksi_ke'])->name('billing.stok-bahan-jadi.edit-produksi-ke');
+                    Route::post('/edit/{rencanaProduksi}', [App\Http\Controllers\StokBahanJadiController::class, 'update_produksi_ke'])->name('billing.stok-bahan-jadi.edit-produksi-ke.update');
+                });
+
             });
 
             Route::prefix('transaksi')->group(function(){

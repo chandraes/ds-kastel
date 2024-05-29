@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\db\Kemasan;
 use App\Models\db\Product;
 use App\Models\db\ProductKomposisi;
+use App\Models\Produksi\RencanaProduksi;
 use Illuminate\Http\Request;
 
 class ProduksiController extends Controller
@@ -57,4 +58,23 @@ class ProduksiController extends Controller
 
         return response()->json($result);
     }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'expired_dalam' => 'required|numeric',
+            'product_id' => 'required|exists:products,id',
+            'kemasan_id' => 'required|exists:kemasans,id',
+            'packaging_id' => 'nullable|exists:packagings,id',
+            'rencana_produksi' => 'required|numeric',
+        ]);
+
+        $db = new RencanaProduksi();
+
+        $res = $db->storeProduksi($data);
+
+        return redirect()->route('billing')->with($res['status'], $res['message']);
+    }
+
+
 }
