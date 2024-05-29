@@ -221,12 +221,13 @@
         });
 
         if(kemasan.packaging_id) {
-            var totalPackaging = rencanaProduksi / kemasan.packaging.konversi_kemasan;
+            let totalPackaging = rencanaProduksi / kemasan.packaging.konversi_kemasan;
+            let finalPackaging = Math.floor(totalPackaging);
             $('#packaging').val(kemasan.packaging.nama);
             $('#packaging_id').val(kemasan.packaging.id);
-            $('#total_packaging').val(totalPackaging);
+            $('#total_packaging').val(finalPackaging);
             $('#stok_packaging').val(kemasan.packaging.stok);
-            if (totalPackaging > kemasan.packaging.stok) {
+            if (finalPackaging > kemasan.packaging.stok) {
                 $('#total_packaging').addClass('is-invalid');
                 $('#stok_packaging').addClass('is-invalid');
             }
