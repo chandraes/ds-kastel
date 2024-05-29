@@ -60,7 +60,7 @@
                             {{$d->sum_packaging ?? 0}}
                         </td>
                         <td class="text-center align-middle">
-                            <button class="btn btn-primary">Aksi</button>
+                            <button class="btn btn-primary">JUAL</button>
                         </td>
                     </tr>
                     @endforeach
