@@ -241,6 +241,10 @@ Route::group(['middleware' => ['auth']], function() {
 
             });
 
+            Route::prefix('jual-product')->group(function(){
+                
+            });
+
             Route::prefix('transaksi')->group(function(){
                 Route::get('/', [App\Http\Controllers\FormTransaksiController::class, 'index'])->name('billing.form-transaksi');
 

@@ -85,7 +85,7 @@
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="#" class="text-decoration-none">
                 <img src="{{asset('images/product-jadi.svg')}}" alt="" width="80">
-                <h4 class="mt-2">FORM JUAL PRODUCT</h4>
+                <h4 class="mt-2">TAGIHAN KE KONSUMEN</h4>
             </a>
         </div>
         {{-- <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
