@@ -6,7 +6,8 @@
             <h1><u>STOK BAHAN JADI</u></h1>
         </div>
     </div>
-    <div class="row mb-3">
+    <div class="row mb-3 d-flex">
+
         <div class="col-md-12">
             <a href="{{route('billing')}}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Kembali</a>
         </div>
@@ -31,14 +32,17 @@
                         <th class="text-center align-middle table-primary">
                             SATUAN<br>KEMASAN
                         </th>
-                        <th class="text-center align-middle table-primary">
-                            STOK<br>PACKAGING (DUS)
+                        <th class="text-center align-middle table-danger">
+                            STOK<br>PACKAGING
+                        </th>
+                        <th class="text-center align-middle table-danger">
+                            SATUAN<br>PACKAGING
                         </th>
                         <th class="text-center align-middle table-danger">
                             HARGA JUAL
                         </th>
                         <th class="text-center align-middle table-danger">
-                            ACT
+                            JUAL<br>(PACKAGING)
                         </th>
                     </tr>
                 </thead>
@@ -63,6 +67,12 @@
                             {{$d->sum_packaging ?? 0}}
                         </td>
                         <td class="text-center align-middle">
+                            @if ($d->kemasan->packaging)
+                                {{$d->kemasan->packaging->satuan->nama}}
+
+                            @endif
+                        </td>
+                        <td class="text-center align-middle">
                             {{$d->kemasan->nf_harga ?? 0}}
                         </td>
                         <td class="text-center align-middle">
@@ -79,7 +89,8 @@
                         </td>
                         <td class="text-center align-middle">10</td>
                         <td class="text-center align-middle">Pill</td>
-                        <td class="text-center align-middle">0</td>
+                        <td class="text-center align-middle">10</td>
+                        <td class="text-center align-middle">Pill</td>
                         <td class="text-center align-middle">3.000.000</td>
                         <td class="text-center align-middle">
                             <button class="btn btn-primary ">JUAL</button>
