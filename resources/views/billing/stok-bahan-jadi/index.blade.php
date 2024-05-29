@@ -14,30 +14,30 @@
     <div class="row">
         <div class="col-md-12">
             <table class="table table-bordered table-sm" id="barangJadi" style="font-size: 11px">
-                <thead class="table-primary">
+                <thead class="">
                     <tr>
-                        <th class="text-center align-middle">
+                        <th class="text-center align-middle table-primary">
                             NO
                         </th>
-                        <th class="text-center align-middle">
+                        <th class="text-center align-middle table-primary">
                             KATEGORI<br>PRODUCT
                         </th>
-                        <th class="text-center align-middle">
+                        <th class="text-center align-middle table-primary">
                             JENIS<br>PRODUCT
                         </th>
-                        <th class="text-center align-middle">
+                        <th class="text-center align-middle table-primary">
                             STOK<br>KEMASAN
                         </th>
-                        <th class="text-center align-middle">
+                        <th class="text-center align-middle table-primary">
                             SATUAN<br>KEMASAN
                         </th>
-                        <th class="text-center align-middle">
+                        <th class="text-center align-middle table-primary">
                             STOK<br>PACKAGING (DUS)
                         </th>
-                        <th class="text-center align-middle">
+                        <th class="text-center align-middle table-danger">
                             HARGA JUAL
                         </th>
-                        <th class="text-center align-middle">
+                        <th class="text-center align-middle table-danger">
                             ACT
                         </th>
                     </tr>
