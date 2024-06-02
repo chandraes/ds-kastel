@@ -6,7 +6,7 @@ use App\Models\db\Kemasan;
 use App\Models\db\Packaging;
 use App\Models\db\Satuan;
 use App\Models\db\Supplier;
-use App\Models\Konsumen;
+use App\Models\db\Konsumen;
 use App\Models\Pengelola;
 use App\Models\db\Product;
 use Illuminate\Http\Request;
@@ -86,19 +86,22 @@ class DatabaseController extends Controller
     {
         $data = $request->validate([
             'nama' => 'required',
-            'singkatan' => 'required',
             'cp' => 'required',
             'no_hp' => 'required',
             'npwp' => 'required',
             'alamat' => 'required',
-            'ppn' => 'nullable',
-            'pph' => 'nullable'
+            'pembayaran' => 'required',
+            'plafon' => 'required',
+            'tempo_hari' => 'required'
         ]);
 
-        $data['ppn'] = $request->filled('ppn') ? 1 : 0;
-        $data['pph'] = $request->filled('pph') ? 1 : 0;
+        $db = new Konsumen();
 
-        Konsumen::create($data);
+        $data['plafon'] = str_replace('.', '', $data['plafon']);
+
+        $data['kode'] = $db->generateKode();
+
+        $db->create($data);
 
         return redirect()->route('db.konsumen')->with('success', 'Data berhasil ditambahkan');
     }
@@ -107,18 +110,16 @@ class DatabaseController extends Controller
     {
         $data = $request->validate([
             'nama' => 'required',
-            'singkatan' => 'required',
             'cp' => 'required',
             'no_hp' => 'required',
             'npwp' => 'required',
             'alamat' => 'required',
-            'ppn' => 'nullable',
-            'pph' => 'nullable'
+            'pembayaran' => 'required',
+            'plafon' => 'required',
+            'tempo_hari' => 'required'
         ]);
 
-        $data['ppn'] = $request->filled('ppn') ? 1 : 0;
-        $data['pph'] = $request->filled('pph') ? 1 : 0;
-
+        $data['plafon'] = str_replace('.', '', $data['plafon']);
         $konsumen->update($data);
 
         return redirect()->route('db.konsumen')->with('success', 'Data berhasil diupdate');

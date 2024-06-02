@@ -11,47 +11,51 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-4 col-sm-6 mb-3">
-                            <label for="nama" class="form-label">Nama</label>
-                            <input type="text" class="form-control" name="nama" id="nama" aria-describedby="helpId"
+                            <label for="nama" class="form-label">Nama Perusahaan</label>
+                            <input type="text" class="form-control" name="nama" id="nama" aria-describedby="helpId" value="{{old('nama')}}"
                                 placeholder="" required>
                         </div>
                         <div class="col-md-4 col-sm-6 mb-3">
-                            <label for="singkatan" class="form-label">Singkatan</label>
-                            <input type="text" class="form-control" name="singkatan" id="singkatan"
-                                aria-describedby="helpId" placeholder="" required>
-                        </div>
-                        <div class="col-md-4 col-sm-6 mb-3">
                             <label for="cp" class="form-label">Contact Person</label>
-                            <input type="text" class="form-control" name="cp" id="cp" aria-describedby="helpId"
+                            <input type="text" class="form-control" name="cp" id="cp" aria-describedby="helpId" value="{{old('cp')}}"
                                 placeholder="" required>
                         </div>
                         <div class="col-md-4 col-sm-6 mb-3">
                             <label for="no_hp" class="form-label">No HP</label>
-                            <input type="text" class="form-control" name="no_hp" id="no_hp" aria-describedby="helpId"
+                            <input type="text" class="form-control" name="no_hp" id="no_hp" aria-describedby="helpId" value="{{old('no_hp')}}"
                                 placeholder="" required>
                         </div>
                         <div class="col-md-4 col-sm-6 mb-3">
                             <label for="npwp" class="form-label">NPWP</label>
-                            <input type="text" class="form-control" name="npwp" id="npwp" aria-describedby="helpId"
+                            <input type="text" class="form-control" name="npwp" id="npwp" aria-describedby="helpId" value="{{old('npwp')}}"
                                 placeholder="" required>
+                        </div>
+                        <div class="col-md-4 col-sm-6 mb-3">
+                            <label for="plafon" class="form-label">Limit Plafon</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Rp</span>
+                                <input type="text" class="form-control" name="plafon" id="plafon" required data-thousands="." value="{{old('plafon')}}">
+                              </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 mb-3">
+                            <label for="tempo_hari" class="form-label">Tempo</label>
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control" name="tempo_hari" id="tempo_hari" required value="{{old('tempo_hari')}}">
+                                <span class="input-group-text" id="basic-addon1">Hari</span>
+                              </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 mb-3">
+                            <label for="npwp" class="form-label">Sistem Pembayaran</label>
+                            <select name="pembayaran" id="pembayaran" required class="form-select">
+                                <option value="" disabled>-- Pilih Sistem Pembayaran --</option>
+                                <option value="1" selected>Cash</option>
+                                <option value="2" disabled>Tempo</option>
+                            </select>
                         </div>
                         <div class="col-md-12 col-sm-12 mb-3">
                             <label for="alamat" class="form-label">Alamat</label>
-                            <textarea name="alamat" id="alamat" cols="30" rows="5" class="form-control"></textarea>
+                            <textarea name="alamat" id="alamat" cols="30" rows="5" class="form-control">{{old('alamat')}}</textarea>
                         </div>
-                        <div class="row">
-                            <div class="btn-group" role="group" data-bs-toggle="buttons">
-                                <label class="btn btn-secondary active">
-                                    <input type="checkbox" class="me-2" name="ppn" id="ppn" autocomplete="off" />
-                                    PPn
-                                </label>
-                                <label class="btn btn-secondary">
-                                    <input type="checkbox" class="me-2" name="pph" id="pph" autocomplete="off" />
-                                    PPh
-                                </label>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
                 <div class="modal-footer">

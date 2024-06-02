@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
             <h1><u>PENGELOLA</u></h1>
@@ -23,18 +23,21 @@
         </div>
     </div>
 </div>
+@include('swal')
 @include('db.konsumen.create')
 @include('db.konsumen.edit')
-<div class="container mt-5 table-responsive">
+<div class="container-fluid mt-5 table-responsive">
     <table class="table table-bordered table-hover" id="data">
         <thead class="table-warning bg-gradient">
             <tr>
                 <th class="text-center align-middle" style="width: 5%">NO</th>
+                <th class="text-center align-middle">KODE</th>
                 <th class="text-center align-middle">NAMA</th>
                 <th class="text-center align-middle">CP</th>
-                <th class="text-center align-middle">NO HP</th>
-                <th class="text-center align-middle">PPn</th>
-                <th class="text-center align-middle">PPh</th>
+                <th class="text-center align-middle">NPWP</th>
+                <th class="text-center align-middle">Alamat</th>
+                <th class="text-center align-middle">Sistem<br>Pembayaran</th>
+                <th class="text-center align-middle">Limit<br>Plafon</th>
                 <th class="text-center align-middle">ACT</th>
             </tr>
         </thead>
@@ -42,19 +45,20 @@
             @foreach ($data as $d)
             <tr>
                 <td class="text-center align-middle">{{$loop->iteration}}</td>
+                <td class="text-center align-middle">{{$d->full_kode}}</td>
                 <td class="text-center align-middle">{{$d->nama}}</td>
-                <td class="text-center align-middle">{{$d->cp}}</td>
-                <td class="text-center align-middle">{{$d->no_hp}}</td>
-                <td class="text-center align-middle">
-                    @if ($d->ppn == 1)
-                    <i class="fa fa-check-square-o"></i>
-                    @endif
+                <td class="text-start align-middle">
+                    <ul>
+                        <li>CP : {{$d->cp}}</li>
+                        <li>No. HP : {{$d->no_hp}}</li>
+                    </ul>
                 </td>
+                <td class="text-center align-middle">{{$d->npwp}}</td>
                 <td class="text-center align-middle">
-                    @if ($d->pph == 1)
-                    <i class="fa fa-check-square-o"></i>
-                    @endif
+                    <p>{{$d->alamat}}</p>
                 </td>
+                <td class="text-center align-middle">{{$d->sistem_pembayaran}}</td>
+                <td class="text-end align-middle">{{$d->nf_plafon}}</td>
                 <td class="text-center align-middle">
                     <div class="d-flex justify-content-center">
                         <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
@@ -103,17 +107,13 @@
     function editInvestor(data, id) {
         document.getElementById('edit_nama').value = data.nama;
         document.getElementById('edit_no_hp').value = data.no_hp;
-        document.getElementById('edit_singkatan').value = data.singkatan;
         document.getElementById('edit_cp').value = data.cp;
         document.getElementById('edit_npwp').value = data.npwp;
+        document.getElementById('edit_pembayaran').value = data.pembayaran;
+        document.getElementById('edit_plafon').value = data.nf_plafon;
+        document.getElementById('edit_tempo_hari').value = data.tempo_hari;
         document.getElementById('edit_alamat').value = data.alamat;
-        if (data.ppn == 1) {
-            document.getElementById('edit_ppn').checked = true;
-        }
-        if (data.pph == 1) {
-            document.getElementById('edit_pph').checked = true;
-        }
-        // Populate other fields...
+
         document.getElementById('editForm').action = '/db/konsumen/' + id + '/update';
     }
 
@@ -126,6 +126,20 @@
     var no_hp = new Cleave('#no_hp', {
         delimiter: '-',
         blocks: [4, 4, 8]
+    });
+
+    var plafon = new Cleave('#plafon', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+
+    var edit_plafon = new Cleave('#edit_plafon', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
     });
 
     var edit_no_hp = new Cleave('#edit_no_hp', {
