@@ -50,61 +50,95 @@
                 </thead>
                 <tbody>
                     @foreach($groupedData as $group)
-                        @php $i = 0; @endphp
-                        @foreach($group as $d)
-                            <tr>
-                                @if($i++ == 0)
-                                    <td class="text-center align-middle" rowspan="{{ count($group) }}">{{$loop->iteration}}</td>
-                                    <td class="text-center align-middle" rowspan="{{ count($group) }}">
-                                        {{$d->product->kategori->nama}}</td>
-                                @endif
-                                <td class="text-center align-middle">
-                                    {{$d->product->nama}}
-                                </td>
-                                <td class="text-center align-middle">
-                                    {{$d->stock_kemasan ?? 0}}
-                                </td>
-                                <td class="text-center align-middle">
-                                    {{$d->kemasan->satuan->nama}}
-                                </td>
-                                <td class="text-center align-middle">
-                                    {{$d->stock_packaging ?? 0}}
-                                </td>
-                                <td class="text-center align-middle">
-                                    @if ($d->kemasan->packaging)
-                                        {{$d->kemasan->packaging->satuan->nama}}
-                                    @else
-                                        {{$d->kemasan->satuan->nama}}
-                                    @endif
-                                </td>
-                                <td class="text-center align-middle">
-                                    {{$d->kemasan->nf_harga ?? 0}}
-                                </td>
-                                <td class="text-center align-middle">
-                                    <button class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#keranjangModal" onclick="setModalJumlah({{$d}}, {{$d->id}})">JUMLAH</button>
-                                </td>
-                            </tr>
-                        @endforeach
+                    @php $i = 0; @endphp
+                    @foreach($group as $d)
+                    <tr>
+                        @if($i++ == 0)
+                        <td class="text-center align-middle" rowspan="{{ count($group) }}">{{$loop->iteration}}</td>
+                        <td class="text-center align-middle" rowspan="{{ count($group) }}">
+                            {{$d->product->kategori->nama}}</td>
+                        @endif
+                        <td class="text-center align-middle">
+                            {{$d->product->nama}}
+                        </td>
+                        <td class="text-center align-middle">
+                            {{$d->stock_kemasan ?? 0}}
+                        </td>
+                        <td class="text-center align-middle">
+                            {{$d->kemasan->satuan->nama}}
+                        </td>
+                        <td class="text-center align-middle">
+                            {{$d->stock_packaging ?? 0}}
+                        </td>
+                        <td class="text-center align-middle">
+                            @if ($d->kemasan->packaging)
+                            {{$d->kemasan->packaging->satuan->nama}}
+                            @else
+                            {{$d->kemasan->satuan->nama}}
+                            @endif
+                        </td>
+                        <td class="text-center align-middle">
+                            {{$d->kemasan->nf_harga ?? 0}}
+                        </td>
+                        <td class="text-center align-middle p-3" style="width: 15%">
+                            @if ($keranjang->where('product_jadi_id', $d->id)->first())
+                            <div class="input-group">
+                                <button class="btn btn-danger" onclick="updateCart({{$d->id}}, -1, {{$d->stock_packaging}})">-</button>
+                                <input type="text" class="form-control text-center" value="{{$keranjang->where('product_jadi_id', $d->id)->first()->jumlah}}" readonly>
+                                <button class="btn btn-success" onclick="updateCart({{$d->id}}, 1, {{$d->stock_packaging}})">+</button>
+                            </div>
+                            @else
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#keranjangModal"
+                                onclick="setModalJumlah({{$d}}, {{$d->id}})">JUMLAH</button>
+                            @endif
+                        </td>
+                    </tr>
+                    @endforeach
                     @endforeach
                 </tbody>
             </table>
         </div>
 
-            <a class="btn btn-success btn-block px-5 mt-3">Checkout</a>
-        </div
-
-    </div>
+        <a class="btn btn-success btn-block px-5 mt-3">Checkout</a>
+    </div </div>
 </div>
 @endsection
 @push('js')
 
-    <script src="{{asset('assets/js/cleave.min.js')}}"></script>
-    <script>
-        function setModalJumlah(data, id)
+<script src="{{asset('assets/js/cleave.min.js')}}"></script>
+<script>
+    function setModalJumlah(data, id)
         {
             document.getElementById('titleJumlah').innerText = data.product.kategori.nama + ' ' + data.product.nama;
             document.getElementById('product_jadi_id').value = data.id;
         }
-    </script>
+
+        function updateCart(productId, quantity, maxStock) {
+            let currentQuantity = parseInt($(`button[onclick="updateCart(${productId}, 1, ${maxStock})"]`).siblings('input').val());
+
+            if (currentQuantity + quantity > maxStock) {
+                alert('Jumlah item tidak boleh melebihi stok yang tersedia.');
+                return;
+            }
+
+            $.ajax({
+                url: '{{route('billing.stok-bahan-jadi.keranjang.update')}}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    product_id: productId,
+                    quantity: quantity
+                },
+                success: function(response) {
+                    $('#spinner').show();
+                    if (response.success) {
+                        location.reload(); // Reload the page to reflect the changes
+                    } else {
+                        alert('Gagal memperbarui keranjang.');
+                    }
+                }
+            });
+        }
+
+</script>
 @endpush

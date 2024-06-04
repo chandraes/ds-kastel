@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\db\Kemasan;
+use App\Models\db\Product;
 use App\Models\PasswordKonfirmasi;
 use App\Models\Produksi\ProductJadi;
 use App\Models\Produksi\ProduksiDetail;
@@ -16,7 +17,7 @@ class StokBahanJadiController extends Controller
     public function index()
     {
         $db = new ProductJadi();
-        $data = $db->with(['product.kategori', 'kemasan'])
+        $data = $db->with(['product.kategori', 'kemasan.satuan', 'kemasan.packaging.satuan'])
                     ->get();
 
         $groupedData = $data->groupBy(function($item, $key) {
@@ -43,7 +44,7 @@ class StokBahanJadiController extends Controller
 
         if($data['jumlah'] == 0 || $data['jumlah'] > $product->stock_packaging)
         {
-            return redirect()->back()->with('error', 'Jumlah tidak melebihi stok');
+            return redirect()->back()->with('error', 'Jumlah stok tidak mencukupi!');
         }
 
 
@@ -55,6 +56,38 @@ class StokBahanJadiController extends Controller
         KeranjangJual::create($data);
 
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang');
+    }
+
+    public function keranjang_update(Request $request)
+    {
+        $productId = $request->input('product_id');
+        $quantity = $request->input('quantity');
+
+        $product = ProductJadi::find($productId);
+        $cartItem = KeranjangJual::where('product_jadi_id', $productId)->first();
+
+        if ($cartItem) {
+            $newQuantity = $cartItem->jumlah + $quantity;
+            if ($newQuantity > $product->stock_packaging) {
+                return response()->json(['success' => false, 'message' => 'Jumlah item melebihi stok yang tersedia.']);
+            }
+            $cartItem->jumlah = $newQuantity;
+            if ($cartItem->jumlah <= 0) {
+                $cartItem->delete();
+            } else {
+                $cartItem->save();
+            }
+        } else {
+            if ($quantity > $product->stock_packaging) {
+                return response()->json(['success' => false, 'message' => 'Jumlah item melebihi stok yang tersedia.']);
+            }
+            KeranjangJual::create([
+                'product_jadi_id' => $productId,
+                'jumlah' => $quantity
+            ]);
+        }
+
+        return response()->json(['success' => true]);
     }
 
     public function rencana_stok(Request $request)
