@@ -121,7 +121,7 @@ class FormTransaksiController extends Controller
 
         $db = new Keranjang();
 
-        if ($db->where('user_id', auth()->id())->where('tempo', 1)->count() == 0) {
+        if ($db->where('user_id', auth()->id())->where('tempo', 0)->count() == 0) {
             return redirect()->back()->with('error', 'Keranjang kosong');
         }
 

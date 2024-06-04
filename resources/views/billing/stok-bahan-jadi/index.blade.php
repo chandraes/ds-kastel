@@ -12,9 +12,11 @@
             <a href="{{route('billing')}}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Kembali</a>
         </div>
     </div>
+
+    @include('billing.stok-bahan-jadi.keranjang')
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-bordered table-sm" id="barangJadi" style="font-size: 11px">
+            <table class="table table-bordered table-sm" id="barangJadi">
                 <thead class="">
                     <tr>
                         <th class="text-center align-middle table-primary">
@@ -47,56 +49,44 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($data as $group)
-                    @php $i = 0; @endphp
-                    @foreach($group as $d)
-                    <tr>
-                        @if($i++ == 0)
-                        <td class="text-center align-middle" rowspan="{{ count($group) }}">{{$loop->iteration}}</td>
-                        <td class="text-center align-middle" rowspan="{{ count($group) }}">
-                            {{$d->product->kategori->nama}}</td>
-                        <td class="text-center align-middle" rowspan="{{ count($group) }}">{{$d->product->nama}}</td>
-                        @endif
-                        <td class="text-center align-middle">
-                            {{$d->sum_kemasan ?? 0}}
-                        </td>
-                        <td class="text-center align-middle">
-                            {{$d->kemasan->satuan->nama}}
-                        </td>
-                        <td class="text-center align-middle">
-                            {{$d->sum_packaging ?? 0}}
-                        </td>
-                        <td class="text-center align-middle">
-                            @if ($d->kemasan->packaging)
-                                {{$d->kemasan->packaging->satuan->nama}}
-
-                            @endif
-                        </td>
-                        <td class="text-center align-middle">
-                            {{$d->kemasan->nf_harga ?? 0}}
-                        </td>
-                        <td class="text-center align-middle">
-                            <button class="btn btn-primary">JUMLAH</button>
-                        </td>
-                    </tr>
+                    @foreach($groupedData as $group)
+                        @php $i = 0; @endphp
+                        @foreach($group as $d)
+                            <tr>
+                                @if($i++ == 0)
+                                    <td class="text-center align-middle" rowspan="{{ count($group) }}">{{$loop->iteration}}</td>
+                                    <td class="text-center align-middle" rowspan="{{ count($group) }}">
+                                        {{$d->product->kategori->nama}}</td>
+                                @endif
+                                <td class="text-center align-middle">
+                                    {{$d->product->nama}}
+                                </td>
+                                <td class="text-center align-middle">
+                                    {{$d->stock_kemasan ?? 0}}
+                                </td>
+                                <td class="text-center align-middle">
+                                    {{$d->kemasan->satuan->nama}}
+                                </td>
+                                <td class="text-center align-middle">
+                                    {{$d->stock_packaging ?? 0}}
+                                </td>
+                                <td class="text-center align-middle">
+                                    @if ($d->kemasan->packaging)
+                                        {{$d->kemasan->packaging->satuan->nama}}
+                                    @else
+                                        {{$d->kemasan->satuan->nama}}
+                                    @endif
+                                </td>
+                                <td class="text-center align-middle">
+                                    {{$d->kemasan->nf_harga ?? 0}}
+                                </td>
+                                <td class="text-center align-middle">
+                                    <button class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#keranjangModal" onclick="setModalJumlah({{$d}}, {{$d->id}})">JUMLAH</button>
+                                </td>
+                            </tr>
+                        @endforeach
                     @endforeach
-                    @endforeach
-                    <tr>
-                        <td class="text-center align-middle">2</td>
-                        <td class="text-center align-middle">MAGMA</td>
-                        <td class="text-center align-middle">
-                            MAGMA 1
-                        </td>
-                        <td class="text-center align-middle">10</td>
-                        <td class="text-center align-middle">Pill</td>
-                        <td class="text-center align-middle">10</td>
-                        <td class="text-center align-middle">Pill</td>
-                        <td class="text-center align-middle">3.000.000</td>
-                        <td class="text-center align-middle">
-                            <button class="btn btn-primary ">JUMLAH</button>
-                        </td>
-                    </tr>
-
                 </tbody>
             </table>
         </div>
@@ -111,6 +101,10 @@
 
     <script src="{{asset('assets/js/cleave.min.js')}}"></script>
     <script>
-
+        function setModalJumlah(data, id)
+        {
+            document.getElementById('titleJumlah').innerText = data.product.kategori.nama + ' ' + data.product.nama;
+            document.getElementById('product_jadi_id').value = data.id;
+        }
     </script>
 @endpush

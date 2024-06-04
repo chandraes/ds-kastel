@@ -14,7 +14,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-bordered table-sm" id="barangJadi" style="font-size: 12px">
+            <table class="table table-bordered table-sm" id="barangJadi">
                 <thead class="table-primary">
                     <tr>
                         <th class="text-center align-middle">
@@ -87,7 +87,6 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="modalTitleId">
-
                                             </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
@@ -95,7 +94,6 @@
                                         <form action="{{route('billing.stok-bahan-jadi.produksi-ke', $d)}}"
                                             method="post" id="productForm{{$d->id}}">
                                             @csrf
-
                                             <div class="modal-body">
                                                 <div class="mb-3">
                                                     <label for="jumlah_produksi" class="form-label">Masukan Jumlah
@@ -116,13 +114,12 @@
                                 </div>
                             </div>
                             @endif
-
                         </td>
                         <td class="text-center align-middle">
                             {{$d->sum_kemasan ?? 0}}
                         </td>
                         <td class="text-center align-middle">
-                            {{$d->sum_packaging ?? 0}}
+                            {{$d->real_packaging}}
                         </td>
                         <td class="text-center align-middle">
                             <a href="{{route('billing.stok-bahan-jadi.edit-produksi-ke', $d)}}"
@@ -162,12 +159,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Optional: Place to the bottom of scripts -->
-                            <script>
-
-                            </script>
-
                         </td>
                     </tr>
                     @endforeach

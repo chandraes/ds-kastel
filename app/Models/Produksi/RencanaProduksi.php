@@ -23,6 +23,11 @@ class RencanaProduksi extends Model
         return $this->hasMany(ProduksiDetail::class, 'rencana_produksi_id', 'id');
     }
 
+    public function packaging()
+    {
+        return $this->belongsTo(Packaging::class);
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class);
