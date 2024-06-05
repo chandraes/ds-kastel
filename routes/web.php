@@ -229,6 +229,8 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::prefix('keranjang')->group(function(){
                     Route::post('/store', [App\Http\Controllers\StokBahanJadiController::class, 'keranjang_store'])->name('billing.stok-bahan-jadi.keranjang.store');
                     Route::post('/update', [App\Http\Controllers\StokBahanJadiController::class, 'keranjang_update'])->name('billing.stok-bahan-jadi.keranjang.update');
+                    Route::post('/set-jumlah', [App\Http\Controllers\StokBahanJadiController::class, 'keranjang_set'])->name('billing.stok-bahan-jadi.keranjang.set-jumlah');
+                    Route::post('/empty', [App\Http\Controllers\StokBahanJadiController::class, 'keranjang_empty'])->name('billing.stok-bahan-jadi.keranjang.empty');
                 });
 
 
