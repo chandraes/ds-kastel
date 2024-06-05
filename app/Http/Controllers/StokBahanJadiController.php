@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\db\Kemasan;
+use App\Models\db\Konsumen;
 use App\Models\db\Product;
 use App\Models\PasswordKonfirmasi;
 use App\Models\Produksi\ProductJadi;
 use App\Models\Produksi\ProduksiDetail;
 use App\Models\Produksi\RencanaProduksi;
+use App\Models\transaksi\InvoiceJual;
 use App\Models\transaksi\Keranjang;
 use App\Models\transaksi\KeranjangJual;
 use Illuminate\Http\Request;
@@ -32,6 +34,29 @@ class StokBahanJadiController extends Controller
         return view('billing.stok-bahan-jadi.index', [
             'groupedData' => $groupedData,
             'keranjang' => $keranjang
+        ]);
+    }
+
+    public function checkout()
+    {
+        $data = KeranjangJual::where('user_id', auth()->user()->id)
+                            ->with(['product_jadi.product.kategori', 'product_jadi.kemasan.satuan', 'product_jadi.kemasan.packaging.satuan'])
+                            ->get();
+
+        $groupedData = $data->groupBy(function($item, $key) {
+            return $item->product_jadi->product->kategori->id;
+        });
+
+        $db = new InvoiceJual();
+        $nomor = $db->generateNoInvoice();
+        $invoice = $db->generateInvoice($nomor);
+        // dd($invoice);
+        $konsumen = Konsumen::where('active', 1)->get();
+
+        return view('billing.stok-bahan-jadi.checkout', [
+            'groupedData' => $groupedData,
+            'konsumen' => $konsumen,
+            'invoice' => $invoice
         ]);
     }
 

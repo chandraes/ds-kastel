@@ -108,7 +108,7 @@
         </div>
         <div class="container px-5">
             <div class="row">
-                <form action="" method="get">
+                <form action="{{route('billing.stok-bahan-jadi.checkout')}}" method="get">
                     <div class="row">
                         <button type="submit" class="btn btn-success" {{$keranjang->count() == 0 ? 'disabled' : ''}}><i class="fa fa-shopping-cart"></i> Checkout @if ($keranjang->count() > 0)
                             ({{$keranjang->sum('jumlah')}})

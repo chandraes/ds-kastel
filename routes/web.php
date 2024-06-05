@@ -233,6 +233,10 @@ Route::group(['middleware' => ['auth']], function() {
                     Route::post('/empty', [App\Http\Controllers\StokBahanJadiController::class, 'keranjang_empty'])->name('billing.stok-bahan-jadi.keranjang.empty');
                 });
 
+                Route::prefix('checkout')->group(function(){
+                    Route::get('/', [App\Http\Controllers\StokBahanJadiController::class, 'checkout'])->name('billing.stok-bahan-jadi.checkout');
+                });
+
 
                 Route::prefix('/rencana')->group(function(){
                     Route::get('/', [App\Http\Controllers\StokBahanJadiController::class, 'rencana_stok'])->name('billing.stok-bahan-jadi.rencana');
