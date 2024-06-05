@@ -60,6 +60,17 @@ class StokBahanJadiController extends Controller
         ]);
     }
 
+    public function get_konsumen(Request $request)
+    {
+        $data = $request->validate([
+            'id' => 'required|exists:konsumens,id'
+        ]);
+
+        $konsumen = Konsumen::find($data['id']);
+
+        return response()->json($konsumen);
+    }
+
     public function keranjang_store(Request $request)
     {
         $data = $request->validate([

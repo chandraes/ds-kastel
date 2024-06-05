@@ -3,97 +3,162 @@
 <div class="container">
     <div class="row justify-content-center mb-5">
         <div class="col-md-12 text-center">
-            <h1><u>Checkout Jual</u></h1>
+            <h1><u>Invoice Penjualan</u></h1>
         </div>
     </div>
     <div class="row mb-3 d-flex">
         <div class="col-md-6">
-            <a href="{{route('billing.stok-bahan-jadi')}}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Kembali</a>
+            <a href="{{route('billing.stok-bahan-jadi')}}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i>
+                Kembali</a>
         </div>
     </div>
     <div class="row">
-        <div class="card">
-            {{-- <img class="card-img-top" src="{{asset('images/cgm.png')}}" style="width: 200px" alt="Title" /> --}}
-            <div class="card-body">
-                <h4 class="card-title">INVOICE : {{$invoice}}</h4>
-                <table class="table table-bordered">
-                    <thead class="table-success">
-                        <tr>
-                            <th class="text-center align-middle">No</th>
-                            <th class="text-center align-middle">Kategori</th>
-                            <th class="text-center align-middle">Jenis Barang</th>
-                            <th class="text-center align-middle">Banyak</th>
-                            <th class="text-center align-middle">Satuan</th>
-                            <th class="text-center align-middle">Harga Satuan</th>
-                            <th class="text-center align-middle">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($groupedData as $group)
-                        @php $i = 0;
-                            $total = 0;
-                        @endphp
-                        @foreach($group as $d)
-                        <tr>
-                            @if($i++ == 0)
-                            <td class="text-center align-middle" rowspan="{{ count($group) }}">{{$loop->iteration}}</td>
-                            <td class="text-center align-middle" rowspan="{{ count($group) }}">
-                                {{$d->product_jadi->product->kategori->nama}}</td>
-                            @endif
-                            <td class="text-center align-middle">
-                                {{$d->product_jadi->product->nama}}
-                            </td>
-                            <td class="text-center align-middle">
-                                {{$d->jumlah}}
-                            </td>
-                            <td class="text-center align-middle">
-                                @if ($d->product_jadi->kemasan->packaging)
-                                {{$d->product_jadi->kemasan->packaging->nama}}
-                                @else
-                                {{$d->product_jadi->kemasan->nama}}
-                                @endif
-                            </td>
-                            <td class="text-end align-middle">
-                                {{$d->nf_harga}}
-                            </td>
-                            <td class="text-end align-middle">
-                                {{$d->nf_total}}
+        <form action="" method="post">
+            @csrf
+            <div class="card">
+                {{-- <img class="card-img-top" src="{{asset('images/cgm.png')}}" style="width: 200px" alt="Title" />
+                --}}
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <strong>#INVOICE : {{$invoice}}</strong>
+                    </h4>
+                    <div class="row mt-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-3">Konsumen :</label>
+                                <div class="col-md-8">
+                                    <select class="form-select" name="konsumen_id" id="konsumen_id" required
+                                        onchange="getKonsumenData()">
+                                        <option value="" disabled selected>-- Pilih Konsumen --</option>
+                                        @foreach ($konsumen as $k)
+                                        <option value="{{$k->id}}">{{$k->nama}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-2">
+                                <label class="col-form-label col-md-3">Sistem Pembayaran :</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="pembayaran" id="pembayaran" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-2">
+                                <label class="col-form-label col-md-3">Alamat :</label>
+                                <div class="col-md-8">
+                                    <textarea name="alamat" id="alamat" class="form-control" disabled></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-success">
+                                <tr>
+                                    <th class="text-center align-middle">No</th>
+                                    <th class="text-center align-middle">Kategori</th>
+                                    <th class="text-center align-middle">Jenis Barang</th>
+                                    <th class="text-center align-middle">Qty</th>
+                                    <th class="text-center align-middle">Satuan</th>
+                                    <th class="text-center align-middle">Harga Satuan</th>
+                                    <th class="text-center align-middle">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($groupedData as $group)
                                 @php
-                                    $total += $d->total;
+                                $i = 0;
+                                $total = 0;
+                                $qty = 0;
                                 @endphp
-                            </td>
-                        </tr>
-                        @endforeach
-                        @endforeach
-                    </tbody>http://localhost:8000/images/cgm.png
-                    @php
-                        $ppn = $total*0.11;
-                    @endphp
-                    <tfoot>
-                        <tr>
-                            <th colspan="6" class="text-end align-middle">Nilai DPP :</th>
-                            <th class="text-end align-middle">{{number_format($total, 0, ',','.')}}</th>
-                        </tr>
-                        <tr>
-                            <th colspan="6" class="text-end align-middle">Ppn :</th>
-                            <th class="text-end align-middle">{{number_format(($ppn), 0, ',','.')}}</th>
-                        </tr>
-                        <tr>
-                            <th colspan="6" class="text-end align-middle">Grand Total :</th>
-                            <th class="text-end align-middle">{{number_format(($total+$ppn), 0, ',','.')}}</th>
-                        </tr>
-                    </tfoot>
-                </table>
+                                @foreach($group as $d)
+                                <tr>
+                                    @if($i++ == 0)
+                                    <td class="text-center align-middle" rowspan="{{ count($group) }}">
+                                        {{$loop->iteration}}
+                                    </td>
+                                    <td class="text-center align-middle" rowspan="{{ count($group) }}">
+                                        {{$d->product_jadi->product->kategori->nama}}</td>
+                                    @endif
+                                    <td class="text-center align-middle">
+                                        {{$d->product_jadi->product->nama}}
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        {{$d->jumlah}}
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        @if ($d->product_jadi->kemasan->packaging)
+                                        {{$d->product_jadi->kemasan->packaging->nama}}
+                                        @else
+                                        {{$d->product_jadi->kemasan->nama}}
+                                        @endif
+                                    </td>
+                                    <td class="text-end align-middle">
+                                        {{$d->nf_harga}}
+                                    </td>
+                                    <td class="text-end align-middle">
+                                        {{$d->nf_total}}
+                                        @php
+                                        $total += $d->total;
+                                        $qty += $d->jumlah;
+                                        @endphp
+                                    </td>
+                                </tr>
+                                @endforeach
+                                @endforeach
+                            </tbody>
+                            @php
+                            $ppn = $total*0.11;
+                            @endphp
+                            <tfoot>
+                                <tr>
+                                    <th colspan="3" class="text-end align-middle">TOTAL</th>
+                                    <th class="text-center align-middle">{{number_format($qty, 0, ',','.')}}</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th class="text-end align-middle">{{number_format($total, 0, ',','.')}}</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="6" class="text-end align-middle">Ppn :</th>
+                                    <th class="text-end align-middle">{{number_format(($ppn), 0, ',','.')}}</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="6" class="text-end align-middle">Grand Total :</th>
+                                    <th class="text-end align-middle">{{number_format(($total+$ppn), 0, ',','.')}}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-12 text-end">
+                            <button type="submit" class="btn btn-success"><i class="fa fa-credit-card"></i>
+                                Lanjutkan Pembayaran</button>
+                                {{-- <button type="button" class="btn btn-info text-white" onclick="javascript:window.print();"><i class="fa fa-print"></i> Print Invoice</button> --}}
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-
-
+        </form>
     </div>
 </div>
 @endsection
 @push('js')
 <script src="{{asset('assets/js/cleave.min.js')}}"></script>
 <script>
+    function getKonsumenData()
+    {
+        var id = document.getElementById('konsumen_id').value;
 
+        $.ajax({
+            url: '{{route('billing.stok-bahan-jadi.checkout.konsumen')}}',
+            type: 'GET',
+            data: {
+                id: id
+            },
+            success: function(data) {
+                document.getElementById('pembayaran').value = data.sistem_pembayaran;
+                document.getElementById('alamat').value = data.alamat;
+            }
+        });
+    }
 </script>
 @endpush
