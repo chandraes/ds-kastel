@@ -7,6 +7,7 @@ use App\Models\InvestorModal;
 use App\Models\KasBesar;
 use App\Models\Produksi\RencanaProduksi;
 use App\Models\transaksi\InvoiceBelanja;
+use App\Models\transaksi\InvoiceJual;
 use Illuminate\Http\Request;
 
 class BillingController extends Controller
@@ -15,9 +16,12 @@ class BillingController extends Controller
     {
         $np = InvoiceBelanja::where('ppn_masukan', 0)->where('tempo', 0)->count();
         $rp = RencanaProduksi::where('approved', 0)->count();
+        $ij = InvoiceJual::where('lunas', 0)->count();
+
         return view('billing.index', [
             'np' => $np,
             'rp' => $rp,
+            'ij' => $ij,
         ]);
     }
 
@@ -41,7 +45,26 @@ class BillingController extends Controller
 
     public function invoice_jual()
     {
-        
+        $data = InvoiceJual::with(['konsumen', 'detail'])->where('lunas', 0)->get();
+
+        return view('billing.invoice-jual.index', [
+            'data' => $data,
+        ]);
+    }
+
+    public function invoice_jual_detail(InvoiceJual $invoice)
+    {
+        $data = $invoice->detail;
+
+        $groupedData = $data->groupBy(function($item, $key) {
+            return $item->product_jadi->product->kategori->id;
+        });
+
+        return view('billing.invoice-jual.detail', [
+            'groupedData' => $groupedData,
+            'invoice' => $invoice->load('konsumen'),
+
+        ]);
     }
 
     // public function claim_ppn(KasProject $kasProject)

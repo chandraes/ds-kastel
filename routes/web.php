@@ -262,6 +262,7 @@ Route::group(['middleware' => ['auth']], function() {
             // TAGIHAN KE KONSUMEN
             Route::prefix('invoice-jual')->group(function(){
                 Route::get('/', [App\Http\Controllers\BillingController::class, 'invoice_jual'])->name('billing.invoice-jual');
+                Route::get('/{invoice}/detail', [App\Http\Controllers\BillingController::class, 'invoice_jual_detail'])->name('billing.invoice-jual.detail');
             });
 
             Route::prefix('transaksi')->group(function(){

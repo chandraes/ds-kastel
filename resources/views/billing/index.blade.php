@@ -83,9 +83,11 @@
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="#" class="text-decoration-none">
-                <img src="{{asset('images/product-jadi.svg')}}" alt="" width="80">
-                <h4 class="mt-2">TAGIHAN KE KONSUMEN</h4>
+            <a href="{{route('billing.invoice-jual')}}" class="text-decoration-none">
+                <img src="{{asset('images/invoice-jual.svg')}}" alt="" width="80">
+                <h4 class="mt-2">TAGIHAN KE KONSUMEN
+                    @if($ij != 0) <span class="text-danger">({{$ij}})</span> @endif
+                </h4>
             </a>
         </div>
         {{-- <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">

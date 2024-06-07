@@ -5,13 +5,14 @@ namespace App\Models\transaksi;
 use App\Models\db\Konsumen;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class InvoiceJual extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
 
-    protected $appends = ['full_invoice', 'bulan_angka', 'tanggal', 'tahun'];
+    protected $appends = ['full_invoice', 'bulan_angka', 'tanggal', 'tahun', 'jatuh_tempo', 'nf_total', 'nf_ppn', 'nf_grand_total', 'grand_total'];
 
     public function detail()
     {
@@ -25,7 +26,6 @@ class InvoiceJual extends Model
         $no_invoice = $max + 1;
 
         return $no_invoice;
-
     }
 
     public function generateInvoice($nomor)
@@ -56,5 +56,31 @@ class InvoiceJual extends Model
     public function getTanggalAttribute()
     {
         return date('d-m-Y', strtotime($this->created_at));
+    }
+
+    public function getJatuhTempoAttribute()
+    {
+        // use carbon to add days from relation konsumen->tempo_hari
+        return Carbon::create($this->created_at)->addDays($this->konsumen->tempo_hari)->format('d-m-Y');
+    }
+
+    public function getNfTotalAttribute()
+    {
+        return number_format($this->total, 0, ',', '.');
+    }
+
+    public function getNfPpnAttribute()
+    {
+        return number_format($this->ppn, 0, ',', '.');
+    }
+
+    public function getGrandTotalAttribute()
+    {
+        return $this->total+$this->ppn;
+    }
+
+    public function getNfGrandTotalAttribute()
+    {
+        return number_format($this->grand_total, 0, ',', '.');
     }
 }
