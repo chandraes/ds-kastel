@@ -133,7 +133,7 @@ class KeranjangJual extends Model
                 'invoice_jual_id' => $store->id,
                 'uraian' => 'Hutang ' . $store->invoice,
                 'hutang' =>  $store->total + $store->ppn,
-                'sisa' => $kasKonsumen->sisaTerakhir($konsumen->id),
+                'sisa' => $kasKonsumen->sisaTerakhir($konsumen->id) + ($store->total + $store->ppn),
             ]);
         }
 

@@ -3,9 +3,16 @@
 namespace App\Models\transaksi;
 
 use App\Models\db\Konsumen;
+use App\Models\GroupWa;
+use App\Models\KasBesar;
+use App\Models\KasKonsumen;
+use App\Models\PesanWa;
+use App\Models\Rekening;
+use App\Services\StarSender;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceJual extends Model
 {
@@ -108,5 +115,103 @@ class InvoiceJual extends Model
         }
 
         return $data;
+    }
+
+    public function pelunasan($id)
+    {
+        $data = $this->find($id);
+
+        try {
+            DB::beginTransaction();
+
+            $kas = new KasBesar();
+            $rekening = Rekening::where('untuk', 'kas-besar')->first();
+
+            $kb['uraian'] = 'Pelunasan ' . $data->invoice;
+            $kb['jenis'] = 1;
+            $kb['nominal'] = $data->total + $data->ppn;
+            $kb['saldo'] = $kas->saldoTerakhir() + $kb['nominal'];
+            $kb['no_rek'] = $rekening->no_rek;
+            $kb['invoice_jual_id'] = $data->id;
+            $kb['nama_rek'] = $rekening->nama_rek;
+            $kb['bank'] = $rekening->bank;
+            $kb['modal_investor_terakhir'] = $kas->modalInvestorTerakhir();
+
+            $storeKas = $kas->create($kb);
+
+            $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
+                        "*FORM PELUNASAN TAGIHAN*\n".
+                        "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
+                        "Invoice : *".$data->invoice."*\n\n".
+                        "Konsumen : *".$data->konsumen->nama."*\n".
+                        "Nilai :  *Rp. ".number_format($storeKas->nominal, 0, ',', '.')."*\n\n".
+                        "Ditransfer ke rek:\n\n".
+                        "Bank      : ".$storeKas->bank."\n".
+                        "Nama    : ".$storeKas->nama_rek."\n".
+                        "No. Rek : ".$storeKas->no_rek."\n\n".
+                        "==========================\n".
+                        "Sisa Saldo Kas Besar : \n".
+                        "Rp. ".number_format($storeKas->saldo, 0, ',', '.')."\n\n".
+                        "Total Modal Investor : \n".
+                        "Rp. ".number_format($storeKas->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                        "Terima kasih 🙏🙏🙏\n";
+
+
+
+
+            $data->update([
+                'lunas' => 1
+            ]);
+
+
+            $kasKonsumen = new KasKonsumen();
+
+            $sisa = $kasKonsumen->sisaTerakhir($data->konsumen->id) - ($data->total + $data->ppn);
+
+            $storeKasKonsumen = $kasKonsumen->create([
+                'konsumen_id' => $data->konsumen->id,
+                'invoice_jual_id' => $data->id,
+                'uraian' => 'Pelunasan ' . $data->invoice,
+                'bayar' =>  $data->total + $data->ppn,
+                'sisa' => $sisa > 0 ? $sisa : 0,
+            ]);
+
+            $this->sendWa($pesan);
+
+            DB::commit();
+
+            $res = [
+                'status' => 'success',
+                'message' => 'Invoice berhasil dilunasi'
+            ];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+
+            $res = [
+                'status' => 'error',
+                'message' => 'Gagal melakukan transaksi.'.$th->getMessage()
+            ];
+
+            return $res;
+        }
+
+        return $res;
+    }
+
+    private function sendWa($pesan)
+    {
+        $tujuan = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
+        $send = new StarSender($tujuan, $pesan);
+        $res = $send->sendGroup();
+
+        $status = ($res == 'true') ? 1 : 0;
+
+        PesanWa::create([
+            'pesan' => $pesan,
+            'tujuan' => $tujuan,
+            'status' => $status,
+        ]);
     }
 }

@@ -60,9 +60,31 @@
                         </td>
 
                         <td class="text-center align-middle">
-                            <button class="btn btn-primary"><i class="fa fa-credit-card"></i> Pelunasan</button>
+                            <form action="{{route('billing.invoice-jual.pelunasan', $d)}}" method="post" id="pelunasanForm{{$d->id}}">
+                                @csrf
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-credit-card"></i> Pelunasan</button>
+                            </form>
+
                         </td>
                     </tr>
+                    <script>
+                        $('#pelunasanForm{{$d->id}}').submit(function(e){
+                               e.preventDefault();
+                               Swal.fire({
+                                   title: 'Apakah data yakin untuk melakukan Pelunasan?',
+                                   icon: 'warning',
+                                   showCancelButton: true,
+                                   confirmButtonColor: '#3085d6',
+                                   cancelButtonColor: '#6c757d',
+                                   confirmButtonText: 'Ya, Lanjutkan!'
+                                   }).then((result) => {
+                                   if (result.isConfirmed) {
+                                    $('#spinner').show();
+                                       this.submit();
+                                   }
+                               })
+                           });
+                    </script>
                 @endforeach
             </tbody>
             <tfoot>

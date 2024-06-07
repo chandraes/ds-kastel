@@ -52,6 +52,15 @@ class BillingController extends Controller
         ]);
     }
 
+    public function invoice_jual_pelunasan(InvoiceJual $invoice)
+    {
+        $db = new InvoiceJual();
+
+        $res = $db->pelunasan($invoice->id);
+
+        return redirect()->back()->with($res['status'], $res['message']);
+    }
+
     public function invoice_jual_detail(InvoiceJual $invoice)
     {
         $data = $invoice->detail;

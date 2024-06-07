@@ -267,6 +267,7 @@ Route::group(['middleware' => ['auth']], function() {
             Route::prefix('invoice-jual')->group(function(){
                 Route::get('/', [App\Http\Controllers\BillingController::class, 'invoice_jual'])->name('billing.invoice-jual');
                 Route::get('/{invoice}/detail', [App\Http\Controllers\BillingController::class, 'invoice_jual_detail'])->name('billing.invoice-jual.detail');
+                Route::post('/pelunasan/{invoice}', [App\Http\Controllers\BillingController::class, 'invoice_jual_pelunasan'])->name('billing.invoice-jual.pelunasan');
             });
 
             Route::prefix('transaksi')->group(function(){
