@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\db\Konsumen;
 use App\Models\GroupWa;
 use App\Models\InvestorModal;
 use App\Models\InvoiceTagihan;
 use App\Models\KasBesar;
 use App\Models\KasKecil;
+use App\Models\KasKonsumen;
 use App\Models\KasProject;
 use App\Models\PesanWa;
 use App\Models\Project;
@@ -21,10 +23,9 @@ class RekapController extends Controller
 {
     public function index()
     {
-
-
+        $konsumen = Konsumen::where('active', 1)->get();
         return view('rekap.index', [
-
+            'konsumen' => $konsumen,
         ]);
     }
 
@@ -312,5 +313,44 @@ class RekapController extends Controller
         return view('rekap.kas-besar.detail-belanja', [
             'data' => $invoice->load(['rekap', 'rekap.bahan_baku', 'rekap.satuan', 'rekap.bahan_baku.kategori']),
         ]);
+    }
+
+    public function konsumen(Request $request)
+    {
+        $data = $request->validate([
+            'konsumen_id' => 'required|exists:konsumens,id',
+        ]);
+
+        $kas = new KasKonsumen();
+
+        $bulan = $request->bulan ?? date('m');
+        $tahun = $request->tahun ?? date('Y');
+
+        $dataTahun = $kas->dataTahun();
+
+        $konsumen = Konsumen::find($data['konsumen_id']);
+
+        $data = $kas->kas($data['konsumen_id'],$bulan, $tahun);
+
+        $bulanSebelumnya = $bulan - 1;
+        $bulanSebelumnya = $bulanSebelumnya == 0 ? 12 : $bulanSebelumnya;
+        $tahunSebelumnya = $bulanSebelumnya == 12 ? $tahun - 1 : $tahun;
+        $stringBulan = Carbon::createFromDate($tahun, $bulanSebelumnya)->locale('id')->monthName;
+        $stringBulanNow = Carbon::createFromDate($tahun, $bulan)->locale('id')->monthName;
+
+        $dataSebelumnya = $kas->kasByMonth($konsumen->id,$bulanSebelumnya, $tahunSebelumnya);
+
+        return view('rekap.kas-konsumen.index', [
+            'data' => $data,
+            'konsumen' => $konsumen,
+            'dataTahun' => $dataTahun,
+            'dataSebelumnya' => $dataSebelumnya,
+            'stringBulan' => $stringBulan,
+            'tahun' => $tahun,
+            'tahunSebelumnya' => $tahunSebelumnya,
+            'bulan' => $bulan,
+            'stringBulanNow' => $stringBulanNow,
+        ]);
+
     }
 }

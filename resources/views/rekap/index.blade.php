@@ -4,6 +4,7 @@
 <div class="container text-center">
     <h1>REKAP</h1>
 </div>
+@include('rekap.modal-konsumen')
 <div class="container mt-5">
     <div class="row justify-content-left">
         <div class="col-lg-3 mt-3 mb-3 text-center">
@@ -25,19 +26,26 @@
             </a>
         </div>
         <div class="col-lg-3 mt-3 mb-3 text-center">
+            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#kasKonsumenModal">
+                <img src="{{asset('images/kas-konsumen.svg')}}" alt="" width="80">
+                <h3 class="mt-2">KAS KONSUMEN</h3>
+            </a>
+        </div>
+        <div class="col-lg-3 mt-3 mb-3 text-center">
             <a href="{{route('rekap.invoice-belanja')}}" class="text-decoration-none">
                 <img src="{{asset('images/rekap-invoice.svg')}}" alt="" width="80">
                 <h3 class="mt-2">INVOICE BELANJA</h3>
             </a>
         </div>
-    </div>
-    <div class="row justify-content-left">
         <div class="col-lg-3 mt-3 mb-3 text-center">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="80">
                 <h3 class="mt-2">DASHBOARD</h3>
             </a>
         </div>
+    </div>
+    <div class="row justify-content-left">
+
     </div>
 </div>
 @endsection

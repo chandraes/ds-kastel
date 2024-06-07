@@ -186,6 +186,11 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::get('/detail-deviden/{investor}', [App\Http\Controllers\RekapController::class, 'rekap_investor_detail_deviden'])->name('rekap.kas-investor.detail-deviden');
             });
 
+
+            Route::prefix('kas-konsumen')->group(function(){
+                Route::get('/', [App\Http\Controllers\RekapController::class, 'konsumen'])->name('rekap.kas-konsumen');
+            });
+
         });
     });
 
@@ -254,8 +259,9 @@ Route::group(['middleware' => ['auth']], function() {
 
             });
 
-            Route::prefix('jual-product')->group(function(){
-
+            // TAGIHAN KE KONSUMEN
+            Route::prefix('invoice-jual')->group(function(){
+                Route::get('/', [App\Http\Controllers\BillingController::class, 'invoice_jual'])->name('billing.invoice-jual');
             });
 
             Route::prefix('transaksi')->group(function(){

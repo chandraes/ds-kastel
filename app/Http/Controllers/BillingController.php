@@ -39,17 +39,10 @@ class BillingController extends Controller
         return redirect()->back()->with($store['status'], $store['message']);
     }
 
-    // public function invoice_tagihan()
-    // {
-    //     $data = InvoiceTagihan::with(['customer', 'project','kasProjects', 'invoiceTagihanDetails'])
-    //                 ->where('cutoff', 1)
-    //                 ->where('finished', 0)
-    //                 ->get();
-
-    //     return view('billing.invoice-tagihan.index', [
-    //         'data' => $data,
-    //     ]);
-    // }
+    public function invoice_jual()
+    {
+        
+    }
 
     // public function claim_ppn(KasProject $kasProject)
     // {
