@@ -28,6 +28,11 @@ class InvoiceJual extends Model
         return $no_invoice;
     }
 
+    public function dataTahun()
+    {
+        return $this->selectRaw('YEAR(created_at) as tahunArray')->groupBy('tahunArray')->get();
+    }
+
     public function generateInvoice($nomor)
     {
         return str_pad($nomor, 3, '0', STR_PAD_LEFT) . '/PT Kastel/' . date('m'). '/' . date('Y');
@@ -82,5 +87,26 @@ class InvoiceJual extends Model
     public function getNfGrandTotalAttribute()
     {
         return number_format($this->grand_total, 0, ',', '.');
+    }
+
+    public function rekapInvoice($month, $year)
+    {
+        return $this->with(['konsumen'])->where('lunas', 1)->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
+    }
+
+    public function rekapInvoiceByMonth($month, $year)
+    {
+        $data = $this->where('lunas', 1)->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if (!$data) {
+        $data = $this->where('lunas', 1)->where('created_at', '<', Carbon::create($year, $month, 1))
+                ->orderBy('id', 'desc')
+                ->first();
+        }
+
+        return $data;
     }
 }

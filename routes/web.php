@@ -186,9 +186,13 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::get('/detail-deviden/{investor}', [App\Http\Controllers\RekapController::class, 'rekap_investor_detail_deviden'])->name('rekap.kas-investor.detail-deviden');
             });
 
-
             Route::prefix('kas-konsumen')->group(function(){
                 Route::get('/', [App\Http\Controllers\RekapController::class, 'konsumen'])->name('rekap.kas-konsumen');
+            });
+
+            Route::prefix('invoice-penjualan')->group(function(){
+                Route::get('/', [App\Http\Controllers\RekapController::class, 'invoice_penjualan'])->name('rekap.invoice-penjualan');
+                Route::get('/{invoice}/detail', [App\Http\Controllers\RekapController::class, 'invoice_penjualan_detail'])->name('rekap.invoice-penjualan.detail');
             });
 
         });
