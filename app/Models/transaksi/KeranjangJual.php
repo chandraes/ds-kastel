@@ -11,6 +11,7 @@ use App\Models\Produksi\ProductJadi;
 use App\Models\Rekening;
 use App\Models\User;
 use App\Services\StarSender;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -54,6 +55,23 @@ class KeranjangJual extends Model
         $db = new InvoiceJual();
 
         $konsumen = Konsumen::find($req['konsumen_id']);
+
+        $dbKonsumen = new KasKonsumen();
+        $sisaTerakhir = $dbKonsumen->sisaTerakhir($konsumen->id);
+        $gt = $getData->sum('total') + ($getData->sum('total')*0.11);
+        $now = Carbon::now();
+        $jatuhTempo = $now->addDays($konsumen->tempo_hari);
+        $countInv = $db->where('konsumen_id', $konsumen->id)->where('lunas', 0)
+                        // where $now is already passed the jatuh tempo
+                        ->whereDate('created_at', '>', $now)
+                        ->count();
+
+        if ($sisaTerakhir + $gt > $konsumen->plafon || $countInv != 0) {
+            return [
+                'status' => 'error',
+                'message' => 'Plafon tidak mencukupi atau masih ada invoice yang belum lunas',
+            ];
+        }
 
         $data['no_invoice'] = $db->generateNoInvoice();
         $data['invoice'] = $db->generateInvoice($data['no_invoice']);

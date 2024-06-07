@@ -2,6 +2,7 @@
 
 namespace App\Models\db;
 
+use App\Models\KasKonsumen;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,5 +38,11 @@ class Konsumen extends Model
         return number_format($this->plafon, 0, ',', '.');
     }
 
+    public function kas()
+    {
+        return $this->hasMany(KasKonsumen::class, 'konsumen_id');
+    }
+
+    
 
 }
