@@ -46,7 +46,7 @@
         <div class="col-lg-3 mt-3 mb-3 text-center">
             <a href="#" class="text-decoration-none">
                 <img src="{{asset('images/rekap-invoice-penjualan.svg')}}" alt="" width="80">
-                <h3 class="mt-2">PPH MASSA</h3>
+                <h3 class="mt-2">PPH MASA</h3>
             </a>
         </div>
         <div class="col-lg-3 mt-3 mb-3 text-center">
