@@ -20,6 +20,10 @@ return new class extends Migration
             $table->bigInteger('total');
             $table->timestamps();
         });
+
+        Schema::table('kas_besars', function (Blueprint $table) {
+            $table->foreignId('invoice_jual_id')->nullable()->constrained('invoice_juals')->onDelete('set null');
+        });
     }
 
     /**
@@ -28,5 +32,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('invoice_jual_details');
+        Schema::table('kas_besars', function (Blueprint $table) {
+            $table->dropForeign(['invoice_jual_id']);
+            $table->dropColumn('invoice_jual_id');
+        });
     }
 };

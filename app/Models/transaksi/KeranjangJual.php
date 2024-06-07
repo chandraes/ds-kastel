@@ -2,8 +2,15 @@
 
 namespace App\Models\transaksi;
 
+use App\Models\db\Konsumen;
+use App\Models\GroupWa;
+use App\Models\KasBesar;
+use App\Models\KasKonsumen;
+use App\Models\PesanWa;
 use App\Models\Produksi\ProductJadi;
+use App\Models\Rekening;
 use App\Models\User;
+use App\Services\StarSender;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -46,16 +53,91 @@ class KeranjangJual extends Model
 
         $db = new InvoiceJual();
 
+        $konsumen = Konsumen::find($req['konsumen_id']);
+
         $data['no_invoice'] = $db->generateNoInvoice();
         $data['invoice'] = $db->generateInvoice($data['no_invoice']);
         $data['konsumen_id'] = $req['konsumen_id'];
         $data['total'] = $getData->sum('total');
         $data['ppn'] = $data['total'] * 0.11;
+        $data['lunas'] = $konsumen->pembayaran == 1 ? 1 : 0;
 
        try {
+
         DB::beginTransaction();
 
-        $db->create($data);
+        $kasKonsumen = new KasKonsumen();
+
+        $store = $db->create($data);
+
+        foreach ($getData as $d) {
+            $detail['invoice_jual_id'] = $store->id;
+            $detail['product_jadi_id'] = $d->product_jadi_id;
+            $detail['harga'] = $d->harga;
+            $detail['jumlah'] = $d->jumlah;
+            $detail['total'] = $detail['harga'] * $detail['jumlah'];
+
+            $store->detail()->create($detail);
+        }
+
+        $this->penguranganStock();
+
+        if ($konsumen->pembayaran == 1) {
+
+            $storeKasKonsumen = $kasKonsumen->create([
+                'konsumen_id' => $konsumen->id,
+                'invoice_jual_id' => $store->id,
+                'uraian' => 'Pembelian ' . $store->invoice,
+                'bayar' =>  $store->total + $store->ppn,
+                'sisa' => $kasKonsumen->sisaTerakhir($konsumen->id),
+            ]);
+
+            $kas = new KasBesar();
+            $rekening = Rekening::where('untuk', 'kas-besar')->first();
+
+            $kb['uraian'] = 'Penjualan ' . $store->invoice;
+            $kb['jenis'] = 1;
+            $kb['nominal'] = $store->total + $store->ppn;
+            $kb['saldo'] = $kas->saldoTerakhir() + $kb['nominal'];
+            $kb['no_rek'] = $rekening->no_rek;
+            $kb['invoice_jual_id'] = $store->id;
+            $kb['nama_rek'] = $rekening->nama_rek;
+            $kb['bank'] = $rekening->bank;
+            $kb['modal_investor_terakhir'] = $kas->modalInvestorTerakhir();
+
+            $storeKas = $kas->create($kb);
+
+            $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
+                        "*FORM PENJUALAN*\n".
+                        "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
+                        "Invoice : *".$store->invoice."*\n\n".
+                        "Konsumen : *".$konsumen->nama."*\n".
+                        "Nilai :  *Rp. ".number_format($storeKas->nominal, 0, ',', '.')."*\n\n".
+                        "Ditransfer ke rek:\n\n".
+                        "Bank      : ".$storeKas->bank."\n".
+                        "Nama    : ".$storeKas->nama_rek."\n".
+                        "No. Rek : ".$storeKas->no_rek."\n\n".
+                        "==========================\n".
+                        "Sisa Saldo Kas Besar : \n".
+                        "Rp. ".number_format($storeKas->saldo, 0, ',', '.')."\n\n".
+                        "Total Modal Investor : \n".
+                        "Rp. ".number_format($storeKas->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                        "Terima kasih 🙏🙏🙏\n";
+
+
+            $this->sendWa($pesan);
+
+        } else {
+            $storeKasKonsumen = $kasKonsumen->create([
+                'konsumen_id' => $konsumen->id,
+                'invoice_jual_id' => $store->id,
+                'uraian' => 'Hutang ' . $store->invoice,
+                'hutang' =>  $store->total + $store->ppn,
+                'sisa' => $kasKonsumen->sisaTerakhir($konsumen->id),
+            ]);
+        }
+
+        $this->where('user_id', auth()->id())->delete();
 
         DB::commit();
 
@@ -70,7 +152,7 @@ class KeranjangJual extends Model
 
             $result = [
                 'status' => 'error',
-                'message' => 'Gagal checkout',
+                'message' => 'Gagal checkout. '.$th->getMessage(),
             ];
 
             return $result;
@@ -78,6 +160,35 @@ class KeranjangJual extends Model
 
         return $result;
 
+    }
+
+    public function penguranganStock()
+    {
+        $getData = $this->where('user_id', auth()->id())->get();
+
+        foreach ($getData as $d) {
+            $product = ProductJadi::find($d->product_jadi_id);
+
+            $product->update([
+                'stock_kemasan' => $product->kemasan->packaging ? $product->stock_kemasan - ($product->kemasan->packaging->konversi_kemasan * $d->jumlah) : $product->stock_kemasan - $d->jumlah,
+                'stock_packaging' => $product->stock_packaging - $d->jumlah,
+            ]);
+        }
+    }
+
+    private function sendWa($pesan)
+    {
+        $tujuan = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
+        $send = new StarSender($tujuan, $pesan);
+        $res = $send->sendGroup();
+
+        $status = ($res == 'true') ? 1 : 0;
+
+        PesanWa::create([
+            'pesan' => $pesan,
+            'tujuan' => $tujuan,
+            'status' => $status,
+        ]);
     }
 
 
