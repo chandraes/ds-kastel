@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="row">
-        <form action="" method="post">
+        <form action="{{route('billing.stok-bahan-jadi.checkout.store')}}" method="post" id="storeForm">
             @csrf
             <div class="card">
                 {{-- <img class="card-img-top" src="{{asset('images/cgm.png')}}" style="width: 200px" alt="Title" />
@@ -160,5 +160,23 @@
             }
         });
     }
+
+    $('#storeForm').submit(function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: "Semua data pada keranjang akan dihapus!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, simpan!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $('#spinner').show();
+                this.submit();
+            }
+        })
+    });
 </script>
 @endpush

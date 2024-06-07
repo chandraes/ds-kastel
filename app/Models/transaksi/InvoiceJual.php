@@ -13,6 +13,11 @@ class InvoiceJual extends Model
 
     protected $appends = ['full_invoice', 'bulan_angka', 'tanggal', 'tahun'];
 
+    public function detail()
+    {
+        return $this->hasMany(InvoiceJualDetail::class, 'invoice_jual_id', 'id');
+    }
+
     public function generateNoInvoice()
     {
         // check max no_invoice by year now

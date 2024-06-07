@@ -60,6 +60,20 @@ class StokBahanJadiController extends Controller
         ]);
     }
 
+    public function checkout_store(Request $request)
+    {
+        $data = $request->validate([
+            'konsumen_id' => 'required|exists:konsumens,id'
+        ]);
+
+        $db = new KeranjangJual();
+
+        $res = $db->checkout($data);
+
+        return redirect()->route('billing')->with($res['status'], $res['message']);
+
+    }
+
     public function get_konsumen(Request $request)
     {
         $data = $request->validate([

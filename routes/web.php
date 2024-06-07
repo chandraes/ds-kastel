@@ -235,6 +235,7 @@ Route::group(['middleware' => ['auth']], function() {
 
                 Route::prefix('checkout')->group(function(){
                     Route::get('/', [App\Http\Controllers\StokBahanJadiController::class, 'checkout'])->name('billing.stok-bahan-jadi.checkout');
+                    Route::post('/store', [App\Http\Controllers\StokBahanJadiController::class, 'checkout_store'])->name('billing.stok-bahan-jadi.checkout.store');
                     Route::get('/konsumen', [App\Http\Controllers\StokBahanJadiController::class, 'get_konsumen'])->name('billing.stok-bahan-jadi.checkout.konsumen');
                 });
 
