@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\db\Kemasan;
 use App\Models\db\Konsumen;
+use App\Models\db\Pajak;
 use App\Models\db\Product;
 use App\Models\PasswordKonfirmasi;
 use App\Models\Produksi\ProductJadi;
@@ -47,6 +48,10 @@ class StokBahanJadiController extends Controller
             return $item->product_jadi->product->kategori->id;
         });
 
+
+        $ppnVal = Pajak::where('untuk', 'ppn')->first()->persen / 100;
+        $pphVal = Pajak::where('untuk', 'pph')->first()->persen / 100;
+
         $db = new InvoiceJual();
         $nomor = $db->generateNoInvoice();
         $invoice = $db->generateInvoice($nomor);
@@ -56,14 +61,17 @@ class StokBahanJadiController extends Controller
         return view('billing.stok-bahan-jadi.checkout', [
             'groupedData' => $groupedData,
             'konsumen' => $konsumen,
-            'invoice' => $invoice
+            'invoice' => $invoice,
+            'ppnVal' => $ppnVal,
+            'pphVal' => $pphVal
         ]);
     }
 
     public function checkout_store(Request $request)
     {
         $data = $request->validate([
-            'konsumen_id' => 'required|exists:konsumens,id'
+            'konsumen_id' => 'required|exists:konsumens,id',
+            'apa_pph' => 'required',
         ]);
 
         $db = new KeranjangJual();

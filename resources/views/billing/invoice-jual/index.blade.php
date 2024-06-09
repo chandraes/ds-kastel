@@ -29,6 +29,7 @@
                     <th class="text-center align-middle">Jatuh Tempo</th>
                     <th class="text-center align-middle">DPP</th>
                     <th class="text-center align-middle">PPn</th>
+                    <th class="text-center align-middle">PPh</th>
                     <th class="text-center align-middle">Total</th>
 
                     <th class="text-center align-middle">Act</th>
@@ -54,6 +55,9 @@
                         </td>
                         <td class="text-end align-middle">
                             {{$d->nf_ppn}}
+                        </td>
+                        <td class="text-end align-middle">
+                            {{$d->nf_pph}}
                         </td>
                         <td class="text-end align-middle">
                             {{$d->nf_grand_total}}
@@ -92,6 +96,7 @@
                     <th class="text-end align-middle" colspan="4">Grand Total</th>
                     <th class="text-end align-middle">{{number_format($data->sum('total'),0,',','.')}}</th>
                     <th class="text-end align-middle">{{number_format($data->sum('ppn'),0,',','.')}}</th>
+                    <th class="text-end align-middle">{{number_format($data->sum('pph'),0,',','.')}}</th>
                     <th class="text-end align-middle">{{number_format($data->sum('grand_total'),0,',','.')}}</th>
                     <th></th>
                 </tr>

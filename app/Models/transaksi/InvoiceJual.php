@@ -19,7 +19,7 @@ class InvoiceJual extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    protected $appends = ['full_invoice', 'bulan_angka', 'tanggal', 'tahun', 'jatuh_tempo', 'nf_total', 'nf_ppn', 'nf_grand_total', 'grand_total'];
+    protected $appends = ['full_invoice', 'bulan_angka', 'tanggal', 'tahun', 'jatuh_tempo', 'nf_total', 'nf_ppn', 'nf_grand_total', 'grand_total', 'nf_pph'];
 
     public function detail()
     {
@@ -86,9 +86,14 @@ class InvoiceJual extends Model
         return number_format($this->ppn, 0, ',', '.');
     }
 
+    public function getNfPphAttribute()
+    {
+        return number_format($this->pph, 0, ',', '.');
+    }
+
     public function getGrandTotalAttribute()
     {
-        return $this->total+$this->ppn;
+        return $this->total+$this->ppn-$this->pph;
     }
 
     public function getNfGrandTotalAttribute()

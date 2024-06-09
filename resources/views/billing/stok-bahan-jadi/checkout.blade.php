@@ -24,6 +24,17 @@
                     </h4>
                     <div class="row mt-3 mb-3">
                         <div class="col-md-6">
+                            <div class="form-group row mb-2">
+                                <label class="col-form-label col-md-3">Menggunakan PPh :</label>
+                                <div class="col-md-8">
+                                    <select class="form-select" name="apa_pph" id="apa_pph" required
+                                        onchange="calculatePPh()">
+                                        <option value="" disabled selected>-- Pilih Salah Satu --</option>
+                                        <option value="1">Ya</option>
+                                        <option value="0">Tidak</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label class="col-form-label col-md-3">Konsumen :</label>
                                 <div class="col-md-8">
@@ -107,7 +118,9 @@
                                 @endforeach
                             </tbody>
                             @php
-                            $ppn = $total*0.11;
+                            $ppn = $total*$ppnVal;
+                            $grandTotal = $total + $ppn;
+                            $pph = 0;
                             @endphp
                             <tfoot>
                                 <tr>
@@ -122,8 +135,12 @@
                                     <th class="text-end align-middle">{{number_format(($ppn), 0, ',','.')}}</th>
                                 </tr>
                                 <tr>
+                                    <th colspan="6" class="text-end align-middle">Pph :</th>
+                                    <th class="text-end align-middle" id="pphTh">0</th>
+                                </tr>
+                                <tr>
                                     <th colspan="6" class="text-end align-middle">Grand Total :</th>
-                                    <th class="text-end align-middle">{{number_format(($total+$ppn), 0, ',','.')}}</th>
+                                    <th class="text-end align-middle" id="grandTotalTh">{{number_format(($grandTotal), 0, ',','.')}}</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -144,6 +161,24 @@
 @push('js')
 <script src="{{asset('assets/js/cleave.min.js')}}"></script>
 <script>
+    function calculatePPh()
+    {
+        var apa_pph = document.getElementById('apa_pph').value;
+        var total = {{$total}};
+        var ppn = {{$ppn}};
+        var pph = 0;
+
+        if (apa_pph == 1) {
+            pph = total * {{$pphVal}};
+        }
+
+        var gt = total + ppn - pph;
+        var pphNf = pph.toLocaleString('id-ID');
+        var gtVal = gt.toLocaleString('id-ID');
+        document.getElementById('pphTh').innerText = pphNf;
+        document.getElementById('grandTotalTh').innerText = gtVal;
+    }
+
     function getKonsumenData()
     {
         var id = document.getElementById('konsumen_id').value;
