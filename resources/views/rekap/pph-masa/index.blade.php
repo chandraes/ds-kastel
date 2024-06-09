@@ -48,7 +48,12 @@
                 <tr>
                     <td class="text-center align-middle" style="width: 5%"></td>
                     <td class="text-center align-middle">
-                        {{$d['bulan']}}
+                        <div class="row px-4">
+                            <a href="{{route('rekap.pph-masa.detail', ['month' => $d['bulan_angka'], 'year' => $tahun])}}" class="btn btn-outline-dark">
+                               <strong>{{$d['bulan']}}</strong>
+                            </a>
+                        </div>
+
                     </td>
                     <td class="text-end align-middle">
                         {{number_format($d['total_dpp'], 0, ',','.')}}
@@ -86,7 +91,6 @@
             "paging": false,
             "searching": true,
             "scrollCollapse": true,
-            "scrollY": "500px",
             "info": false,
 
         });

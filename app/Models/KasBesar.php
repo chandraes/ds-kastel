@@ -250,6 +250,7 @@ class KasBesar extends Model
         $data['no_rek'] = $rekening->no_rek;
         $data['bank'] = $rekening->bank;
         $data['nama_rek'] = $rekening->nama_rek;
+        $data['lain_lain'] = 1;
         $data['modal_investor_terakhir'] = $this->modalInvestorTerakhir();
 
         $store = $this->create($data);
@@ -263,6 +264,7 @@ class KasBesar extends Model
         $data['saldo'] = $this->saldoTerakhir() - $data['nominal'];
         $data['modal_investor_terakhir'] = $this->modalInvestorTerakhir();
         $data['jenis'] = 0;
+        $data['lain_lain'] = 1;
 
         $store = $this->create($data);
 

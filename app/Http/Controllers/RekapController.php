@@ -459,8 +459,16 @@ class RekapController extends Controller
         ]);
     }
 
-    public function pph_masa_detail(Request $request)
+    public function pph_masa_detail(int $month, int $year)
     {
-        
+        $kas = new InvoiceJual();
+
+        $data = $kas->whereMonth('created_at',$month)->whereYear('created_at',$year)->where('lunas', 1)->get();
+
+        return view('rekap.pph-masa.detail', [
+            'data' => $data,
+            'month' => $month,
+            'year' => $year,
+        ]);
     }
 }

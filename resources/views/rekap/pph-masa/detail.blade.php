@@ -1,9 +1,28 @@
 @extends('layouts.app')
 @section('content')
-<div class="container-fluid">
+<div class="container">
     <div class="row justify-content-center mb-5">
         <div class="col-md-12 text-center">
-            <h1><u>INVOICE PENJUALAN</u></h1>
+            <h1><u>DETAIL PPH MASA</u></h1>
+            <h2>
+            @php
+                $monthNames = [
+                1 => 'Januari',
+                2 => 'Februari',
+                3 => 'Maret',
+                4 => 'April',
+                5 => 'Mei',
+                6 => 'Juni',
+                7 => 'Juli',
+                8 => 'Agustus',
+                9 => 'September',
+                10 => 'Oktober',
+                11 => 'November',
+                12 => 'Desember'
+                ];
+                echo $monthNames[$month];
+            @endphp {{$year}}
+            </h2>
         </div>
     </div>
     @include('swal')
@@ -15,44 +34,11 @@
                                 width="30"> Dashboard</a></td>
                     <td><a href="{{route('rekap')}}"><img src="{{asset('images/rekap.svg')}}" alt="dokumen" width="30">
                             REKAP</a></td>
+                    <td><a href="{{route('rekap.pph-masa')}}"><img src="{{asset('images/back.svg')}}" alt="dokumen" width="30">
+                        KEMBALI</a></td>
                 </tr>
             </table>
         </div>
-        <form action="{{route('rekap.invoice-penjualan')}}" method="get" class="col-md-6">
-            <div class="row mt-2">
-                <div class="col-md-4 mb-3">
-                    <select class="form-select" name="bulan" id="bulan">
-                        <option value="1" {{$bulan=='01' ? 'selected' : '' }}>Januari</option>
-                        <option value="2" {{$bulan=='02' ? 'selected' : '' }}>Februari</option>
-                        <option value="3" {{$bulan=='03' ? 'selected' : '' }}>Maret</option>
-                        <option value="4" {{$bulan=='04' ? 'selected' : '' }}>April</option>
-                        <option value="5" {{$bulan=='05' ? 'selected' : '' }}>Mei</option>
-                        <option value="6" {{$bulan=='06' ? 'selected' : '' }}>Juni</option>
-                        <option value="7" {{$bulan=='07' ? 'selected' : '' }}>Juli</option>
-                        <option value="8" {{$bulan=='08' ? 'selected' : '' }}>Agustus</option>
-                        <option value="9" {{$bulan=='09' ? 'selected' : '' }}>September</option>
-                        <option value="10" {{$bulan=='10' ? 'selected' : '' }}>Oktober</option>
-                        <option value="11" {{$bulan=='11' ? 'selected' : '' }}>November</option>
-                        <option value="12" {{$bulan=='12' ? 'selected' : '' }}>Desember</option>
-                    </select>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <select class="form-select" name="tahun" id="tahun">
-                        @foreach ($dataTahun as $dt)
-                        <option value="{{$dt->tahunArray}}" {{$dt->tahunArray == $tahun ? 'selected' : ''}}>{{$dt->tahunArray}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <button type="submit" class="btn btn-primary form-control" id="btn-cari">Tampilkan</button>
-                </div>
-                {{-- <div class="col-md-3 mb-3">
-                    <label for="showPrint" class="form-label">&nbsp;</label>
-                    <a href="{{route('rekap.kas-besar.preview', ['bulan' => $bulan, 'tahun' => $tahun])}}"
-                        target="_blank" class="btn btn-secondary form-control" id="btn-cari">Print Preview</a>
-                </div> --}}
-            </div>
-        </form>
     </div>
     <div class="row mt-3">
         <table class="table table-bordered table-hover" id="data-table">
@@ -79,11 +65,9 @@
                         {{$d->konsumen->nama}}
                     </td>
                     <td class="text-center align-middle">
-                        <div class="row px-3">
-                            <a href="{{route('rekap.invoice-penjualan.detail', $d)}}" class="btn btn-outline-dark">
-                                {{$d->invoice}}
-                            </a>
-                        </div>
+                        <a href="{{route('rekap.invoice-penjualan.detail', $d)}}" class="btn btn-outline-dark">
+                            {{$d->invoice}}
+                        </a>
                     </td>
                     <td class="text-end align-middle">
                         {{$d->nf_total}}
@@ -123,16 +107,14 @@
 @push('js')
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
-    function detailInvoice(data)
-    {
-        document.getElementById('detailModalTitle').innerHTML = 'INVOICE : '+data.invoice;
-    }
+
     $(document).ready(function() {
         var table = $('#data-table').DataTable({
             "paging": false,
             "searching": true,
             "scrollCollapse": true,
             "scrollY": "500px",
+            "info": false,
 
         });
 
@@ -142,5 +124,6 @@
             } );
         } ).draw();
     });
+
 </script>
 @endpush

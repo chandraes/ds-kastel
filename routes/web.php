@@ -202,7 +202,7 @@ Route::group(['middleware' => ['auth']], function() {
 
             Route::prefix('pph-masa')->group(function(){
                 Route::get('/', [App\Http\Controllers\RekapController::class, 'pph_masa'])->name('rekap.pph-masa');
-                Route::get('/detail', [App\Http\Controllers\RekapController::class, 'pph_masa_detail'])->name('rekap.pph-masa.detail');
+                Route::get('/detail/{month}/{year}', [App\Http\Controllers\RekapController::class, 'pph_masa_detail'])->name('rekap.pph-masa.detail');
             });
 
         });
