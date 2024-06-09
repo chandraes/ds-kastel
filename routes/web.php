@@ -200,6 +200,11 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::get('/{invoice}/detail', [App\Http\Controllers\RekapController::class, 'invoice_penjualan_detail'])->name('rekap.invoice-penjualan.detail');
             });
 
+            Route::prefix('pph-masa')->group(function(){
+                Route::get('/', [App\Http\Controllers\RekapController::class, 'pph_masa'])->name('rekap.pph-masa');
+                Route::get('/detail', [App\Http\Controllers\RekapController::class, 'pph_masa_detail'])->name('rekap.pph-masa.detail');
+            });
+
         });
     });
 

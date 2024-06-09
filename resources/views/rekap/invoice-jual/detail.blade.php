@@ -92,9 +92,6 @@
                             @endforeach
                             @endforeach
                         </tbody>
-                        @php
-                        $ppn = $total*0.11;
-                        @endphp
                         <tfoot>
                             <tr>
                                 <th colspan="3" class="text-end align-middle">TOTAL</th>
@@ -105,11 +102,16 @@
                             </tr>
                             <tr>
                                 <th colspan="6" class="text-end align-middle">Ppn :</th>
-                                <th class="text-end align-middle">{{number_format(($ppn), 0, ',','.')}}</th>
+                                <th class="text-end align-middle">{{number_format(($invoice->ppn), 0, ',','.')}}</th>
+                            </tr>
+                            <tr>
+                                <th colspan="6" class="text-end align-middle">Pph :</th>
+                                <th class="text-end align-middle">{{number_format(($invoice->pph), 0, ',','.')}}</th>
                             </tr>
                             <tr>
                                 <th colspan="6" class="text-end align-middle">Grand Total :</th>
-                                <th class="text-end align-middle">{{number_format(($total+$ppn), 0, ',','.')}}</th>
+                                <th class="text-end align-middle">
+                                    {{number_format(($invoice->total+$invoice->ppn-$invoice->pph), 0, ',','.')}}</th>
                             </tr>
                         </tfoot>
                     </table>

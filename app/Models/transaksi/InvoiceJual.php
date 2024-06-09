@@ -88,7 +88,7 @@ class InvoiceJual extends Model
 
     public function getNfPphAttribute()
     {
-        return number_format($this->pph, 0, ',', '.');
+        return number_format($this->pph, 2, ',', '.');
     }
 
     public function getGrandTotalAttribute()

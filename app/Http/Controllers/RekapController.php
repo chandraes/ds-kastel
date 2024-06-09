@@ -399,4 +399,68 @@ class RekapController extends Controller
 
         ]);
     }
+
+    public function pph_masa(Request $request)
+    {
+        $kas = new InvoiceJual();
+
+        $tahun = $request->tahun ?? date('Y');
+
+        $dataTahun = $kas->dataTahun();
+
+        $reports = InvoiceJual::selectRaw('
+                MONTH(created_at) as month,
+                SUM(total) as total_dpp,
+                SUM(pph) as total_pph
+            ')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->whereYear('created_at', $tahun)
+            ->where('lunas', 1)
+            ->get();
+
+        $months = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+        ];
+
+        $data = [];
+        $grandTotalDpp = 0;
+        $grandTotalPph = 0;
+
+        foreach ($months as $num => $name) {
+            $report = $reports->firstWhere('month', $num);
+            $totalDpp = $report ? $report->total_dpp : 0;
+            $totalPph = $report ? $report->total_pph : 0;
+
+            $data[] = [
+                'bulan_angka' => $num,
+                'bulan' => $name,
+                'total_dpp' => $report ? $report->total_dpp : 0,
+                'total_pph' => $report ? $report->total_pph : 0,
+            ];
+
+            $grandTotalDpp += $totalDpp;
+            $grandTotalPph += $totalPph;
+        }
+
+         // Urutkan data berdasarkan bulan
+         usort($data, function ($a, $b) use ($months) {
+            return array_search($a['bulan'], array_values($months)) - array_search($b['bulan'], array_values($months));
+        });
+
+        return view('rekap.pph-masa.index', [
+            'data' => $data,
+            'dataTahun' => $dataTahun,
+            'tahun' => $tahun,
+            'grandTotalDpp' => $grandTotalDpp,
+            'grandTotalPph' => $grandTotalPph,
+        ]);
+    }
+
+    public function pph_masa_detail(Request $request)
+    {
+        
+    }
 }
