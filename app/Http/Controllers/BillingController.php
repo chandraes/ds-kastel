@@ -76,45 +76,6 @@ class BillingController extends Controller
         ]);
     }
 
-    // public function claim_ppn(KasProject $kasProject)
-    // {
-    //     $db = new KasProject();
-
-    //     $store = $db->claim_ppn($kasProject);
-
-    //     return redirect()->back()->with($store['status'], $store['message']);
-    // }
-
-    // public function invoice_ppn()
-    // {
-    //     $data = InvoiceTagihan::with(['project', 'customer', 'invoiceTagihanDetails'])
-    //                         ->where('cutoff', 1)
-    //                         ->where('ppn', 0)
-    //                         ->where('finished', 1)
-    //                         ->where('nilai_ppn', '>', 0)
-    //                         ->get();
-
-    //     return view('billing.invoice-ppn.index', [
-    //         'data' => $data,
-    //     ]);
-    // }
-
-    // public function invoice_ppn_bayar(InvoiceTagihan $invoice)
-    // {
-    //     $db = new InvoiceTagihan();
-    //     $kb = new KasBesar();
-
-    //     $saldo = $kb->saldoTerakhir();
-
-    //     if ($saldo < $invoice->nilai_ppn) {
-    //         return redirect()->back()->with('error', 'Saldo kas besar tidak mencukupi');
-    //     }
-
-    //     $store = $db->invoice_ppn_bayar($invoice);
-
-    //     return redirect()->back()->with($store['status'], $store['message']);
-    // }
-
     public function ppn_masuk_susulan()
     {
         $data = Investor::all();

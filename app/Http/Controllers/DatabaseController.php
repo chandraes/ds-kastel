@@ -7,12 +7,32 @@ use App\Models\db\Packaging;
 use App\Models\db\Satuan;
 use App\Models\db\Supplier;
 use App\Models\db\Konsumen;
+use App\Models\db\Pajak;
 use App\Models\Pengelola;
 use App\Models\db\Product;
 use Illuminate\Http\Request;
 
 class DatabaseController extends Controller
 {
+    public function pajak()
+    {
+        $data = Pajak::all();
+        return view('db.pajak.index', [
+            'data' => $data
+        ]);
+    }
+
+    public function pajak_update(Pajak $pajak, Request $request)
+    {
+        $data = $request->validate([
+            'persen' => 'required'
+        ]);
+
+        $pajak->update($data);
+
+        return redirect()->route('db.pajak')->with('success', 'Data berhasil diupdate');
+    }
+
     public function pengelola()
     {
         $data = Pengelola::all();

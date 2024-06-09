@@ -143,6 +143,11 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::get('/', [App\Http\Controllers\ProductController::class, 'product_jadi'])->name('db.product-jadi');
                 Route::post('/store', [App\Http\Controllers\ProductController::class, 'product_jadi_store'])->name('db.product-jadi.store');
             });
+
+            Route::prefix('pajak')->group(function(){
+                Route::get('/', [App\Http\Controllers\DatabaseController::class, 'pajak'])->name('db.pajak');
+                Route::patch('/update/{pajak}', [App\Http\Controllers\DatabaseController::class, 'pajak_update'])->name('db.pajak.update');
+            });
         });
     });
 
