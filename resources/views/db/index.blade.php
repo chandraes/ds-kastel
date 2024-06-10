@@ -53,6 +53,12 @@
                 <h4 class="mt-2">PAJAK</h4>
             </a>
         </div>
+        <div class="col-lg-3 col-md-3 col-sm-4 my-4 text-center">
+            <a href="{{route('db.staff')}}" class="text-decoration-none">
+                <img src="{{asset('images/karyawan.svg')}}" alt="" width="80">
+                <h4 class="mt-2">STAFF</h4>
+            </a>
+        </div>
     </div>
     <div class="row justify-content-left">
         <div class="col-lg-3 col-md-3 col-sm-4 my-4 text-center">

@@ -148,6 +148,24 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::get('/', [App\Http\Controllers\DatabaseController::class, 'pajak'])->name('db.pajak');
                 Route::patch('/update/{pajak}', [App\Http\Controllers\DatabaseController::class, 'pajak_update'])->name('db.pajak.update');
             });
+
+            Route::prefix('staff')->group(function(){
+                Route::get('/', [App\Http\Controllers\DatabaseController::class, 'staff'])->name('db.staff');
+
+                Route::prefix('jabatan')->group(function(){
+                    Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'jabatan_store'])->name('db.staff.jabatan.store');
+                    Route::patch('/update/{jabatan}', [App\Http\Controllers\DatabaseController::class, 'jabatan_update'])->name('db.staff.jabatan.update');
+                    Route::delete('/delete/{jabatan}', [App\Http\Controllers\DatabaseController::class, 'jabatan_delete'])->name('db.staff.jabatan.delete');
+                });
+
+                Route::get('/create', [App\Http\Controllers\DatabaseController::class, 'staff_create'])->name('db.staff.create');
+                Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'staff_store'])->name('db.staff.store');
+
+                Route::get('/edit/{staff}', [App\Http\Controllers\DatabaseController::class, 'staff_edit'])->name('db.staff.edit');
+                Route::patch('/update/{staff}', [App\Http\Controllers\DatabaseController::class, 'staff_update'])->name('db.staff.update');
+                
+                Route::delete('/delete/{staff}', [App\Http\Controllers\DatabaseController::class, 'staff_delete'])->name('db.staff.delete');
+            });
         });
     });
 

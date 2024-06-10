@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\db\Jabatan;
+use App\Models\db\Karyawan;
 use App\Models\db\Kemasan;
 use App\Models\db\Packaging;
 use App\Models\db\Satuan;
@@ -11,9 +13,220 @@ use App\Models\db\Pajak;
 use App\Models\Pengelola;
 use App\Models\db\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Ramsey\Uuid\Uuid;
 
 class DatabaseController extends Controller
 {
+
+    public function jabatan_store(Request $req)
+    {
+        $data = $req->validate([
+            'nama' => 'required',
+        ]);
+
+        Jabatan::create($data);
+
+        return redirect()->back()->with('success', 'Data berhasil ditambahkan');
+    }
+
+    public function jabatan_update(Jabatan $jabatan, Request $req)
+    {
+        $data = $req->validate([
+            'nama' => 'required',
+        ]);
+
+        $jabatan->update($data);
+
+        return redirect()->back()->with('success', 'Data berhasil diupdate');
+    }
+
+    public function jabatan_delete(Jabatan $jabatan)
+    {
+        $jabatan->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
+    }
+
+    public function staff()
+    {
+        $data = Karyawan::with(['jabatan'])->get();
+        $jabatan = Jabatan::all();
+
+        return view('db.karyawan.index', [
+            'data' => $data,
+            'jabatan' => $jabatan
+        ]);
+    }
+
+    public function staff_create()
+    {
+        $jabatan = Jabatan::all();
+
+        return view('db.karyawan.create', [
+            'jabatan' => $jabatan
+        ]);
+    }
+
+    public function staff_store(Request $request)
+    {
+        $data = $request->validate([
+            'jabatan_id' => 'required|exists:jabatans,id',
+            'nama' => 'required',
+            'nickname' => 'required',
+            'gaji_pokok' => 'required',
+            'tunjangan_jabatan' => 'required',
+            'tunjangan_keluarga' => 'required',
+            'nik' => 'required',
+            'npwp' => 'required',
+            'bpjs_tk' => 'required',
+            'bpjs_kesehatan' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'alamat' => 'required',
+            'no_hp' => 'required',
+            'bank' => 'required',
+            'no_rek' => 'required',
+            'nama_rek' => 'required',
+            'mulai_bekerja' => 'required',
+            'foto_ktp' => 'required|mimes:jpg,jpeg,png|max:10000',
+            'foto_diri' => 'required|mimes:jpg,jpeg,png|max:10000',
+            'status' => 'required',
+        ]);
+
+        $data['nomor'] = Karyawan::max('nomor') + 1;
+
+        $data['gaji_pokok'] = str_replace('.', '', $data['gaji_pokok']);
+        $data['tunjangan_jabatan'] = str_replace('.', '', $data['tunjangan_jabatan']);
+        $data['tunjangan_keluarga'] = str_replace('.', '', $data['tunjangan_keluarga']);
+
+
+
+        try {
+            DB::beginTransaction();
+            $file_name_ktp = Uuid::uuid4().'- KTP - '. $data['nama']. '.' . $request->foto_ktp->extension();
+            $file_name_diri = Uuid::uuid4(). ' - Foto Diri '. $data['nama']. '.' . $request->foto_diri->extension();
+
+            $data['foto_ktp'] = $request->file('foto_ktp')->storeAs('public/karyawan', $file_name_ktp);
+            $data['foto_diri'] = $request->file('foto_diri')->storeAs('public/karyawan', $file_name_diri);
+
+            Karyawan::create($data);
+
+            DB::commit();
+
+            return redirect()->route('db.staff')->with('success', 'Data berhasil ditambahkan');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
+        }
+
+    }
+
+    public function staff_edit(Karyawan $staff)
+    {
+        $jabatan = Jabatan::all();
+
+        return view('db.karyawan.edit', [
+            'data' => $staff,
+            'jabatan' => $jabatan
+        ]);
+    }
+
+    public function staff_update(Karyawan $staff, Request $request)
+    {
+        $data = $request->validate([
+            'jabatan_id' => 'required|exists:jabatans,id',
+            'nama' => 'required',
+            'nickname' => 'required',
+            'gaji_pokok' => 'required',
+            'tunjangan_jabatan' => 'required',
+            'tunjangan_keluarga' => 'required',
+            'nik' => 'required',
+            'npwp' => 'required',
+            'bpjs_tk' => 'required',
+            'bpjs_kesehatan' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'alamat' => 'required',
+            'no_hp' => 'required',
+            'bank' => 'required',
+            'no_rek' => 'required',
+            'nama_rek' => 'required',
+            'mulai_bekerja' => 'required',
+            'status' => 'required',
+            'foto_ktp' => 'nullable|mimes:jpg,jpeg,png|max:10000',
+            'foto_diri' => 'nullable|mimes:jpg,jpeg,png|max:10000',
+        ]);
+
+        $data['gaji_pokok'] = str_replace('.', '', $data['gaji_pokok']);
+        $data['tunjangan_jabatan'] = str_replace('.', '', $data['tunjangan_jabatan']);
+        $data['tunjangan_keluarga'] = str_replace('.', '', $data['tunjangan_keluarga']);
+
+        try {
+            DB::beginTransaction();
+
+            if ($request->hasFile('foto_ktp')) {
+                $file_name_ktp = Uuid::uuid4().'- KTP - '. $data['nama']. '.' . $request->foto_ktp->extension();
+                $data['foto_ktp'] = $request->file('foto_ktp')->storeAs('public/karyawan', $file_name_ktp);
+                $ktp_path = storage_path('app/'.$staff->foto_ktp);
+                unlink($ktp_path);
+            }
+
+            if ($request->hasFile('foto_diri')) {
+                $file_name_diri = Uuid::uuid4(). ' - Foto Diri '. $data['nama']. '.' . $request->foto_diri->extension();
+                $data['foto_diri'] = $request->file('foto_diri')->storeAs('public/karyawan', $file_name_diri);
+                $diri_path = storage_path('app/'.$staff->foto_diri);
+                unlink($diri_path);
+            }
+
+            $staff->update($data);
+
+            DB::commit();
+
+
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            DB::rollBack();
+
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
+        }
+
+        return redirect()->route('db.staff')->with('success', 'Data berhasil diupdate');
+    }
+
+    public function staff_delete(Karyawan $staff)
+    {
+        try {
+            DB::beginTransaction();
+
+            $ktp_path = storage_path('app/'.$staff->foto_ktp);
+            $diri_path = storage_path('app/'.$staff->foto_diri);
+
+            if (file_exists($ktp_path)) {
+                unlink($ktp_path);
+            }
+
+            if (file_exists($diri_path)) {
+                unlink($diri_path);
+            }
+
+            $staff->delete();
+
+            DB::commit();
+
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
+        }
+
+
+        return redirect()->route('db.staff')->with('success', 'Data berhasil dihapus');
+    }
+
     public function pajak()
     {
         $data = Pajak::all();
