@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\db\CostOperational;
 use App\Models\db\Jabatan;
 use App\Models\db\Karyawan;
 use App\Models\db\Kemasan;
@@ -18,6 +19,44 @@ use Ramsey\Uuid\Uuid;
 
 class DatabaseController extends Controller
 {
+
+    public function cost_operational()
+    {
+        $data = CostOperational::all();
+
+        return view('db.cost-operational.index', [
+            'data' => $data
+        ]);
+    }
+
+    public function cost_operational_store(Request $req)
+    {
+        $data = $req->validate([
+            'nama' => 'required',
+        ]);
+
+        CostOperational::create($data);
+
+        return redirect()->back()->with('success', 'Data berhasil ditambahkan');
+    }
+
+    public function cost_operational_update(CostOperational $cost, Request $req)
+    {
+        $data = $req->validate([
+            'nama' => 'required',
+        ]);
+
+        $cost->update($data);
+
+        return redirect()->back()->with('success', 'Data berhasil diupdate');
+    }
+
+    public function cost_operational_delete(CostOperational $cost)
+    {
+        $cost->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
+    }
 
     public function jabatan_store(Request $req)
     {

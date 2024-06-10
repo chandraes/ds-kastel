@@ -163,8 +163,14 @@ Route::group(['middleware' => ['auth']], function() {
 
                 Route::get('/edit/{staff}', [App\Http\Controllers\DatabaseController::class, 'staff_edit'])->name('db.staff.edit');
                 Route::patch('/update/{staff}', [App\Http\Controllers\DatabaseController::class, 'staff_update'])->name('db.staff.update');
-                
                 Route::delete('/delete/{staff}', [App\Http\Controllers\DatabaseController::class, 'staff_delete'])->name('db.staff.delete');
+            });
+
+            Route::prefix('cost-operational')->group(function(){
+                Route::get('/', [App\Http\Controllers\DatabaseController::class, 'cost_operational'])->name('db.cost-operational');
+                Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'cost_operational_store'])->name('db.cost-operational.store');
+                Route::patch('/update/{cost}', [App\Http\Controllers\DatabaseController::class, 'cost_operational_update'])->name('db.cost-operational.update');
+                Route::delete('/delete/{cost}', [App\Http\Controllers\DatabaseController::class, 'cost_operational_delete'])->name('db.cost-operational.delete');
             });
         });
     });
