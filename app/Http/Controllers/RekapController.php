@@ -13,6 +13,7 @@ use App\Models\KasKonsumen;
 use App\Models\KasProject;
 use App\Models\PesanWa;
 use App\Models\Project;
+use App\Models\RekapGaji;
 use App\Models\transaksi\InvoiceBelanja;
 use App\Models\transaksi\InvoiceJual;
 use App\Services\StarSender;
@@ -469,6 +470,30 @@ class RekapController extends Controller
             'data' => $data,
             'month' => $month,
             'year' => $year,
+        ]);
+    }
+
+    public function gaji_detail(Request $request)
+    {
+        $v = $request->validate([
+            'bulan' => 'required',
+            'tahun' => 'required',
+        ]);
+
+        $data = RekapGaji::with('details')->where('bulan', $v['bulan'])->where('tahun', $v['tahun'])->first();
+
+        if (!$data) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan!!');
+        }
+
+        $bulan = Carbon::createFromDate($v['tahun'], $v['bulan'])->locale('id')->monthName;
+        $tahun = $v['tahun'];
+
+        return view('rekap.gaji.detail', [
+            'data' => $data,
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'bulan_angka' => $v['bulan'],
         ]);
     }
 }

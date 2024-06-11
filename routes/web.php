@@ -229,6 +229,10 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::get('/detail/{month}/{year}', [App\Http\Controllers\RekapController::class, 'pph_masa_detail'])->name('rekap.pph-masa.detail');
             });
 
+            Route::prefix('gaji')->group(function(){
+                Route::view('/', 'rekap.gaji.index')->name('rekap.gaji');
+                Route::get('/detail', [App\Http\Controllers\RekapController::class, 'gaji_detail'])->name('rekap.gaji.detail');
+            });
         });
     });
 
@@ -242,6 +246,11 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::prefix('cost-operational')->group(function(){
                     Route::get('/', [App\Http\Controllers\BillingController::class, 'cost_operational'])->name('billing.form-cost-operational.cost-operational');
                     Route::post('/store', [App\Http\Controllers\BillingController::class, 'cost_operational_store'])->name('billing.form-cost-operational.cost-operational.store');
+                });
+
+                Route::prefix('form-gaji')->group(function(){
+                    Route::get('/', [App\Http\Controllers\BillingController::class, 'gaji'])->name('billing.form-cost-operational.gaji');
+                    Route::post('/store', [App\Http\Controllers\BillingController::class, 'gaji_store'])->name('billing.form-cost-operational.gaji.store');
                 });
             });
 

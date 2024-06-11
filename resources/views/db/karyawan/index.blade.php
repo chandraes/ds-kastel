@@ -24,7 +24,7 @@
                     </td>
                     <td>
                         <a href="{{route('db.staff.create')}}" class="btn btn-outline-primary">
-                            <img src=" {{asset('images/karyawan.svg')}}" alt="dokumen" width="30"> Tambah karyawan</a>
+                            <img src=" {{asset('images/karyawan.svg')}}" alt="dokumen" width="30"> Tambah Staff</a>
                     </td>
                 </tr>
             </table>
