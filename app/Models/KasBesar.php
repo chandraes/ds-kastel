@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\db\CostOperational;
 use App\Models\transaksi\InvoiceBelanja;
 use App\Services\StarSender;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -566,5 +567,70 @@ class KasBesar extends Model
         ];
 
 
+    }
+
+    public function cost_operational($data)
+    {
+        $data['cost_operational'] = 1;
+
+        $data['uraian'] = CostOperational::find($data['cost_operational_id'])->nama;
+
+        unset($data['cost_operational_id']);
+
+        $data['nominal'] = str_replace('.', '', $data['nominal']);
+        $data['jenis'] = 0;
+        $data['saldo'] = $this->saldoTerakhir() - $data['nominal'];
+
+        if ($data['saldo'] < $data['nominal']) {
+            return [
+                'status' => 'error',
+                'message' => 'Saldo kas besar tidak mencukupi!! Sisa Saldo : Rp. '.number_format($this->saldoTerakhir(), 0, ',', '.'),
+            ];
+        }
+
+        $data['modal_investor_terakhir'] = $this->modalInvestorTerakhir();
+
+        try {
+            DB::beginTransaction();
+
+            $store = $this->create($data);
+
+            $pesan =    "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
+                        "*Form Cost Operational*\n".
+                        "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
+                        "Uraian : ".$store->uraian."\n".
+                        "Nilai :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
+                        "Ditransfer ke rek:\n\n".
+                        "Bank      : ".$store->bank."\n".
+                        "Nama    : ".$store->nama_rek."\n".
+                        "No. Rek : ".$store->no_rek."\n\n".
+                        "==========================\n".
+                        "Sisa Saldo Kas Besar : \n".
+                        "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                        "Total Modal Investor : \n".
+                        "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                        "Terima kasih 🙏🙏🙏\n";
+
+            DB::commit();
+
+            $tujuan = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
+
+            $this->sendWa($tujuan, $pesan);
+
+            return [
+                'status' => 'success',
+                'message' => 'Berhasil menambahkan data',
+            ];
+
+        } catch (\Throwable $th) {
+
+                DB::rollback();
+
+                return [
+                    'status' => 'error',
+                    'message' => $th->getMessage(),
+                ];
+
+        }
     }
 }

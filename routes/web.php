@@ -237,6 +237,14 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/billing', [App\Http\Controllers\BillingController::class, 'index'])->name('billing');
         Route::prefix('billing')->group(function() {
 
+            Route::prefix('form-cost-operational')->group(function(){
+                Route::view('/', 'billing.form-cost-operational.index')->name('billing.form-cost-operational');
+                Route::prefix('cost-operational')->group(function(){
+                    Route::get('/', [App\Http\Controllers\BillingController::class, 'cost_operational'])->name('billing.form-cost-operational.cost-operational');
+                    Route::post('/store', [App\Http\Controllers\BillingController::class, 'cost_operational_store'])->name('billing.form-cost-operational.cost-operational.store');
+                });
+            });
+
             Route::prefix('form-deposit')->group(function() {
                 Route::get('/masuk', [App\Http\Controllers\FormDepositController::class, 'masuk'])->name('form-deposit.masuk');
                 Route::post('/masuk/store', [App\Http\Controllers\FormDepositController::class, 'masuk_store'])->name('form-deposit.masuk.store');

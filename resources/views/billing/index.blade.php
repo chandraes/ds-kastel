@@ -8,14 +8,14 @@
     <div class="row justify-content-left">
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#formDeposit">
-                <img src="{{asset('images/form-deposit.svg')}}" alt="" width="80">
+                <img src="{{asset('images/form-deposit.svg')}}" alt="" width="70">
                 <h4 class="mt-2">FORM DEPOSIT</h4>
             </a>
             @include('billing.modal-form-deposit')
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#formKecil">
-                <img src="{{asset('images/form-kas-kecil.svg')}}" alt="" width="80">
+                <img src="{{asset('images/form-kas-kecil.svg')}}" alt="" width="70">
                 <h4 class="mt-2">FORM KAS KECIL</h4>
             </a>
             @include('billing.modal-form-kas-kecil')
@@ -23,7 +23,7 @@
         @if (auth()->user()->role == 'admin' || auth()->user()->role == 'su')
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalLain">
-                <img src="{{asset('images/form-lain.svg')}}" alt="" width="80">
+                <img src="{{asset('images/form-lain.svg')}}" alt="" width="70">
                 <h4 class="mt-2">FORM LAIN-LAIN</h4>
             </a>
             <div class="modal fade" id="modalLain" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -51,19 +51,25 @@
         @endif
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('billing.form-transaksi')}}" class="text-decoration-none">
-                <img src="{{asset('images/transaksi.svg')}}" alt="" width="80">
+                <img src="{{asset('images/transaksi.svg')}}" alt="" width="70">
                 <h4 class="mt-2">FORM TRANSAKSI</h4>
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
+            <a href="{{route('billing.form-cost-operational')}}" class="text-decoration-none">
+                <img src="{{asset('images/form-cost-operational.svg')}}" alt="" width="70">
+                <h4 class="mt-2">FORM COST<br>OPERATIONAL</h4>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('billing.produksi')}}" class="text-decoration-none">
-                <img src="{{asset('images/produksi.svg')}}" alt="" width="80">
+                <img src="{{asset('images/produksi.svg')}}" alt="" width="70">
                 <h4 class="mt-2">PRODUKSI</h4>
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('billing.stok-bahan-jadi.rencana')}}" class="text-decoration-none">
-                <img src="{{asset('images/rencana.svg')}}" alt="" width="80">
+                <img src="{{asset('images/rencana.svg')}}" alt="" width="70">
                 <h4 class="mt-2">RENCANA STOCK<br>BAHAN JADI
                     @if($rp != 0) <span class="text-danger">({{$rp}})</span> @endif
                 </h4>
@@ -71,66 +77,24 @@
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('billing.stok-bahan-jadi')}}" class="text-decoration-none">
-                <img src="{{asset('images/product-jadi.svg')}}" alt="" width="80">
+                <img src="{{asset('images/product-jadi.svg')}}" alt="" width="70">
                 <h4 class="mt-2">STOCK BAHAN JADI</h4>
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('billing.invoice-jual')}}" class="text-decoration-none">
-                <img src="{{asset('images/invoice-jual.svg')}}" alt="" width="80">
+                <img src="{{asset('images/invoice-jual.svg')}}" alt="" width="70">
                 <h4 class="mt-2">TAGIHAN KE KONSUMEN
                     @if($ij != 0) <span class="text-danger">({{$ij}})</span> @endif
                 </h4>
             </a>
         </div>
-        {{-- <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="{{route('billing.stok-bahan-jadi')}}" class="text-decoration-none">
-                <img src="{{asset('images/product-jadi.svg')}}" alt="" width="80">
-                <h4 class="mt-2">PENJUALAN BAHAN JADI</h4>
-            </a>
-        </div> --}}
-    </div>
-    <div class="row justify-content-left">
-        {{-- <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="{{route('nota-ppn-masukan')}}" class="text-decoration-none">
-                <img src="{{asset('images/form-ppn.svg')}}" alt="" width="80">
-                <h4 class="mt-2">NOTA PPn MASUKAN
-                    @if($np != 0) <span class="text-danger">({{$np}})</span> @endif
-                </h4>
-            </a>
-        </div> --}}
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('home')}}" class="text-decoration-none">
-                <img src="{{asset('images/dashboard.svg')}}" alt="" width="80">
+                <img src="{{asset('images/dashboard.svg')}}" alt="" width="70">
                 <h4 class="mt-2">DASHBOARD</h4>
             </a>
         </div>
-        {{-- <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="{{route('nota-tagihan.index')}}" class="text-decoration-none">
-                <img src="{{asset('images/nota-tagihan.svg')}}" alt="" width="80">
-                <h4 class="mt-2">NOTA TAGIHAN @if($nt != 0) <span class="text-danger">({{$nt}})</span> @endif</h4>
-            </a>
-        </div>
-
-        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="{{route('invoice-tagihan')}}" class="text-decoration-none">
-                <img src="{{asset('images/invoice-tagihan.svg')}}" alt="" width="80">
-                <h4 class="mt-2">INVOICE TAGIHAN @if($it != 0) <span class="text-danger">({{$it}})</span> @endif</h4>
-            </a>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="{{route('invoice-ppn')}}" class="text-decoration-none">
-                <img src="{{asset('images/taxes.svg')}}" alt="" width="80">
-                <h4 class="mt-2">INVOICE PPN @if($ip != 0) <span class="text-danger">({{$ip}})</span> @endif</h4>
-            </a>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="{{route('ppn-susulan')}}" class="text-decoration-none">
-                <img src="{{asset('images/ppn-susulan.svg')}}" alt="" width="80">
-                <h4 class="mt-2">PPN MASUKAN SUSULAN</h4>
-            </a>
-        </div> --}}
-
     </div>
 </div>
 @endsection

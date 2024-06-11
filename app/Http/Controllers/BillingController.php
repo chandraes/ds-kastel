@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\db\CostOperational;
 use App\Models\Investor;
 use App\Models\InvestorModal;
 use App\Models\KasBesar;
@@ -103,6 +104,37 @@ class BillingController extends Controller
         $store = $db->ppn_masuk_susulan($data['nominal']);
 
         return redirect()->back()->with($store['status'], $store['message']);
+
+    }
+
+    public function cost_operational()
+    {
+        $data = CostOperational::all();
+
+        if($data->isEmpty()) {
+            return redirect()->route('db.cost-operational')->with('error', 'Data cost operational kosong, silahkan tambahkan data cost operational terlebih dahulu');
+        }
+
+        return view('billing.form-cost-operational.form-operational.index', [
+            'data' => $data,
+        ]);
+    }
+
+    public function cost_operational_store(Request $request)
+    {
+        $data = $request->validate([
+                    'nominal' => 'required',
+                    'cost_operational_id' => 'required|exists:cost_operationals,id',
+                    'nama_rek' => 'required',
+                    'no_rek' => 'required',
+                    'bank' => 'required',
+                ]);
+
+        $db = new KasBesar();
+
+        $res = $db->cost_operational($data);
+
+        return redirect()->route('billing.form-cost-operational')->with($res['status'], $res['message']);
 
     }
 }
