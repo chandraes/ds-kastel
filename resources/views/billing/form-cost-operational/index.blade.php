@@ -12,7 +12,7 @@
             </a>
         </div>
         <div class="col-lg-3 mt-3 mb-3 text-center">
-            <a href="{{route('rekap.kas-kecil')}}" class="text-decoration-none">
+            <a href="#" class="text-decoration-none">
                 <img src="{{asset('images/form-gaji.svg')}}" alt="" width="70">
                 <h3 class="mt-2">FORM GAJI</h3>
             </a>
