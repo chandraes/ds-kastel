@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
 use App\Models\db\Konsumen;
 use App\Models\GroupWa;
 use App\Models\InvestorModal;
-use App\Models\InvoiceTagihan;
 use App\Models\KasBesar;
 use App\Models\KasKecil;
 use App\Models\KasKonsumen;
-use App\Models\KasProject;
 use App\Models\PesanWa;
-use App\Models\Project;
 use App\Models\RekapGaji;
 use App\Models\transaksi\InvoiceBelanja;
 use App\Models\transaksi\InvoiceJual;
