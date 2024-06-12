@@ -30,6 +30,7 @@
                     <th class="text-center align-middle">No</th>
                     <th class="text-center align-middle">Tanggal</th>
                     <th class="text-center align-middle">Keterangan</th>
+                    <th class="text-center align-middle">Jumlah</th>'
                 </tr>
             </thead>
             <tbody>
@@ -44,6 +45,13 @@
                             Produksi {{$d->rencanaProduksi->kode_produksi}}
                             @elseif ($d->invoiceJual)
                             Penjualan {{$d->invoiceJual->invoice}}
+                            @endif
+                        </td>
+                        <td class="text-center align-middle">
+                            @if ($d->rencanaProduksi)
+                            {{$d->rencanaProduksi->stock_kemasan}}
+                            @elseif ($d->invoiceJual)
+                            {{$d->invoiceJual->jumlah}}
                             @endif
                         </td>
                     </tr>
