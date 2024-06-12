@@ -23,7 +23,7 @@
         <div class="col-lg-3 col-md-3 col-sm-4 my-4 text-center">
             <a href="{{route('db.pengelola')}}" class="text-decoration-none">
                 <img src="{{asset('images/pengelola.svg')}}" alt="" width="70">
-                <h4 class="mt-2">PENGELOLA</h4>
+                <h4 class="mt-2">PERSENTASE DIVIDEN<br>PENGELOLA</h4>
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-4 my-4 text-center">
