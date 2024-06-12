@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
-            <h1><u>INVESTOR MODAL</u></h1>
+            <h1><u>NAMA INVESTOR</u></h1>
         </div>
     </div>
     <div class="flex-row justify-content-between mt-3">
@@ -15,7 +15,7 @@
                     <td><a href="{{route('db')}}"><img src="{{asset('images/database.svg')}}" alt="dokumen" width="30">
                             Database</a></td>
                     <td><a href="#" data-bs-toggle="modal" data-bs-target="#createInvestor"><img
-                                src="{{asset('images/investor-modal.svg')}}" width="30"> Tambah Investor Modal</a>
+                                src="{{asset('images/investor-modal.svg')}}" width="30"> Tambah Investor</a>
 
                     </td>
                 </tr>
