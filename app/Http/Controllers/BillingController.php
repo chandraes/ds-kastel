@@ -150,7 +150,7 @@ class BillingController extends Controller
         $check = RekapGaji::where('bulan', date('m'))->whereYear('tahun', date('Y'))->first();
 
         if ($check) {
-            return redirect()->route('billing.index')->with('error', 'Form Gaji Bulan Ini Sudah Dibuat');
+            return redirect()->route('billing')->with('error', 'Form Gaji Bulan Ini Sudah Dibuat');
         }
         $month = Carbon::now()->locale('id')->monthName;
         $data = Karyawan::where('status', 1)->get();
@@ -165,7 +165,7 @@ class BillingController extends Controller
     {
         ini_set('max_execution_time', 300); //300 seconds = 5 minutes
         ini_set('memory_limit', '512M');
-        
+
         $ds = $request->validate([
             'total' => 'required',
         ]);
