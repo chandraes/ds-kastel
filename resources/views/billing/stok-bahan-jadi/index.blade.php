@@ -62,10 +62,18 @@
                         @if($i++ == 0)
                         <td class="text-center align-middle" rowspan="{{ count($group) }}">{{$loop->iteration}}</td>
                         <td class="text-center align-middle" rowspan="{{ count($group) }}">
-                            {{$d->product->kategori->nama}}</td>
+
+                            {{$d->product->kategori->nama}}
+                        </td>
                         @endif
                         <td class="text-center align-middle">
-                            {{$d->product->nama}}
+                            <div class="row px-3">
+                                    <a href="{{route('billing.stok-bahan-jadi.detail', $d->id)}}"
+                                        class="btn btn-outline-dark">
+                                        {{$d->product->nama}}
+                                    </a>
+                            </div>
+
                         </td>
                         <td class="text-center align-middle">
                             {{$d->stock_kemasan ?? 0}}

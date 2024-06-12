@@ -290,6 +290,7 @@ Route::group(['middleware' => ['auth']], function() {
 
             Route::prefix('stok-bahan-jadi')->group(function(){
                 Route::get('/', [App\Http\Controllers\StokBahanJadiController::class, 'index'])->name('billing.stok-bahan-jadi');
+                Route::get('/detail/{productJadi}', [App\Http\Controllers\StokBahanJadiController::class, 'detail'])->name('billing.stok-bahan-jadi.detail');
                 Route::prefix('keranjang')->group(function(){
                     Route::post('/store', [App\Http\Controllers\StokBahanJadiController::class, 'keranjang_store'])->name('billing.stok-bahan-jadi.keranjang.store');
                     Route::post('/update', [App\Http\Controllers\StokBahanJadiController::class, 'keranjang_update'])->name('billing.stok-bahan-jadi.keranjang.update');

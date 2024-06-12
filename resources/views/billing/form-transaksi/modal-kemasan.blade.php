@@ -11,7 +11,7 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="mb-3">
-                        <select class="form-select" name="bahanBakuSelect" id="bahanBakuSelect">
+                        <select class="form-select" name="kemasanSelect" id="kemasanSelect">
                             <option value="cash">Cash</option>
                             <option value="tempo">Dengan Tempo</option>
                         </select>
@@ -22,21 +22,21 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Tutup
                 </button>
-                <button type="button" class="btn btn-primary" onclick="funBahan()">Lanjutkan</button>
+                <button type="button" class="btn btn-primary" onclick="funKemasan()">Lanjutkan</button>
             </div>
         </div>
     </div>
 </div>
 @push('js')
 <script>
-    function funBahan()
+    function funKemasan()
     {
-        var bahanBakuSelect = document.getElementById('bahanBakuSelect').value;
-        if(bahanBakuSelect == 'cash')
+        var kemasanSelect = document.getElementById('kemasanSelect').value;
+        if(kemasanSelect == 'cash')
         {
             window.location.href = "{{route('billing.form-transaksi.kemasan')}}";
         }
-        else if(bahanBakuSelect == 'tempo')
+        else if(kemasanSelect == 'tempo')
         {
             window.location.href = "{{route('billing.form-transaksi.bahan-baku.beli-tempo')}}";
         }

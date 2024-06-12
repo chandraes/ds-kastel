@@ -35,6 +35,17 @@ class StokBahanJadiController extends Controller
         ]);
     }
 
+    public function detail(ProductJadi $productJadi)
+    {
+        $data = ProductJadiRekap::where('product_jadi_id', $productJadi->id)
+                                ->with('rencanaProduksi', 'productJadi')
+                                ->get();
+
+        return view('billing.stok-bahan-jadi.detail', [
+            'data' => $data
+        ]);
+    }
+
     public function checkout()
     {
         $data = KeranjangJual::where('user_id', auth()->user()->id)
