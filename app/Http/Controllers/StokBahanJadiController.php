@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\db\Kemasan;
 use App\Models\db\Konsumen;
 use App\Models\db\Pajak;
-use App\Models\db\Product;
 use App\Models\PasswordKonfirmasi;
 use App\Models\Produksi\ProductJadi;
 use App\Models\Produksi\ProductJadiRekap;
-use App\Models\Produksi\ProduksiDetail;
 use App\Models\Produksi\RencanaProduksi;
 use App\Models\transaksi\InvoiceJual;
-use App\Models\transaksi\Keranjang;
 use App\Models\transaksi\KeranjangJual;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

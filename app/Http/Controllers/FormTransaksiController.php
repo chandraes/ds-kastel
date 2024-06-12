@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\db\KategoriBahan;
+use App\Models\db\KategoriProduct;
+use App\Models\db\Kemasan;
+use App\Models\db\Product;
 use App\Models\db\Satuan;
 use App\Models\db\Supplier;
 use App\Models\transaksi\InvoiceBelanja;
@@ -45,7 +48,7 @@ class FormTransaksiController extends Controller
         }
         $supplier = Supplier::where('status', 1)->get();
         $kategori = KategoriBahan::all();
-        $keranjang = Keranjang::with(['bahan_baku'])->where('user_id', auth()->id())->where('tempo', 0)->get();
+        $keranjang = Keranjang::with(['bahan_baku'])->where('user_id', auth()->id())->where('jenis', 1)->where('tempo', 0)->get();
         $satuan = Satuan::all();
 
         return view('billing.form-transaksi.bahan-baku.beli', [
@@ -93,13 +96,13 @@ class FormTransaksiController extends Controller
 
     public function keranjang_empty()
     {
-        $count = Keranjang::where('user_id', auth()->id())->where('tempo', 0)->count();
+        $count = Keranjang::where('user_id', auth()->id())->where('tempo', 0)->where('jenis', 1)->count();
 
         if ($count == 0) {
             return redirect()->back()->with('error', 'Keranjang kosong');
         }
 
-        Keranjang::where('user_id', auth()->id())->where('tempo', 0)->delete();
+        Keranjang::where('user_id', auth()->id())->where('jenis', 1)->where('tempo', 0)->delete();
 
         return redirect()->route('billing.form-transaksi.bahan-baku.beli')->with('success', 'Keranjang berhasil dikosongkan');
     }
@@ -121,7 +124,7 @@ class FormTransaksiController extends Controller
 
         $db = new Keranjang();
 
-        if ($db->where('user_id', auth()->id())->where('tempo', 0)->count() == 0) {
+        if ($db->where('user_id', auth()->id())->where('tempo', 0)->where('jenis', 1)->count() == 0) {
             return redirect()->back()->with('error', 'Keranjang kosong');
         }
 
@@ -137,7 +140,7 @@ class FormTransaksiController extends Controller
         }
         $supplier = Supplier::where('status', 1)->get();
         $kategori = KategoriBahan::all();
-        $keranjang = Keranjang::with(['bahan_baku'])->where('user_id', auth()->id())->where('tempo', 1)->get();
+        $keranjang = Keranjang::with(['bahan_baku'])->where('user_id', auth()->id())->where('jenis', 1)->where('tempo', 1)->get();
         $satuan = Satuan::all();
 
         return view('billing.form-transaksi.bahan-baku.tempo.index', [
@@ -179,13 +182,13 @@ class FormTransaksiController extends Controller
 
     public function keranjang_tempo_empty()
     {
-        $count = Keranjang::where('user_id', auth()->id())->where('tempo', 1)->count();
+        $count = Keranjang::where('user_id', auth()->id())->where('jenis', 1)->where('tempo', 1)->count();
 
         if ($count == 0) {
             return redirect()->back()->with('error', 'Keranjang kosong');
         }
 
-        Keranjang::where('user_id', auth()->id())->where('tempo', 1)->delete();
+        Keranjang::where('user_id', auth()->id())->where('jenis', 1)->where('tempo', 1)->delete();
 
         return redirect()->back()->with('success', 'Keranjang berhasil dikosongkan');
     }
@@ -209,13 +212,78 @@ class FormTransaksiController extends Controller
 
         $db = new Keranjang();
 
-        if ($db->where('user_id', auth()->id())->where('tempo', 1)->count() == 0) {
+        if ($db->where('user_id', auth()->id())->where('jenis', 1)->where('tempo', 1)->count() == 0) {
             return redirect()->back()->with('error', 'Keranjang kosong');
         }
 
         $store = $db->checkoutTempo($data);
 
         return redirect()->back()->with($store['status'], $store['message']);
+    }
+
+    public function get_product(Request $request)
+    {
+        $data = Product::where('kategori_product_id', $request->kategori_product_id)->get();
+
+        if($data->count() == 0){
+            $data = 'empty';
+            $result = [
+                'status' => 0,
+                'message' => 'Kategori belum memiliki product!'
+            ];
+        } else {
+            $result = [
+                'status' => 1,
+                'message' => 'Produk ditemukan',
+                'data' => $data
+            ];
+        }
+
+        return response()->json($result);
+    }
+
+    public function get_kemasan(Request $request)
+    {
+        $data = Kemasan::with('satuan')->where('product_id', $request->product_id)->get();
+
+        if($data->count() == 0){
+            $data = 'empty';
+            $result = [
+                'status' => 0,
+                'message' => 'Kemasan tidak ditemukan'
+            ];
+        } else {
+            $result = [
+                'status' => 1,
+                'message' => 'Kemasan ditemukan',
+                'data' => $data
+            ];
+        }
+
+        return response()->json($result);
+    }
+
+    public function kemasan()
+    {
+        if (Supplier::where('status', 1)->count() == 0) {
+            return redirect()->route('db.supplier')->with('error', 'Supplier belum ada, silahkan tambahkan supplier terlebih dahulu');
+        }
+        $supplier = Supplier::where('status', 1)->get();
+        $kategori = KategoriProduct::all();
+        $keranjang = Keranjang::with(['bahan_baku'])->where('user_id', auth()->id())->where('jenis', 2)->where('tempo', 0)->get();
+        $satuan = Satuan::all();
+
+        return view('billing.form-transaksi.kemasan.index', [
+            'kategori' => $kategori,
+            'keranjang' => $keranjang,
+            'satuan' => $satuan,
+            'supplier' => $supplier
+        ]);
+    }
+
+    public function kemasan_tempo()
+    {
+
     }
 
 

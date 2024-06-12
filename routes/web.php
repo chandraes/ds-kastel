@@ -354,6 +354,12 @@ Route::group(['middleware' => ['auth']], function() {
                     });
 
                 });
+
+                Route::prefix('form-kemasan')->group(function(){
+                    Route::get('/', [App\Http\Controllers\FormTransaksiController::class, 'kemasan'])->name('billing.form-transaksi.kemasan');
+                    Route::get('/get-product', [App\Http\Controllers\FormTransaksiController::class, 'get_product'])->name('billing.form-transaksi.kemasan.get-product');
+                    Route::get('/get-kemasan', [App\Http\Controllers\FormTransaksiController::class, 'get_kemasan'])->name('billing.form-transaksi.kemasan.get-kemasan');
+                });
             });
 
             Route::get('/nota-tagihan', [App\Http\Controllers\NotaTagihanController::class, 'index'])->name('nota-tagihan.index');

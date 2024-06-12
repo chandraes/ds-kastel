@@ -151,7 +151,7 @@ class Keranjang extends Model
 
     private function update_bahan()
     {
-        $keranjang = $this->where('user_id', auth()->user()->id)->where('tempo', 0)->get();
+        $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', 1)->where('tempo', 0)->get();
 
         // Get all the bahan_baku_ids from the keranjang
         $bahan_baku_ids = $keranjang->pluck('bahan_baku_id')->toArray();
@@ -192,7 +192,7 @@ class Keranjang extends Model
 
         $store = $db->create($invoice);
 
-        $keranjang = $this->where('user_id', auth()->user()->id)->where('tempo', 0)->get();
+        $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', 1)->where('tempo', 0)->get();
 
         foreach ($keranjang as $item) {
 
@@ -235,7 +235,7 @@ class Keranjang extends Model
     {
         $kas = new KasBesar();
 
-        $belanja = $this->where('user_id', auth()->user()->id)->where('tempo', 1)->get();
+        $belanja = $this->where('user_id', auth()->user()->id)->where('jenis', 1)->where('tempo', 1)->get();
 
         if($data['ppn'] == 1)
         {
@@ -304,7 +304,7 @@ class Keranjang extends Model
 
             $this->update_bahan_tempo();
 
-            $this->where('user_id', auth()->user()->id)->where('tempo', 1)->delete();
+            $this->where('user_id', auth()->user()->id)->where('jenis', 1)->where('tempo', 1)->delete();
 
             DB::commit();
 
@@ -355,7 +355,7 @@ class Keranjang extends Model
 
         $store = $db->create($invoice);
 
-        $keranjang = $this->where('user_id', auth()->user()->id)->where('tempo', 1)->get();
+        $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', 1)->where('tempo', 1)->get();
 
         foreach ($keranjang as $item) {
 
@@ -402,7 +402,7 @@ class Keranjang extends Model
 
     private function update_bahan_tempo()
     {
-        $keranjang = $this->where('user_id', auth()->user()->id)->where('tempo', 1)->get();
+        $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', 1)->where('tempo', 1)->get();
 
         // Get all the bahan_baku_ids from the keranjang
         $bahan_baku_ids = $keranjang->pluck('bahan_baku_id')->toArray();

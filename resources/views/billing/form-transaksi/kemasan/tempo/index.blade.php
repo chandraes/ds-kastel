@@ -4,7 +4,7 @@
     <div class="row justify-content-center mb-5">
         <div class="col-md-12 text-center">
             <h1><u>Form Beli Bahan Baku</u></h1>
-            <h1><u>CASH</u></h1>
+            <h1><u>TEMPO</u></h1>
         </div>
     </div>
     <div class="row justify-content-left mt-3 mb-3">
@@ -15,10 +15,10 @@
                         <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#keranjangBelanja" >
                             <i class="fa fa-shopping-cart"> Keranjang </i> ({{$keranjang->count()}})
                         </a>
-                        @include('billing.form-transaksi.bahan-baku.keranjang')
+                        @include('billing.form-transaksi.bahan-baku.tempo.keranjang')
                     </td>
                     <td>
-                        <form action="{{route('billing.form-transaksi.bahan-baku.keranjang.empty')}}" method="post" id="kosongKeranjang">
+                        <form action="{{route('billing.form-transaksi.bahan-baku.keranjang-tempo.empty')}}" method="post" id="kosongKeranjang">
                             @csrf
                             <button class="btn btn-danger" type="submit">
                                 <i class="fa fa-trash"> Kosongkan Keranjang </i>
@@ -30,10 +30,9 @@
         </div>
     </div>
     @include('swal')
-    <form action="{{route('billing.form-transaksi.bahan-baku.keranjang.store')}}" method="post" id="masukForm">
+    <form action="{{route('billing.form-transaksi.bahan-baku.keranjang-tempo.store')}}" method="post" id="masukForm">
         @csrf
         <div class="row">
-
             <div class="col-md-3">
                 <div class="mb-3">
                     <label for="apa_konversi" class="form-label">Bahan</label>
@@ -164,6 +163,14 @@
                 numeralDecimalMark: ',',
                 delimiter: '.'
             });
+
+            var dp = new Cleave('#dp', {
+                numeral: true,
+                numeralThousandsGroupStyle: 'thousand',
+                numeralDecimalMark: ',',
+                delimiter: '.'
+            });
+
             var diskoTn = new Cleave('#diskon', {
                 numeral: true,
                 numeralThousandsGroupStyle: 'thousand',
@@ -204,7 +211,6 @@
         function funGetBarang() {
             var kategori_bahan_id = $('#kategori_bahan_id').val();
             var apa_konversi = $('#apa_konversi').val();
-
             $.ajax({
                 url: "{{route('billing.form-transaksi.bahan-baku.get-barang')}}",
                 type: "GET",
@@ -218,12 +224,9 @@
                     $.each(data, function(index, value){
                         $('#bahan_baku_id').append('<option value="'+value.id+'">'+value.nama+'</option>');
                     });
-
-
                 }
             });
 
-            console.log(apa_konversi)
             if (apa_konversi == 1) {
                 // set selected value satuan_id to 2 and make it readonly
                 $('#satuan_id').val(2);
@@ -233,7 +236,6 @@
                 $('#satuan_id').val('');
                 $('#satuan_id').removeAttr('disabled');
             }
-
         }
 
     </script>
