@@ -16,7 +16,6 @@
                 <table class="table table-bordered">
                     <thead class="table-success">
                         <tr>
-                            <th class="text-center align-middle">Kategori Barang</th>
                             <th class="text-center align-middle">Nama Barang</th>
                             <th class="text-center align-middle">Banyak</th>
                             <th class="text-center align-middle">Satuan</th>
@@ -29,8 +28,7 @@
                     <tbody>
                         @foreach ($keranjang as $b)
                         <tr>
-                            <td class="text-center align-middle">{{$b->bahan_baku->kategori->nama}}</td>
-                            <td class="text-center align-middle">{{$b->bahan_baku->nama}}</td>
+                            <td class="text-center align-middle">{{$b->kemasan->nama}}</td>
                             <td class="text-center align-middle">{{$b->nf_jumlah}}</td>
                             <td class="text-center align-middle">{{$b->satuan->nama}}</td>
                             <td class="text-center align-middle">{{number_format($b->harga, 0, ',','.')}}</td>
@@ -51,7 +49,6 @@
                     <tfoot>
                         <tr>
                             <td class="text-center align-middle"></td>
-                            <td class="text-center align-middle"></td>
                             <td class="text-center align-middle">{{count($keranjang) > 0 ?
                                 number_format($keranjang->sum('jumlah'), 0, ',','.') : ''}}</td>
                             <td class="text-center align-middle"></td>
@@ -64,35 +61,35 @@
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="6">Total DPP</td>
+                            <td class="text-end align-middle" colspan="5">Total DPP</td>
                             <td class="text-end align-middle" id="tdTotal">{{count($keranjang) > 0 ?
                                 number_format($keranjang->sum('total') + $keranjang->sum('add_fee'), 0, ',','.') : ''}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="6">Diskon</td>
+                            <td class="text-end align-middle" colspan="5">Diskon</td>
                             <td class="text-end align-middle" id="tdDiskon">
                                 {{number_format($diskon, 0, ',','.')}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="6">Total DPP Setelah Diskon</td>
+                            <td class="text-end align-middle" colspan="5">Total DPP Setelah Diskon</td>
                             <td class="text-end align-middle" id="tdTotalSetelahDiskon">
                                 {{number_format($total-$diskon, 0, ',','.')}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="6">PPN</td>
+                            <td class="text-end align-middle" colspan="5">PPN</td>
                             <td class="text-end align-middle" id="tdPpn">
                                 0
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="6">Grand Total</td>
+                            <td class="text-end align-middle" colspan="5">Grand Total</td>
                             <td class="text-end align-middle" id="grand_total">
                                 {{number_format($total + $add_fee + $ppn - $diskon, 0, ',','.')}}
                             </td>

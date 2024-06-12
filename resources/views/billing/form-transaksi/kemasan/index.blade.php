@@ -30,7 +30,7 @@
         </div>
     </div>
     @include('swal')
-    <form action="#" method="post" id="masukForm">
+    <form action="{{route('billing.form-transaksi.kemasan.store')}}" method="post" id="masukForm">
         @csrf
         <div class="row">
             <div class="col-md-3">
@@ -125,12 +125,13 @@
 
     function add_ppn(){
         var apa_ppn = document.getElementById('ppn').value;
-        console.log(apa_ppn);
+        var ppn = {!! $ppn !!} / 100;
+
         if (apa_ppn === "1") { // compare with string "1"
             var gt = Number(document.getElementById('tdTotalSetelahDiskon').textContent.replace(/\./g, ''));
 
-            var vPpn = gt * 0.11;
-            var totalap = gt + (gt * 0.11);
+            var vPpn = gt * ppn;
+            var totalap = gt + (gt *ppn);
 
             var tF = totalap.toLocaleString('id-ID');
             var vF = vPpn.toLocaleString('id-ID');
@@ -202,10 +203,16 @@
                             text: data.message,
                             icon: "error",
                             button: "OK"
-                        })
+                        });
+                        // make kategori_product_id to '' selected
+                        $('#kategori_product_id').val('');
+
+
+
                     } else {
                         var data = data.data;
                         $('#product_id').empty();
+
                         $('#product_id').append('<option value=""> -- Pilih Jenis-- </option>');
                         $.each(data, function(index, value){
                             $('#product_id').append('<option value="'+value.id+'">'+value.nama+'</option>');

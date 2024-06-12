@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\db\KategoriBahan;
 use App\Models\db\KategoriProduct;
 use App\Models\db\Kemasan;
+use App\Models\db\Pajak;
 use App\Models\db\Product;
 use App\Models\db\Satuan;
 use App\Models\db\Supplier;
@@ -272,18 +273,68 @@ class FormTransaksiController extends Controller
         $kategori = KategoriProduct::all();
         $keranjang = Keranjang::with(['bahan_baku'])->where('user_id', auth()->id())->where('jenis', 2)->where('tempo', 0)->get();
         $satuan = Satuan::all();
+        $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
 
         return view('billing.form-transaksi.kemasan.index', [
             'kategori' => $kategori,
             'keranjang' => $keranjang,
             'satuan' => $satuan,
-            'supplier' => $supplier
+            'supplier' => $supplier,
+            'ppn' => $ppn
         ]);
     }
 
-    public function kemasan_tempo()
+    public function kemasan_store(Request $request)
     {
+        $data = $request->validate([
+            'kemasan_id' => 'required|exists:kemasans,id',
+            'jumlah' => 'required|numeric|min:1',
+            'harga' => 'required',
+            'satuan_id' => 'required_if:apa_konversi,==,0',
+            'add_fee' => 'required'
+        ]);
 
+
+        $data['satuan_id'] = Kemasan::find($data['kemasan_id'])->satuan_id;
+        $data['user_id'] = auth()->user()->id;
+
+        $data['harga'] = str_replace('.', '', $data['harga']);
+        $data['total'] = $data['jumlah'] * $data['harga'];
+        $data['add_fee'] = str_replace('.', '', $data['add_fee']);
+        $data['jenis'] = 2;
+
+
+        Keranjang::create($data);
+
+        return redirect()->route('billing.form-transaksi.kemasan')->with('success', 'Berhasil ditambahkan ke keranjang');
+    }
+
+    public function kemasan_keranjang_checkout(Request $request)
+    {
+        ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+        ini_set('memory_limit', '512M');
+
+        $data = $request->validate([
+            'uraian' => 'required',
+            'dp' => 'required',
+            'jatuh_tempo' => 'required',
+            'ppn' => 'required',
+            'diskon' => 'required',
+            'nama_rek' => 'required',
+            'no_rek' => 'required',
+            'bank' => 'required',
+            'supplier_id' => 'required|exists:suppliers,id'
+        ]);
+
+        $db = new Keranjang();
+
+        if ($db->where('user_id', auth()->id())->where('jenis', 2)->where('tempo', 0)->count() == 0) {
+            return redirect()->back()->with('error', 'Keranjang kosong');
+        }
+
+        $store = $db->checkoutKemasan($data);
+
+        return redirect()->back()->with($store['status'], $store['message']);
     }
 
 

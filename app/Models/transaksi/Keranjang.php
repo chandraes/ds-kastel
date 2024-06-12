@@ -3,6 +3,8 @@
 namespace App\Models\transaksi;
 
 use App\Models\db\BahanBaku;
+use App\Models\db\Kemasan;
+use App\Models\db\Pajak;
 use App\Models\db\RekapBahanBaku;
 use App\Models\db\Satuan;
 use App\Models\GroupWa;
@@ -25,6 +27,11 @@ class Keranjang extends Model
     public function getNfJumlahAttribute()
     {
         return number_format($this->jumlah, 0, ',','.');
+    }
+
+    public function kemasan()
+    {
+        return $this->belongsTo(Kemasan::class);
     }
 
     public function user()
@@ -418,6 +425,90 @@ class Keranjang extends Model
         }
 
         return true;
+    }
+
+    public function checkoutKemasan($data)
+    {
+        $kas = new KasBesar();
+
+        $belanja = $this->where('user_id', auth()->user()->id)->where('tempo', 0)->get();
+
+        if($data['ppn'] == 1)
+        {
+            $data['ppn'] = 0.11 * ($belanja->sum('total') + $belanja->sum('add_fee'));
+
+        }
+        $data['diskon'] = str_replace('.', '', $data['diskon']);
+
+        $data['total'] = $belanja->sum('total') + $belanja->sum('add_fee') + $data['ppn'] - $data['diskon'];
+
+        $saldo = $kas->saldoTerakhir();
+
+        if ($saldo < $data['total']) {
+            return [
+                'status' => 'error',
+                'message' => 'Saldo tidak mencukupi'
+            ];
+        }
+
+        $pesan = '';
+
+        try {
+
+            DB::beginTransaction();
+
+            $store_inv = $this->invoice_checkout($data);
+
+            $store = $this->kas_checkout($data, $store_inv->id);
+
+            $this->update_bahan();
+
+            $this->where('user_id', auth()->user()->id)->where('tempo', 0)->delete();
+
+            DB::commit();
+
+            $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 0)->sum('ppn');
+
+            $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
+                        "*FORM BELI BAHAN BAKU*\n".
+                        "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
+                        "Uraian :  *".$store->uraian."*\n\n".
+                        "Nilai    :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
+                        "Ditransfer ke rek:\n\n".
+                        "Bank      : ".$store->bank."\n".
+                        "Nama    : ".$store->nama_rek."\n".
+                        "No. Rek : ".$store->no_rek."\n\n".
+                        "==========================\n".
+                        "Sisa Saldo Kas Besar : \n".
+                        "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                        "Total Modal Investor : \n".
+                        "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                        "Total PPn Masukan : \n".
+                        "Rp. ".number_format($ppnMasukan, 0, ',', '.')."\n\n".
+                        "Terima kasih 🙏🙏🙏\n";
+
+            $group = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
+
+            $this->sendWa($group, $pesan);
+
+            $result = [
+                'status' => 'success',
+                'message' => 'Data berhasil disimpan!'
+            ];
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            $result = [
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ];
+
+            return $result;
+        }
+
+        return $result;
     }
 
 }

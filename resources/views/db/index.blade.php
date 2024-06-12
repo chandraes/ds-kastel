@@ -47,7 +47,7 @@
         <div class="col-lg-3 col-md-3 col-sm-4 my-4 text-center">
             <a href="{{route('db.cost-operational')}}" class="text-decoration-none">
                 <img src="{{asset('images/cost-operational.svg')}}" alt="" width="70">
-                <h4 class="mt-2">DB COST<br>OPERASIONAL</h4>
+                <h4 class="mt-2">KATEGORI COST<br>OPERASIONAL</h4>
             </a>
         </div>
         @endif
