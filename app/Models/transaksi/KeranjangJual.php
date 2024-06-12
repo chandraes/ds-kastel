@@ -9,6 +9,7 @@ use App\Models\KasBesar;
 use App\Models\KasKonsumen;
 use App\Models\PesanWa;
 use App\Models\Produksi\ProductJadi;
+use App\Models\Produksi\ProductJadiRekap;
 use App\Models\Rekening;
 use App\Models\User;
 use App\Services\StarSender;
@@ -103,6 +104,7 @@ class KeranjangJual extends Model
         DB::beginTransaction();
 
         $kasKonsumen = new KasKonsumen();
+        $pjr = new ProductJadiRekap();
 
         $store = $db->create($data);
 
@@ -114,6 +116,15 @@ class KeranjangJual extends Model
             $detail['total'] = $detail['harga'] * $detail['jumlah'];
 
             $store->detail()->create($detail);
+
+            ProductJadiRekap::create([
+                'jenis' => 0,
+                'product_jadi_id' => $d->product_jadi_id,
+                'jumlah_kemasan' => $d->product_jadi->kemasan->packaging ? $d->product_jadi->kemasan->packaging->konversi_kemasan * $d->jumlah : $d->jumlah,
+                'jumlah_packaging' => $d->jumlah,
+                'invoice_jual_id' => $store->id,
+                'sisa_kemasan' => $pjr->sisaTerakhir($d->product_jadi_id),
+            ]);
         }
 
         $this->penguranganStock();

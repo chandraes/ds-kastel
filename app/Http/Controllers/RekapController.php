@@ -492,4 +492,21 @@ class RekapController extends Controller
             'bulan_angka' => $v['bulan'],
         ]);
     }
+
+    public function pph_badan(Request $request)
+    {
+        $db = new KasBesar();
+
+        $tahun = $request->tahun ?? date('Y');
+
+        $dataTahun = $db->dataTahun();
+
+        $data = $db->pphBadan($tahun);
+
+        return view('rekap.pph-badan.index', [
+            'data' => $data,
+            'dataTahun' => $dataTahun,
+            'tahun' => $tahun,
+        ]);
+    }
 }

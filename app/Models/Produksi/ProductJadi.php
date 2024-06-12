@@ -21,4 +21,9 @@ class ProductJadi extends Model
     {
         return $this->belongsTo(Kemasan::class);
     }
+
+    public function rekap()
+    {
+        return $this->hasMany(ProductJadiRekap::class, 'product_jadi_id');
+    }
 }

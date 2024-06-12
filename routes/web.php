@@ -233,6 +233,10 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::view('/', 'rekap.gaji.index')->name('rekap.gaji');
                 Route::get('/detail', [App\Http\Controllers\RekapController::class, 'gaji_detail'])->name('rekap.gaji.detail');
             });
+
+            Route::prefix('pph-badan')->group(function(){
+                Route::get('/', [App\Http\Controllers\RekapController::class, 'pph_badan'])->name('rekap.pph-badan');
+            });
         });
     });
 

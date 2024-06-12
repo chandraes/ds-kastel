@@ -633,4 +633,9 @@ class KasBesar extends Model
 
         }
     }
+
+    public function pphBadan($tahun)
+    {
+        return [];
+    }
 }

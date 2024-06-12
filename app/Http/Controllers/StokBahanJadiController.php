@@ -8,6 +8,7 @@ use App\Models\db\Pajak;
 use App\Models\db\Product;
 use App\Models\PasswordKonfirmasi;
 use App\Models\Produksi\ProductJadi;
+use App\Models\Produksi\ProductJadiRekap;
 use App\Models\Produksi\ProduksiDetail;
 use App\Models\Produksi\RencanaProduksi;
 use App\Models\transaksi\InvoiceJual;
@@ -352,6 +353,15 @@ class StokBahanJadiController extends Controller
 
             $data->update([
                 'approved' => 1
+            ]);
+
+            ProductJadiRekap::create([
+                'product_jadi_id' => $store->id,
+                'jenis' => 1,
+                'jumlah_kemasan' => $data->produksi_detail->sum('total_kemasan'),
+                'jumlah_packaging' => $data->real_packaging,
+                'sisa_kemasan' => $data->produksi_detail->sum('total_kemasan') % $data->real_packaging,
+                'rencana_produksi_id' => $data->id,
             ]);
 
             DB::commit();
