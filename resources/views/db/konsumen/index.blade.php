@@ -152,6 +152,15 @@
         blocks: [4, 4, 8]
     });
 
+    var npwp = new Cleave('#npwp', {
+        delimiters: ['.', '.', '.', '-','.','.'],
+        blocks: [2, 3, 3, 1, 3, 3],
+    });
+
+    var edit_npwp = new Cleave('#edit_npwp', {
+        delimiters: ['.', '.', '.', '-','.','.'],
+        blocks: [2, 3, 3, 1, 3, 3],
+    });
 
     $('#createForm').submit(function(e){
             e.preventDefault();
