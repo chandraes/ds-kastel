@@ -67,8 +67,6 @@
                 <h5 class="mt-2">DAFTAR<br>KONSUMEN</h5>
             </a>
         </div>
-    </div>
-    <div class="row justify-content-left">
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.satuan')}}" class="text-decoration-none">
                 <img src="{{asset('images/satuan.svg')}}" alt="" width="70">
