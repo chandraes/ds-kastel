@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row justify-content-center mb-5">
         <div class="col-md-12 text-center">
-            <h1><u>Tambah Staff</u></h1>
+            <h1><u>Biodata Direksi / Staff</u></h1>
         </div>
     </div>
     <form action="{{route('db.staff.store')}}" method="post" enctype="multipart/form-data" id="masukForm">

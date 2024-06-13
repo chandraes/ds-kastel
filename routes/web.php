@@ -366,7 +366,16 @@ Route::group(['middleware' => ['auth']], function() {
                         Route::post('/empty', [App\Http\Controllers\FormTransaksiController::class, 'kemasan_keranjang_empty'])->name('billing.form-transaksi.kemasan.keranjang.empty');
                         Route::post('/checkout', [App\Http\Controllers\FormTransaksiController::class, 'kemasan_keranjang_checkout'])->name('billing.form-transaksi.kemasan.keranjang.checkout');
                     });
+                });
 
+                Route::prefix('form-packaging')->group(function(){
+                    Route::get('/', [App\Http\Controllers\FormTransaksiController::class, 'packaging'])->name('billing.form-transaksi.packaging');
+                    Route::post('/store', [App\Http\Controllers\FormTransaksiController::class, 'packaging_store'])->name('billing.form-transaksi.packaging.store');
+                    Route::prefix('keranjang')->group(function(){
+                        Route::delete('/delete/{keranjang}', [App\Http\Controllers\FormTransaksiController::class, 'packaging_keranjang_delete'])->name('billing.form-transaksi.packaging.keranjang.delete');
+                        Route::post('/empty', [App\Http\Controllers\FormTransaksiController::class, 'packaging_keranjang_empty'])->name('billing.form-transaksi.packaging.keranjang.empty');
+                        Route::post('/checkout', [App\Http\Controllers\FormTransaksiController::class, 'packaging_keranjang_checkout'])->name('billing.form-transaksi.packaging.keranjang.checkout');
+                    });
                 });
             });
 

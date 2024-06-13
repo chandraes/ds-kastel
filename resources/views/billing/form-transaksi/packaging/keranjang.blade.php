@@ -16,7 +16,6 @@
                 <table class="table table-bordered">
                     <thead class="table-success">
                         <tr>
-                            <th class="text-center align-middle">Kategori Barang</th>
                             <th class="text-center align-middle">Nama Barang</th>
                             <th class="text-center align-middle">Banyak</th>
                             <th class="text-center align-middle">Satuan</th>
@@ -29,8 +28,7 @@
                     <tbody>
                         @foreach ($keranjang as $b)
                         <tr>
-                            <td class="text-center align-middle">{{$b->bahan_baku->kategori->nama}}</td>
-                            <td class="text-center align-middle">{{$b->bahan_baku->nama}}</td>
+                            <td class="text-center align-middle">{{$b->packaging->nama}}</td>
                             <td class="text-center align-middle">{{$b->nf_jumlah}}</td>
                             <td class="text-center align-middle">{{$b->satuan->nama}}</td>
                             <td class="text-center align-middle">{{number_format($b->harga, 0, ',','.')}}</td>
@@ -38,7 +36,7 @@
                             <td class="text-end align-middle">{{number_format($b->total + $b->add_fee, 0, ',','.')}}
                             </td>
                             <td class="text-center align-middle">
-                                <form action="{{ route('billing.form-transaksi.bahan-baku.keranjang.delete', $b->id) }}" method="post" id="deleteForm{{ $b->id }}"
+                                <form action="{{ route('billing.form-transaksi.packaging.keranjang.delete', $b->id) }}" method="post" id="deleteForm{{ $b->id }}"
                                     class="delete-form" data-id="{{ $b->id }}">
                                     @csrf
                                     @method('delete')
@@ -50,7 +48,6 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td class="text-center align-middle"></td>
                             <td class="text-center align-middle"></td>
                             <td class="text-center align-middle">{{count($keranjang) > 0 ?
                                 number_format($keranjang->sum('jumlah'), 0, ',','.') : ''}}</td>
@@ -64,35 +61,35 @@
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="6">Total DPP</td>
+                            <td class="text-end align-middle" colspan="5">Total DPP</td>
                             <td class="text-end align-middle" id="tdTotal">{{count($keranjang) > 0 ?
                                 number_format($keranjang->sum('total') + $keranjang->sum('add_fee'), 0, ',','.') : ''}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="6">Diskon</td>
+                            <td class="text-end align-middle" colspan="5">Diskon</td>
                             <td class="text-end align-middle" id="tdDiskon">
                                 {{number_format($diskon, 0, ',','.')}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="6">Total DPP Setelah Diskon</td>
+                            <td class="text-end align-middle" colspan="5">Total DPP Setelah Diskon</td>
                             <td class="text-end align-middle" id="tdTotalSetelahDiskon">
                                 {{number_format($total-$diskon, 0, ',','.')}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="6">PPN</td>
+                            <td class="text-end align-middle" colspan="5">PPN</td>
                             <td class="text-end align-middle" id="tdPpn">
                                 0
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="6">Grand Total</td>
+                            <td class="text-end align-middle" colspan="5">Grand Total</td>
                             <td class="text-end align-middle" id="grand_total">
                                 {{number_format($total + $add_fee + $ppn - $diskon, 0, ',','.')}}
                             </td>
@@ -100,7 +97,7 @@
                         </tr>
                     </tfoot>
                 </table>
-                <form action="{{route('billing.form-transaksi.bahan-baku.keranjang.checkout')}}" method="post" id="beliBarang">
+                <form action="{{route('billing.form-transaksi.packaging.keranjang.checkout')}}" method="post" id="beliBarang">
                     @csrf
                     <div class="row">
                         <div class="col-md-4">

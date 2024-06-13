@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\db\KategoriBahan;
 use App\Models\db\KategoriProduct;
 use App\Models\db\Kemasan;
+use App\Models\db\Packaging;
 use App\Models\db\Pajak;
 use App\Models\db\Product;
 use App\Models\db\Satuan;
@@ -355,5 +356,94 @@ class FormTransaksiController extends Controller
         return redirect()->back()->with('success', 'Keranjang berhasil dikosongkan');
     }
 
+    public function packaging()
+    {
+        if (Supplier::where('status', 1)->count() == 0) {
+            return redirect()->route('db.supplier')->with('error', 'Supplier belum ada, silahkan tambahkan supplier terlebih dahulu');
+        }
+        $supplier = Supplier::where('status', 1)->get();
+        $kategori = Packaging::all();
+        $keranjang = Keranjang::with(['bahan_baku'])->where('user_id', auth()->id())->where('jenis', 3)->where('tempo', 0)->get();
+        $satuan = Satuan::all();
+        $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
+
+        return view('billing.form-transaksi.packaging.index', [
+            'kategori' => $kategori,
+            'keranjang' => $keranjang,
+            'satuan' => $satuan,
+            'supplier' => $supplier,
+            'ppn' => $ppn
+        ]);
+    }
+
+    public function packaging_store(Request $request)
+    {
+        $data = $request->validate([
+            'packaging_id' => 'required|exists:packagings,id',
+            'jumlah' => 'required|numeric|min:1',
+            'harga' => 'required',
+            'add_fee' => 'required'
+        ]);
+
+
+        $data['satuan_id'] = Packaging::find($data['packaging_id'])->satuan_id;
+        $data['user_id'] = auth()->user()->id;
+
+        $data['harga'] = str_replace('.', '', $data['harga']);
+        $data['total'] = $data['jumlah'] * $data['harga'];
+        $data['add_fee'] = str_replace('.', '', $data['add_fee']);
+        $data['jenis'] = 3;
+
+
+        Keranjang::create($data);
+
+        return redirect()->back()->with('success', 'Berhasil ditambahkan ke keranjang');
+    }
+
+    public function packaging_keranjang_delete(Keranjang $keranjang)
+    {
+        $keranjang->delete();
+
+        return redirect()->back()->with('success', 'Berhasil dihapus dari keranjang');
+    }
+
+    public function packaging_keranjang_empty()
+    {
+        $count = Keranjang::where('user_id', auth()->id())->where('jenis', 3)->where('tempo', 0)->count();
+
+        if ($count == 0) {
+            return redirect()->back()->with('error', 'Keranjang kosong');
+        }
+
+        Keranjang::where('user_id', auth()->id())->where('jenis', 3)->where('tempo', 0)->delete();
+
+        return redirect()->back()->with('success', 'Keranjang berhasil dikosongkan');
+    }
+
+    public function packaging_keranjang_checkout(Request $request)
+    {
+        ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+        ini_set('memory_limit', '512M');
+
+        $data = $request->validate([
+            'uraian' => 'required',
+            'ppn' => 'required',
+            'diskon' => 'required',
+            'nama_rek' => 'required',
+            'no_rek' => 'required',
+            'bank' => 'required',
+            'supplier_id' => 'required|exists:suppliers,id'
+        ]);
+
+        $db = new Keranjang();
+
+        if ($db->where('user_id', auth()->id())->where('jenis', 3)->where('tempo', 0)->count() == 0) {
+            return redirect()->back()->with('error', 'Keranjang kosong');
+        }
+
+        $store = $db->checkoutPackaging($data);
+
+        return redirect()->back()->with($store['status'], $store['message']);
+    }
 
 }

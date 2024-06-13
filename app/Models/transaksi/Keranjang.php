@@ -474,8 +474,6 @@ class Keranjang extends Model
     {
         $kas = new KasBesar();
 
-
-
         $belanja = $this->where('user_id', auth()->user()->id)->where('jenis', 2)->where('tempo', 0)->get();
 
         if($data['ppn'] == 1)
@@ -517,6 +515,91 @@ class Keranjang extends Model
 
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                         "*FORM BELI KEMASAN*\n".
+                        "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
+                        "Uraian :  *".$store->uraian."*\n\n".
+                        "Nilai    :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
+                        "Ditransfer ke rek:\n\n".
+                        "Bank      : ".$store->bank."\n".
+                        "Nama    : ".$store->nama_rek."\n".
+                        "No. Rek : ".$store->no_rek."\n\n".
+                        "==========================\n".
+                        "Sisa Saldo Kas Besar : \n".
+                        "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                        "Total Modal Investor : \n".
+                        "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                        "Total PPn Masukan : \n".
+                        "Rp. ".number_format($ppnMasukan, 0, ',', '.')."\n\n".
+                        "Terima kasih 🙏🙏🙏\n";
+
+            $group = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
+
+            $this->sendWa($group, $pesan);
+
+            $result = [
+                'status' => 'success',
+                'message' => 'Data berhasil disimpan!'
+            ];
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            $result = [
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ];
+
+            return $result;
+        }
+
+        return $result;
+    }
+
+    public function checkoutPackaging($data)
+    {
+        $kas = new KasBesar();
+
+        $belanja = $this->where('user_id', auth()->user()->id)->where('jenis', 3)->where('tempo', 0)->get();
+
+        if($data['ppn'] == 1)
+        {
+            $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
+            $data['ppn'] = ($ppn/100) * ($belanja->sum('total') + $belanja->sum('add_fee'));
+
+        }
+        $data['diskon'] = str_replace('.', '', $data['diskon']);
+
+        $data['total'] = $belanja->sum('total') + $belanja->sum('add_fee') + $data['ppn'] - $data['diskon'];
+
+        $saldo = $kas->saldoTerakhir();
+
+        if ($saldo < $data['total']) {
+            return [
+                'status' => 'error',
+                'message' => 'Saldo tidak mencukupi'
+            ];
+        }
+
+        $pesan = '';
+
+        try {
+
+            DB::beginTransaction();
+            $jenis = 3;
+            $store_inv = $this->invoice_checkout($data, $jenis);
+
+            $store = $this->kas_checkout($data, $store_inv->id);
+
+            $this->update_packaging();
+
+            $this->where('user_id', auth()->user()->id)->where('jenis', 3)->where('tempo', 0)->delete();
+
+            DB::commit();
+
+            $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 0)->sum('ppn');
+
+            $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
+                        "*FORM BELI PACKAGING*\n".
                         "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
                         "Uraian :  *".$store->uraian."*\n\n".
                         "Nilai    :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
