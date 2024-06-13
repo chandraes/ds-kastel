@@ -27,8 +27,12 @@
         <table class="table table-hover table-bordered" id="rekapTable">
             <thead class=" table-success">
                 <tr>
+                    @if ($data->rekap[0]->bahan_baku)
                     <th class="text-center align-middle">Kategori Barang</th>
+                    @endif
                     <th class="text-center align-middle">Nama Barang</th>
+
+
                     <th class="text-center align-middle">Banyak</th>
                     <th class="text-center align-middle">Satuan</th>
                     <th class="text-center align-middle">Harga Satuan</th>
@@ -39,9 +43,22 @@
             <tbody>
                 @foreach ($data->rekap as $d)
                 <tr>
+                    @if ($d->bahan_baku)
                     <td class="text-center align-middle">
                         {{$d->bahan_baku->kategori->nama}}
                     </td>
+                    @elseif($d->kemasan)
+                    <td class="text-center align-middle">
+                        {{$d->kemasan->product->nama}}
+                    </td>
+                    @elseif($d->kemasan)
+                    <td class="text-center align-middle">
+                        {{$d->kemasan->product->nama}}
+                    </td>
+                    @elseif($d->packaging)
+
+                    @endif
+
                     <td class="text-center align-middle">
                         {{$d->nama}}
                     </td>
@@ -65,7 +82,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th class="text-center align-middle" colspan="2">SUBTOTAL</th>
+                    <th class="text-center align-middle"@if ($data->rekap[0]->bahan_baku) colspan="2" @endif>SUBTOTAL</th>
                     <th class="text-center align-middle">{{
                         number_format($data->rekap->sum('jumlah'), 0, ',','.')}}</th>
                     <th class="text-center align-middle"></th>

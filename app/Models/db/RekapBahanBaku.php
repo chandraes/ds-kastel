@@ -42,6 +42,16 @@ class RekapBahanBaku extends Model
         return $this->belongsTo(BahanBaku::class, 'bahan_baku_id');
     }
 
+    public function kemasan()
+    {
+        return $this->belongsTo(Kemasan::class, 'kemasan_id');
+    }
+
+    public function packaging()
+    {
+        return $this->belongsTo(Packaging::class, 'packaging_id');
+    }
+
     public function satuan()
     {
         return $this->belongsTo(Satuan::class, 'satuan_id');

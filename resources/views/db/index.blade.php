@@ -41,7 +41,7 @@
         <div class="col-lg-3 col-md-3 col-sm-4 my-4 text-center">
             <a href="{{route('db.staff')}}" class="text-decoration-none">
                 <img src="{{asset('images/karyawan.svg')}}" alt="" width="70">
-                <h4 class="mt-2">STAFF</h4>
+                <h4 class="mt-2">BIODATA<br>DIREKSI & STAFF</h4>
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-4 my-4 text-center">

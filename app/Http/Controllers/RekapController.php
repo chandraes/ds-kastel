@@ -309,7 +309,7 @@ class RekapController extends Controller
     public function detail_belanja(InvoiceBelanja $invoice)
     {
         return view('rekap.kas-besar.detail-belanja', [
-            'data' => $invoice->load(['rekap', 'rekap.bahan_baku', 'rekap.satuan', 'rekap.bahan_baku.kategori']),
+            'data' => $invoice->load(['rekap', 'rekap.bahan_baku', 'rekap.satuan', 'rekap.bahan_baku.kategori', 'rekap.kemasan.satuan', 'rekap.packaging.satuan']),
         ]);
     }
 
