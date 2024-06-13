@@ -23,6 +23,8 @@
                 <h3 class="mt-2">KREDIT INVENTARIS</h3>
             </a>
         </div>
+    </div>
+    <div class="row justify-content-left">
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('billing')}}" class="text-decoration-none">
                 <img src="{{asset('images/back.svg')}}" alt="" width="80">
