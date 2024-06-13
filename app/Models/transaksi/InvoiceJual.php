@@ -229,7 +229,9 @@ class InvoiceJual extends Model
         $data = [];
 
         $data['omset'] = $this->whereYear('updated_at', $tahun)->where('lunas', 1)->sum('total');
-
+        if ($data['omset'] == 0) {
+            return $data;
+        }
         $data['permintaan_kas_kecil'] = $kasBesar->whereYear('created_at', $tahun)->whereNotNull('nomor_kode_kas_kecil')->sum('nominal');
         $data['lain_lain'] = $kasBesar->whereYear('created_at', $tahun)->where('lain_lain', 1)->where('jenis', 0)->sum('nominal');
         $data['belanja'] = $belanja->whereYear('created_at', $tahun)->where('tempo', 0)->sum('total');

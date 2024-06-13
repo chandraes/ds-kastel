@@ -501,14 +501,16 @@ class RekapController extends Controller
 
         $kelebihan = $request->kelebihan_pph ?? 0;
         $kelebihan = str_replace('.', '', $kelebihan);
-        
+
         $nfKelebihan = number_format($kelebihan, 2, ',', '.');
 
 
         $dataTahun = $db->dataTahun();
 
         $data = $db->pphBadan($tahun, $kelebihan);
-
+        if ($data['omset'] == 0) {
+            return redirect()->back()->with('error', 'Belum ada omset!!');
+        }
         return view('rekap.pph-badan.index', [
             'data' => $data,
             'dataTahun' => $dataTahun,
