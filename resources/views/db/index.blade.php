@@ -52,21 +52,21 @@
                 <h5 class="mt-2">BIODATA<br>DIREKSI & STAFF</h5>
             </a>
         </div>
-        @endif
-    </div>
-    <div class="row justify-content-left">
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.supplier')}}" class="text-decoration-none">
                 <img src="{{asset('images/supplier.svg')}}" alt="" width="70">
-                <h5 class="mt-2">SUPPLIER<br>BAHAN BAKU</h5>
+                <h5 class="mt-2">BIODATA SUPPLIER<br>BAHAN BAKU</h5>
             </a>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.konsumen')}}" class="text-decoration-none">
                 <img src="{{asset('images/customer.svg')}}" alt="" width="70">
-                <h5 class="mt-2">DAFTAR<br>KONSUMEN</h5>
+                <h5 class="mt-2">BIODATA<br>KONSUMEN</h5>
             </a>
         </div>
+        @endif
+    </div>
+    <div class="row justify-content-left">
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.satuan')}}" class="text-decoration-none">
                 <img src="{{asset('images/satuan.svg')}}" alt="" width="70">
