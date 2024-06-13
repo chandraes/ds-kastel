@@ -51,6 +51,7 @@
                     <ul>
                         <li>CP : {{$d->cp}}</li>
                         <li>No. HP : {{$d->no_hp}}</li>
+                        <li>No. Kantor : {{$d->no_kantor}}</li>
                     </ul>
                 </td>
                 <td class="text-center align-middle">{{$d->npwp}}</td>
@@ -112,6 +113,7 @@
     function editInvestor(data, id) {
         document.getElementById('edit_nama').value = data.nama;
         document.getElementById('edit_no_hp').value = data.no_hp;
+        document.getElementById('edit_no_kantor').value = data.no_kantor;
         document.getElementById('edit_cp').value = data.cp;
         document.getElementById('edit_npwp').value = data.npwp;
         document.getElementById('edit_pembayaran').value = data.pembayaran;
@@ -132,6 +134,17 @@
         delimiter: '-',
         blocks: [4, 4, 8]
     });
+
+     var no_kantor = new Cleave('#no_kantor', {
+        delimiter: '-',
+        blocks: [4, 4, 8]
+    });
+
+    var edit_no_kantor = new Cleave('#edit_no_kantor', {
+        delimiter: '-',
+        blocks: [4, 4, 8]
+    });
+
 
     var plafon = new Cleave('#plafon', {
         numeral: true,
