@@ -62,6 +62,12 @@
             </a>
         </div>
         <div class="col-lg-3 mt-3 mb-3 text-center">
+            <a href="#" class="text-decoration-none">
+                <img src="{{asset('images/pph-badan.svg')}}" alt="" width="70">
+                <h3 class="mt-2">INVENTARIS</h3>
+            </a>
+        </div>
+        <div class="col-lg-3 mt-3 mb-3 text-center">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="70">
                 <h3 class="mt-2">DASHBOARD</h3>
