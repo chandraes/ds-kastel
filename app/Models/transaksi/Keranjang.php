@@ -203,6 +203,26 @@ class Keranjang extends Model
         return true;
     }
 
+    private function update_packaging()
+    {
+        $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', 3)->where('tempo', 0)->get();
+
+        // Get all the bahan_baku_ids from the keranjang
+        $bahan_baku_ids = $keranjang->pluck('packaging_id')->toArray();
+
+        // Get all the BahanBaku records at once
+        $bahan_bakus = Packaging::whereIn('id', $bahan_baku_ids)->get()->keyBy('id');
+
+        foreach ($keranjang as $item) {
+            $bahan = $bahan_bakus[$item->packaging_id];
+
+            $bahan->stok += $item->jumlah;
+            $bahan->save();
+        }
+
+        return true;
+    }
+
     private function invoice_checkout($data, $jenis)
     {
         $db = new InvoiceBelanja();
