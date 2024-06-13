@@ -23,13 +23,13 @@
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.investor-modal')}}" class="text-decoration-none">
                 <img src="{{asset('images/investor-modal.svg')}}" alt="" width="70">
-                <h5 class="mt-2">NAMA INVESTOR</h5>
+                <h5 class="mt-2">NAMA<br>INVESTOR</h5>
             </a>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.rekening')}}" class="text-decoration-none">
                 <img src="{{asset('images/rekening.svg')}}" alt="" width="70">
-                <h5 class="mt-2">REKENING TRANSAKSI</h5>
+                <h5 class="mt-2">REKENING<br>TRANSAKSI</h5>
             </a>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
@@ -55,7 +55,7 @@
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.supplier')}}" class="text-decoration-none">
                 <img src="{{asset('images/supplier.svg')}}" alt="" width="70">
-                <h5 class="mt-2">BIODATA SUPPLIER<br></h5>
+                <h5 class="mt-2">BIODATA<br>SUPPLIER<br></h5>
             </a>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
@@ -70,7 +70,7 @@
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.satuan')}}" class="text-decoration-none">
                 <img src="{{asset('images/satuan.svg')}}" alt="" width="70">
-                <h5 class="mt-2">SATUAN</h5>
+                <h5 class="mt-2">KATEGORI<br>SATUAN</h5>
             </a>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
