@@ -268,4 +268,9 @@ class BillingController extends Controller
 
         return redirect()->route('billing.form-cost-operational')->with('success', 'Form Gaji Berhasil Dibuat');
     }
+
+    public function form_inventaris()
+    {
+        return view('billing.form-inventaris.index');
+    }
 }

@@ -245,6 +245,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/billing', [App\Http\Controllers\BillingController::class, 'index'])->name('billing');
         Route::prefix('billing')->group(function() {
 
+            Route::prefix('form-inventaris')->group(function(){
+                Route::get('/', [App\Http\Controllers\BillingController::class, 'form_inventaris'])->name('billing.form-inventaris');
+            });
             Route::prefix('form-cost-operational')->group(function(){
                 Route::view('/', 'billing.form-cost-operational.index')->name('billing.form-cost-operational');
                 Route::prefix('cost-operational')->group(function(){
