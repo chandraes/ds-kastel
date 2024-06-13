@@ -4,6 +4,7 @@ namespace App\Models\transaksi;
 
 use App\Models\db\BahanBaku;
 use App\Models\db\Kemasan;
+use App\Models\db\Packaging;
 use App\Models\db\Pajak;
 use App\Models\db\RekapBahanBaku;
 use App\Models\db\Satuan;
@@ -34,6 +35,11 @@ class Keranjang extends Model
         return $this->belongsTo(Kemasan::class);
     }
 
+    public function packaging()
+    {
+        return $this->belongsTo(Packaging::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -57,7 +63,8 @@ class Keranjang extends Model
 
         if($data['ppn'] == 1)
         {
-            $data['ppn'] = 0.11 * ($belanja->sum('total') + $belanja->sum('add_fee'));
+            $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
+            $data['ppn'] = ($ppn/100) * ($belanja->sum('total') + $belanja->sum('add_fee'));
 
         }
         $data['diskon'] = str_replace('.', '', $data['diskon']);
@@ -78,8 +85,8 @@ class Keranjang extends Model
         try {
 
             DB::beginTransaction();
-
-            $store_inv = $this->invoice_checkout($data);
+            $jenis = 1;
+            $store_inv = $this->invoice_checkout($data, $jenis);
 
             $store = $this->kas_checkout($data, $store_inv->id);
 
@@ -176,7 +183,27 @@ class Keranjang extends Model
         return true;
     }
 
-    private function invoice_checkout($data)
+    private function update_kemasan()
+    {
+        $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', 2)->where('tempo', 0)->get();
+
+        // Get all the bahan_baku_ids from the keranjang
+        $bahan_baku_ids = $keranjang->pluck('kemasan_id')->toArray();
+
+        // Get all the BahanBaku records at once
+        $bahan_bakus = Kemasan::whereIn('id', $bahan_baku_ids)->get()->keyBy('id');
+
+        foreach ($keranjang as $item) {
+            $bahan = $bahan_bakus[$item->kemasan_id];
+
+            $bahan->stok += $item->jumlah;
+            $bahan->save();
+        }
+
+        return true;
+    }
+
+    private function invoice_checkout($data, $jenis)
     {
         $db = new InvoiceBelanja();
 
@@ -199,19 +226,34 @@ class Keranjang extends Model
 
         $store = $db->create($invoice);
 
-        $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', 1)->where('tempo', 0)->get();
+        $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', $jenis)->where('tempo', 0)->get();
 
         foreach ($keranjang as $item) {
 
-            $rekap = RekapBahanBaku::create([
-                'bahan_baku_id' => $item->bahan_baku_id,
-                'nama' => $item->bahan_baku->nama,
+            $baseRekap = [
                 'jenis' => 0, //Pembelian
                 'jumlah' => $item->jumlah,
                 'harga' => $item->harga,
                 'satuan_id' => $item->satuan_id,
                 'add_fee' => $item->add_fee,
-            ]);
+            ];
+
+            switch ($jenis) {
+                case 1:
+                    $baseRekap['bahan_baku_id'] = $item->bahan_baku_id;
+                    $baseRekap['nama'] = $item->bahan_baku->nama;
+                    break;
+                case 2:
+                    $baseRekap['kemasan_id'] = $item->kemasan_id;
+                    $baseRekap['nama'] = $item->kemasan->nama;
+                    break;
+                case 3:
+                    $baseRekap['packaging_id'] = $item->packaging_id;
+                    $baseRekap['nama'] = $item->packaging->nama;
+                    break;
+            }
+
+            $rekap = RekapBahanBaku::create($baseRekap);
 
             $store->detail()->create([
                 'invoice_belanja_id' => $store->id,
@@ -246,7 +288,8 @@ class Keranjang extends Model
 
         if($data['ppn'] == 1)
         {
-            $data['ppn'] = 0.11 * ($belanja->sum('total') + $belanja->sum('add_fee'));
+            $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
+            $data['ppn'] = ($ppn/100) * ($belanja->sum('total') + $belanja->sum('add_fee'));
 
         }
         $data['dp'] = str_replace('.', '', $data['dp']);
@@ -431,11 +474,14 @@ class Keranjang extends Model
     {
         $kas = new KasBesar();
 
-        $belanja = $this->where('user_id', auth()->user()->id)->where('tempo', 0)->get();
+
+
+        $belanja = $this->where('user_id', auth()->user()->id)->where('jenis', 2)->where('tempo', 0)->get();
 
         if($data['ppn'] == 1)
         {
-            $data['ppn'] = 0.11 * ($belanja->sum('total') + $belanja->sum('add_fee'));
+            $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
+            $data['ppn'] = ($ppn/100) * ($belanja->sum('total') + $belanja->sum('add_fee'));
 
         }
         $data['diskon'] = str_replace('.', '', $data['diskon']);
@@ -456,21 +502,21 @@ class Keranjang extends Model
         try {
 
             DB::beginTransaction();
-
-            $store_inv = $this->invoice_checkout($data);
+            $jenis = 2;
+            $store_inv = $this->invoice_checkout($data, $jenis);
 
             $store = $this->kas_checkout($data, $store_inv->id);
 
-            $this->update_bahan();
+            $this->update_kemasan();
 
-            $this->where('user_id', auth()->user()->id)->where('tempo', 0)->delete();
+            $this->where('user_id', auth()->user()->id)->where('jenis', 2)->where('tempo', 0)->delete();
 
             DB::commit();
 
             $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 0)->sum('ppn');
 
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
-                        "*FORM BELI BAHAN BAKU*\n".
+                        "*FORM BELI KEMASAN*\n".
                         "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
                         "Uraian :  *".$store->uraian."*\n\n".
                         "Nilai    :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".

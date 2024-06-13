@@ -316,8 +316,6 @@ class FormTransaksiController extends Controller
 
         $data = $request->validate([
             'uraian' => 'required',
-            'dp' => 'required',
-            'jatuh_tempo' => 'required',
             'ppn' => 'required',
             'diskon' => 'required',
             'nama_rek' => 'required',
@@ -335,6 +333,26 @@ class FormTransaksiController extends Controller
         $store = $db->checkoutKemasan($data);
 
         return redirect()->back()->with($store['status'], $store['message']);
+    }
+
+    public function kemasan_keranjang_delete(Keranjang $keranjang)
+    {
+        $keranjang->delete();
+
+        return redirect()->back()->with('success', 'Berhasil dihapus dari keranjang');
+    }
+
+    public function kemasan_keranjang_empty()
+    {
+        $count = Keranjang::where('user_id', auth()->id())->where('jenis', 2)->where('tempo', 0)->count();
+
+        if ($count == 0) {
+            return redirect()->back()->with('error', 'Keranjang kosong');
+        }
+
+        Keranjang::where('user_id', auth()->id())->where('jenis', 2)->where('tempo', 0)->delete();
+
+        return redirect()->back()->with('success', 'Keranjang berhasil dikosongkan');
     }
 
 

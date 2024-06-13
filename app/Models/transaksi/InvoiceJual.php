@@ -7,6 +7,7 @@ use App\Models\GroupWa;
 use App\Models\KasBesar;
 use App\Models\KasKonsumen;
 use App\Models\PesanWa;
+use App\Models\RekapGaji;
 use App\Models\Rekening;
 use App\Services\StarSender;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -218,5 +219,45 @@ class InvoiceJual extends Model
             'tujuan' => $tujuan,
             'status' => $status,
         ]);
+    }
+
+    public function pphBadan($tahun, $kelebihan = 0)
+    {
+        $kasBesar = new KasBesar();
+        $belanja = new InvoiceBelanja();
+
+        $data = [];
+
+        $data['omset'] = $this->whereYear('updated_at', $tahun)->where('lunas', 1)->sum('total');
+
+        $data['permintaan_kas_kecil'] = $kasBesar->whereYear('created_at', $tahun)->whereNotNull('nomor_kode_kas_kecil')->sum('nominal');
+        $data['lain_lain'] = $kasBesar->whereYear('created_at', $tahun)->where('lain_lain', 1)->where('jenis', 0)->sum('nominal');
+        $data['belanja'] = $belanja->whereYear('created_at', $tahun)->where('tempo', 0)->sum('total');
+        $data['modal'] = $data['permintaan_kas_kecil'] + $data['lain_lain'] + $data['belanja'];
+
+        $data['gaji'] = RekapGaji::where('tahun', $tahun)->sum('total');
+        $data['co'] = $kasBesar->whereYear('created_at', $tahun)->where('cost_operational', 1)->sum('nominal');
+        $data['cost_operational'] = $data['gaji'] + $data['co'];
+
+        $data['laba_bersih'] = $data['omset'] - $data['modal'] - $data['cost_operational'];
+        $data['pokok_pkp'] = $data['laba_bersih'] - $kelebihan;
+
+        $data['pph_terhutang_2'] = (0.5 * 0.22) * $data['laba_bersih'];
+        $nominal = 4800000000;
+        $data['pkp_fasilitas'] = ($nominal/$data['omset']) * $data['pokok_pkp'];
+
+        $data['pph_terhutang_fasilitas'] = (0.5 * 0.22) * $data['pkp_fasilitas'];
+
+        $data['pkp_non_fasilitas'] = $data['pokok_pkp'] - $data['pkp_fasilitas'];
+        $data['pph_terhutang_non_fasilitas'] = 0.22 * $data['pkp_non_fasilitas'];
+
+        $data['kredit_pph'] = InvoiceJual::where('lunas', 1)->whereYear('updated_at', $tahun)->sum('pph');
+
+        $data['gt_pph_terhutang'] = $data['pph_terhutang_fasilitas'] + $data['pph_terhutang_non_fasilitas'];
+
+        $data['gt'] = $data['gt_pph_terhutang'] - $data['kredit_pph'];
+
+        return $data;
+
     }
 }

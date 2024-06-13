@@ -16,7 +16,7 @@
                 <table class="table table-bordered">
                     <thead class="table-success">
                         <tr>
-                            <th class="text-center align-middle">Nama Barang</th>
+                            <th class="text-center align-middle">Nama Kemasan</th>
                             <th class="text-center align-middle">Banyak</th>
                             <th class="text-center align-middle">Satuan</th>
                             <th class="text-center align-middle">Harga Satuan</th>
@@ -36,7 +36,7 @@
                             <td class="text-end align-middle">{{number_format($b->total + $b->add_fee, 0, ',','.')}}
                             </td>
                             <td class="text-center align-middle">
-                                <form action="{{ route('billing.form-transaksi.bahan-baku.keranjang.delete', $b->id) }}" method="post" id="deleteForm{{ $b->id }}"
+                                <form action="{{ route('billing.form-transaksi.kemasan.keranjang.delete', $b->id) }}" method="post" id="deleteForm{{ $b->id }}"
                                     class="delete-form" data-id="{{ $b->id }}">
                                     @csrf
                                     @method('delete')
@@ -97,7 +97,7 @@
                         </tr>
                     </tfoot>
                 </table>
-                <form action="{{route('billing.form-transaksi.bahan-baku.keranjang.checkout')}}" method="post" id="beliBarang">
+                <form action="{{route('billing.form-transaksi.kemasan.keranjang.checkout')}}" method="post" id="beliBarang">
                     @csrf
                     <div class="row">
                         <div class="col-md-4">
@@ -177,7 +177,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="submit" class="btn btn-primary">Beli Barang</button>
+                <button type="submit" class="btn btn-primary">Checkout</button>
                 </form>
             </div>
         </div>

@@ -495,18 +495,25 @@ class RekapController extends Controller
 
     public function pph_badan(Request $request)
     {
-        $db = new KasBesar();
+        $db = new InvoiceJual();
 
         $tahun = $request->tahun ?? date('Y');
 
+        $kelebihan = $request->kelebihan_pph ?? 0;
+        $kelebihan = str_replace('.', '', $kelebihan);
+        
+        $nfKelebihan = number_format($kelebihan, 2, ',', '.');
+
+
         $dataTahun = $db->dataTahun();
 
-        $data = $db->pphBadan($tahun);
+        $data = $db->pphBadan($tahun, $kelebihan);
 
         return view('rekap.pph-badan.index', [
             'data' => $data,
             'dataTahun' => $dataTahun,
             'tahun' => $tahun,
+            'kelebihan' => $kelebihan,
         ]);
     }
 }

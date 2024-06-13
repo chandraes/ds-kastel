@@ -18,7 +18,7 @@
                         @include('billing.form-transaksi.kemasan.keranjang')
                     </td>
                     <td>
-                        <form action="#" method="post" id="kosongKeranjang">
+                        <form action="{{route('billing.form-transaksi.kemasan.keranjang.empty')}}" method="post" id="kosongKeranjang">
                             @csrf
                             <button class="btn btn-danger" type="submit">
                                 <i class="fa fa-trash"> Kosongkan Keranjang </i>

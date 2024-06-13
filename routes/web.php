@@ -361,6 +361,12 @@ Route::group(['middleware' => ['auth']], function() {
                     Route::get('/get-product', [App\Http\Controllers\FormTransaksiController::class, 'get_product'])->name('billing.form-transaksi.kemasan.get-product');
                     Route::get('/get-kemasan', [App\Http\Controllers\FormTransaksiController::class, 'get_kemasan'])->name('billing.form-transaksi.kemasan.get-kemasan');
                     Route::post('/kemasan/store', [App\Http\Controllers\FormTransaksiController::class, 'kemasan_store'])->name('billing.form-transaksi.kemasan.store');
+                    Route::prefix('keranjang')->group(function(){
+                        Route::delete('/delete/{keranjang}', [App\Http\Controllers\FormTransaksiController::class, 'kemasan_keranjang_delete'])->name('billing.form-transaksi.kemasan.keranjang.delete');
+                        Route::post('/empty', [App\Http\Controllers\FormTransaksiController::class, 'kemasan_keranjang_empty'])->name('billing.form-transaksi.kemasan.keranjang.empty');
+                        Route::post('/checkout', [App\Http\Controllers\FormTransaksiController::class, 'kemasan_keranjang_checkout'])->name('billing.form-transaksi.kemasan.keranjang.checkout');
+                    });
+
                 });
             });
 

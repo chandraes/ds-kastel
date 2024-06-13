@@ -23,7 +23,8 @@
                 <div class="col-md-4 mb-3">
                     <select class="form-select" name="tahun" id="tahun">
                         @foreach ($dataTahun as $dt)
-                        <option value="{{$dt->tahunArray}}" {{$dt->tahunArray == $tahun ? 'selected' : ''}}>{{$dt->tahunArray}}</option>
+                        <option value="{{$dt->tahunArray}}" {{$dt->tahunArray == $tahun ? 'selected' :
+                            ''}}>{{$dt->tahunArray}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -37,14 +38,202 @@
         <table class="table table-bordered table-hover" id="data-table">
             <thead class="table-success">
                 <tr>
-                    <th class="text-center align-middle">No</th>
-                    <th class="text-center align-middle">Bulan</th>
-                    <th class="text-center align-middle">Nilai DPP</th>
-                    <th class="text-center align-middle">Nilai PPh</th>
+                    <th class="text-center align-middle" style="width: 5%">No</th>
+                    <th class="text-center align-middle">URAIAN</th>
+                    <th class="text-center align-middle">NOMINAL</th>
+                    <th class="text-center align-middle">TOTAL</th>
                 </tr>
             </thead>
             <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-start align-middle">1</td>
+                    <td class="text-start align-middle"><strong>Laba bersih</strong></td>
+                    <td class="text-start align-middle"></td>
+                    <td class="text-end align-middle">
+                        <strong>
+                            {{number_format($data['laba_bersih'], 2, ',','.')}}
+                        </strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-end align-middle">A</td>
+                    <td class="text-start align-middle">Omset Utama</td>
+                    <td class="text-end align-middle">
+                        {{number_format($data['omset'], 2, ',','.')}}
+                    </td>
+                    <td class="text-end align-middle"></td>
+                </tr>
+                <tr>
+                    <td class="text-end align-middle">B</td>
+                    <td class="text-start align-middle">Modal/HPP</td>
+                    <td class="text-end align-middle">
+                        {{number_format($data['modal'], 2, ',','.')}}
+                    </td>
+                    <td class="text-end align-middle"></td>
+                </tr>
+                <tr>
+                    <td class="text-end align-middle">C</td>
+                    <td class="text-start align-middle">COST OPERASIONAL</td>
+                    <td class="text-end align-middle">
+                        {{number_format($data['cost_operational'], 2, ',','.')}}
+                    </td>
+                    <td class="text-end align-middle"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-start align-middle">2</td>
+                    <td class="text-start align-middle"><strong>Kelebihan PPH tahun sebelumnya</strong></td>
+                    <td class="text-start align-middle">
+                        <form action="{{route('rekap.pph-badan')}}" method="get">
+                            <div class="row px-3">
+                                <input type="text" name="kelebihan_pph" id="kelebihan_pph" class="form-control"
+                                    value="{{$kelebihan}}">
+                            </div>
+                        </form>
+                    </td>
+                    <td class="text-end align-middle"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-start align-middle">3</td>
+                    <td class="text-start align-middle"><strong>Nilai Pokok Penghitung PKP</strong></td>
+                    <td class="text-start align-middle">
 
+                    </td>
+                    <td class="text-end align-middle">
+                        <strong>
+                            {{number_format($data['pokok_pkp'], 2, ',','.')}}
+                        </strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-start align-middle">4</td>
+                    <td class="text-start align-middle"><strong>Grand Total PPH Terhutang</strong></td>
+                    <td class="text-start align-middle"></td>
+                    <td class="text-end align-middle">
+                        <strong>
+                            {{number_format($data['gt_pph_terhutang'], 2, ',','.')}}
+                        </strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-end align-middle">
+                        <strong>
+                            A
+                        </strong>
+                    </td>
+                    <td class="text-start align-middle">
+                        <strong>PPH Fasilitas</strong>
+                    </td>
+                    <td class="text-end align-middle"></td>
+                    <td class="text-end align-middle"></td>
+                </tr>
+                <tr>
+                    <td class="text-end align-middle">*</td>
+                    <td class="text-start align-middle">PKP Fasilitas</td>
+                    <td class="text-end align-middle">{{number_format($data['pkp_fasilitas'], 2, ',','.')}}</td>
+                    <td class="text-end align-middle"></td>
+                </tr>
+                <tr>
+                    <td class="text-end align-middle">*</td>
+                    <td class="text-start align-middle">PPH Terhutang Fasilitas</td>
+                    <td class="text-end align-middle">
+                        <strong>
+                            {{number_format($data['pph_terhutang_fasilitas'], 2, ',','.')}}
+                        </strong>
+                    </td>
+                    <td class="text-end align-middle"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-end align-middle">
+                        <strong>
+                            B
+                        </strong>
+                    </td>
+                    <td class="text-start align-middle">
+                        <strong>PPH Non Fasilitas</strong>
+                    </td>
+                    <td class="text-end align-middle"></td>
+                    <td class="text-end align-middle"></td>
+                </tr>
+                <tr>
+                    <td class="text-end align-middle">*</td>
+                    <td class="text-start align-middle">PKP Non Fasilitas</td>
+                    <td class="text-end align-middle">
+                        {{number_format($data['pkp_non_fasilitas'], 2, ',','.')}}
+                    </td>
+                    <td class="text-end align-middle"></td>
+                </tr>
+                <tr>
+                    <td class="text-end align-middle">*</td>
+                    <td class="text-start align-middle">PPH Terhutang Non Fasilitas</td>
+                    <td class="text-end align-middle">
+                        <strong>
+                            {{number_format($data['pph_terhutang_non_fasilitas'], 2, ',','.')}}
+                        </strong>
+                    </td>
+                    <td class="text-end align-middle"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-start align-middle">6</td>
+                    <td class="text-start align-middle"><strong>Kredit PPH</strong></td>
+                    <td class="text-start align-middle"></td>
+                    <td class="text-end align-middle">
+                        <strong>
+                            {{number_format($data['kredit_pph'], 2, ',','.')}}
+                        </strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-start align-middle">5</td>
+                    <td class="text-start align-middle"><strong>PPH Kurang/lebih bayar</strong></td>
+                    <td class="text-start align-middle"></td>
+                    <td class="text-end align-middle">
+                        <strong>
+                            {{number_format($data['gt'], 2, ',','.')}}
+                        </strong>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -60,21 +249,24 @@
 @push('js')
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
+        var kelebihan_pph = new Cleave('#kelebihan_pph', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        });
+
 
     $(document).ready(function() {
         var table = $('#data-table').DataTable({
             "paging": false,
-            "searching": true,
+            "searching": false,
             "scrollCollapse": true,
             "info": false,
+            "ordering": false,
 
         });
 
-        table.on( 'order.dt search.dt', function () {
-            table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                cell.innerHTML = i+1;
-            } );
-        } ).draw();
     });
 
 </script>
