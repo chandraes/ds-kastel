@@ -38,18 +38,18 @@
                 <h5 class="mt-2">PAJAK</h5>
             </a>
         </div>
+        <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
+            <a href="{{route('db.cost-operational')}}" class="text-decoration-none">
+                <img src="{{asset('images/cost-operational.svg')}}" alt="" width="70">
+                <h5 class="mt-2">KATEGORI COST<br>OPERASIONAL</h5>
+            </a>
+        </div>
     </div>
     <div class="row justify-content-left">
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.staff')}}" class="text-decoration-none">
                 <img src="{{asset('images/karyawan.svg')}}" alt="" width="70">
                 <h5 class="mt-2">BIODATA<br>DIREKSI & STAFF</h5>
-            </a>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
-            <a href="{{route('db.cost-operational')}}" class="text-decoration-none">
-                <img src="{{asset('images/cost-operational.svg')}}" alt="" width="70">
-                <h5 class="mt-2">KATEGORI COST<br>OPERASIONAL</h5>
             </a>
         </div>
         @endif
