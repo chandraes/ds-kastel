@@ -88,13 +88,13 @@
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.packaging')}}" class="text-decoration-none">
                 <img src="{{asset('images/packaging.svg')}}" alt="" width="70">
-                <h5 class="mt-2">PACKAGING</h5>
+                <h5 class="mt-2">KONVERSI<br>PACKAGING</h5>
             </a>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.kemasan')}}" class="text-decoration-none">
                 <img src="{{asset('images/kemasan.svg')}}" alt="" width="70">
-                <h5 class="mt-2">KEMASAN</h5>
+                <h5 class="mt-2">KONVERSI<br>KEMASAN</h5>
             </a>
         </div>
 
