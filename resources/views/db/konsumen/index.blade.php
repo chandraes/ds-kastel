@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
-            <h1><u>PENGELOLA</u></h1>
+            <h1><u>BIODATA KONSUMEN</u></h1>
         </div>
     </div>
     <div class="flex-row justify-content-between mt-3">
@@ -35,7 +35,7 @@
                 <th class="text-center align-middle">NAMA</th>
                 <th class="text-center align-middle">CP</th>
                 <th class="text-center align-middle">NPWP</th>
-                <th class="text-center align-middle">Alamat</th>
+                <th class="text-center align-middle">KOTA</th>
                 <th class="text-center align-middle">Sistem<br>Pembayaran</th>
                 <th class="text-center align-middle">Limit<br>Plafon</th>
                 <th class="text-center align-middle">ACT</th>
@@ -55,9 +55,14 @@
                 </td>
                 <td class="text-center align-middle">{{$d->npwp}}</td>
                 <td class="text-center align-middle">
-                    <p>{{$d->alamat}}</p>
+                    {{$d->kota}}
                 </td>
-                <td class="text-center align-middle">{{$d->sistem_pembayaran}}</td>
+                <td class="text-center align-middle">
+                    {{$d->sistem_pembayaran}} <br>
+                    @if ($d->pembayaran == 2)
+                    ({{$d->tempo_hari}} Hari)
+                    @endif
+                </td>
                 <td class="text-end align-middle">{{$d->nf_plafon}}</td>
                 <td class="text-center align-middle">
                     <div class="d-flex justify-content-center">

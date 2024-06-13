@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="investorTitle">Tambah Investor</h5>
+                <h5 class="modal-title" id="investorTitle">Tambah Konsumen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{route('db.konsumen.store')}}" method="post" id="createForm">
@@ -51,6 +51,11 @@
                                 <option value="1" selected>Cash</option>
                                 <option value="2" disabled>Tempo</option>
                             </select>
+                        </div>
+                        <div class="col-md-4 col-sm-6 mb-3">
+                            <label for="kota" class="form-label">Kota</label>
+                            <input type="text" class="form-control" name="kota" id="kota" aria-describedby="helpId" value="{{old('kota')}}"
+                                placeholder="" required>
                         </div>
                         <div class="col-md-12 col-sm-12 mb-3">
                             <label for="alamat" class="form-label">Alamat</label>

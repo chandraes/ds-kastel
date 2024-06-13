@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="investorTitle">Tambah Investor</h5>
+                <h5 class="modal-title" id="investorTitle">Tambah Konsumen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="post" id="editForm">
@@ -52,6 +52,11 @@
                                 <option value="1">Cash</option>
                                 <option value="2">Tempo</option>
                             </select>
+                        </div>
+                        <div class="col-md-4 col-sm-6 mb-3">
+                            <label for="kota" class="form-label">Kota</label>
+                            <input type="text" class="form-control" name="kota" id="edit_kota" aria-describedby="helpId"
+                                placeholder="" required>
                         </div>
                         <div class="col-md-12 col-sm-12 mb-3">
                             <label for="alamat" class="form-label">Alamat</label>
