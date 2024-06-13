@@ -26,8 +26,8 @@
                                 placeholder="" required>
                         </div>
                         <div class="col-4 mb-3">
-                            <label for="npwp" class="form-label">NPWP</label>
-                            <input type="text" class="form-control" name="npwp" id="npwp" aria-describedby="helpId"
+                            <label for="kota" class="form-label">KOTA</label>
+                            <input type="text" class="form-control" name="kota" id="kota" aria-describedby="helpId"
                                 placeholder="" required>
                         </div>
                         <div class="col-4 mb-3">

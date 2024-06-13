@@ -456,7 +456,7 @@ class DatabaseController extends Controller
         $data = $request->validate([
             'nama' => 'required',
             'alamat' => 'required',
-            'npwp' => 'required',
+            'kota' => 'required',
             'cp' => 'required',
             'no_hp' => 'required',
             'no_rek' => 'required',
@@ -477,7 +477,7 @@ class DatabaseController extends Controller
         $data = $request->validate([
             'nama' => 'required',
             'alamat' => 'required',
-            'npwp' => 'required',
+            'kota' => 'required',
             'cp' => 'required',
             'no_hp' => 'required',
             'no_rek' => 'required',

@@ -35,6 +35,7 @@
                 <th class="text-center align-middle">CONTACT<br>PERSON</th>
                 <th class="text-center align-middle">NO HP</th>
                 <th class="text-center align-middle">INFO REKENING</th>
+                <th class="text-center align-middle">KOTA</th>
                 <th class="text-center align-middle">STATUS</th>
                 <th class="text-center align-middle">ACT</th>
             </tr>
@@ -56,6 +57,7 @@
                         </ul>
                     </div>
                 </td>
+                <td class="text-center align-middle">{{$d->kota}}</td>
                 <td class="text-center align-middle">
                     @if ($d->status == 1)
                     <span class="badge bg-success">Aktif</span>
@@ -112,7 +114,7 @@
         document.getElementById('edit_nama').value = data.nama;
         document.getElementById('edit_cp').value = data.cp;
         document.getElementById('edit_no_hp').value = data.no_hp;
-        document.getElementById('edit_npwp').value = data.npwp;
+        document.getElementById('edit_kota').value = data.kota;
         document.getElementById('edit_alamat').value = data.alamat;
         document.getElementById('edit_status').value = data.status;
         document.getElementById('edit_nama_rek').value = data.nama_rek;
