@@ -25,7 +25,7 @@
                     </td>
                     <td>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#createModal"">
-                            <img src=" {{asset('images/bahan-baku.svg')}}" alt="dokumen" width="30"> Tambah Bahan Baku</a>
+                            <img src=" {{asset('images/bahan-baku.svg')}}" alt="dokumen" width="30"> Tambah Singkatan Bahan Baku</a>
                     </td>
                 </tr>
             </table>
@@ -41,7 +41,7 @@
             <tr>
                 <th class="text-center align-middle">No</th>
                 <th class="text-center align-middle">Nama Kimia</th>
-                <th class="text-center align-middle">Jenis</th>
+                <th class="text-center align-middle">Singkatan</th>
                 <th class="text-center align-middle">Konversi</th>
                 <th class="text-center align-middle">Kg</th>
                 <th class="text-center align-middle">Liter</th>
@@ -140,7 +140,7 @@
             <tr>
                 <th class="text-center align-middle">No</th>
                 <th class="text-center align-middle">Nama Kimia</th>
-                <th class="text-center align-middle">Jenis</th>
+                <th class="text-center align-middle">Singkatan</th>
                 <th class="text-center align-middle">Stok</th>
                 <th class="text-center align-middle">Satuan</th>
                 <th class="text-center align-middle">Modal</th>

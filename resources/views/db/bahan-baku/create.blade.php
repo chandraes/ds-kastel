@@ -30,7 +30,7 @@
                                 </select>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="nama" class="form-label">Nama Bahan</label>
+                            <label for="nama" class="form-label">Singkatan</label>
                             <input type="text" class="form-control" name="nama" id="nama" aria-describedby="helpId"
                                 placeholder="" />
                         </div>

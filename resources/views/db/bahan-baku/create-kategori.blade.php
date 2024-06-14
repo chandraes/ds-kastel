@@ -50,7 +50,7 @@
                     @csrf
                     <div class="input-group mb-3 mt-3">
                         <input type="text" class="form-control" name="nama" id="nama_jabatan_tambah"
-                            aria-describedby="helpId" placeholder="Nama Kategori" required>
+                            aria-describedby="helpId" placeholder="Nama Kimia" required>
                         <button type="submit" class="btn btn-primary">Tambah</button>
                     </div>
                 </form>
