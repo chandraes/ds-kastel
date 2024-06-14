@@ -65,7 +65,7 @@
                             <td rowspan="{{ count($konversi) }}" class="text-center align-middle">{{ $kategori_nama }}</td>
                         @endif
                         <td class="text-center align-middle">{{ $k->nama }}</td>
-                        <td class="text-center align-middle">1 : {{ $k->konversi }}</td>
+                        <td class="text-center align-middle">1 : {{ number_format($k->konversi, 4, '.', ',') }}</td>
                         <td class="text-center align-middle">
                             @php
                                 $kg += $k->stock * $k->konversi;
