@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('kategori_bahan_id')->constrained('kategori_bahans')->onDelete('cascade');
             $table->string('nama');
-            $table->float('konversi');
+            $table->float('konversi', 8, 4);
             $table->float('stock')->default(0);
             $table->timestamps();
         });
