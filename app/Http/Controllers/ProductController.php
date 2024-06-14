@@ -35,9 +35,8 @@ class ProductController extends Controller
     {
         $data = $request->validate([
             'nama' => 'required',
-            'kode' => 'required',
+            'kode' => 'required|unique:products,kode',
             'kategori_product_id' => 'required',
-
         ]);
 
         $data['konversi_liter'] = 0; // [TODO] konversi liter
@@ -51,7 +50,7 @@ class ProductController extends Controller
     {
         $data = $request->validate([
             'nama' => 'required',
-            'kode' => 'required',
+            'kode' => 'required|unique:products,kode,' . $product->id,
             'kategori_product_id' => 'required',
         ]);
 
