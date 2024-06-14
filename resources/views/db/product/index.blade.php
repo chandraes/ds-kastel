@@ -67,7 +67,7 @@
                                     <ul>
                                         @foreach ($p->komposisi as $k)
                                         <li class="mb-2">
-                                            {{$k->bahan_baku->kategori ? $k->bahan_baku->kategori->nama : '-'}} - {{$k->bahan_baku->nama}} ({{$k->jumlah}}%)
+                                            {{$k->bahan_baku->kategori ? $k->bahan_baku->kategori->nama : '-'}} - {{$k->bahan_baku->nama}} ({{number_format($k->jumlah, 2, ',','.')}}%)
                                         </li>
                                         @endforeach
                                     </ul>
