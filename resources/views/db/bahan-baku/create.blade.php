@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createTitle">
-                    Tambah Bahan Baku
+                    Tambah Jenis Bahan Baku
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -21,7 +21,7 @@
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
-                                <label for="kategori_bahan_id" class="form-label">Kategori Barang</label>
+                                <label for="kategori_bahan_id" class="form-label">Nama Kimia</label>
                                 <select class="form-select" name="kategori_bahan_id" id="kategori_bahan_id" required>
                                     <option value="">-- Pilih Kategori Barang --</option>
                                     @foreach ($kategori as $i)

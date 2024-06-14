@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="creat-category-title">Tambah Kategori Barang</h5>
+                <h5 class="modal-title" id="creat-category-title">Tambah Nama Kimia</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -11,7 +11,7 @@
                     <thead>
                         <tr>
                             <th class="text-center align-middle">No</th>
-                            <th class="text-center align-middle">Nama Kategori</th>
+                            <th class="text-center align-middle">Nama Kimia</th>
                             <th class="text-center align-middle">Action</th>
                         </tr>
                     </thead>

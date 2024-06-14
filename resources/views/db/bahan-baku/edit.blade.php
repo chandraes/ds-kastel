@@ -23,7 +23,7 @@
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="kategori_bahan_id" class="form-label">Kategori Barang</label>
+                            <label for="kategori_bahan_id" class="form-label">Nama Kimia</label>
                             <select class="form-select" name="kategori_bahan_id" id="edit_kategori_bahan_id" required>
                                 <option value="">-- Pilih Kategori Bahan --</option>
                                 @foreach ($kategori as $i)

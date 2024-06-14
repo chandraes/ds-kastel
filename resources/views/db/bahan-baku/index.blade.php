@@ -21,7 +21,7 @@
                                 width="30"> Database</a></td>
                     <td>
                         <td><a href="#" data-bs-toggle="modal" data-bs-target="#create-category"><img src="{{asset('images/kategori.svg')}}" alt="dokumen"
-                            width="30"> Tambah Kategori</a></td>
+                            width="30"> Tambah Nama Kimia</a></td>
                     </td>
                     <td>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#createModal"">
@@ -40,7 +40,7 @@
         <thead class="table-success">
             <tr>
                 <th class="text-center align-middle">No</th>
-                <th class="text-center align-middle">Kategori</th>
+                <th class="text-center align-middle">Nama Kimia</th>
                 <th class="text-center align-middle">Jenis</th>
                 <th class="text-center align-middle">Konversi</th>
                 <th class="text-center align-middle">Kg</th>
@@ -139,7 +139,7 @@
         <thead class="table-success">
             <tr>
                 <th class="text-center align-middle">No</th>
-                <th class="text-center align-middle">Kategori</th>
+                <th class="text-center align-middle">Nama Kimia</th>
                 <th class="text-center align-middle">Jenis</th>
                 <th class="text-center align-middle">Stok</th>
                 <th class="text-center align-middle">Satuan</th>
