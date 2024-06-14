@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\db\CostOperational;
+use App\Models\db\InventarisJenis;
+use App\Models\db\InventarisKategori;
 use App\Models\db\Jabatan;
 use App\Models\db\Karyawan;
+use App\Models\db\KategoriInventaris;
 use App\Models\db\Kemasan;
 use App\Models\db\Packaging;
 use App\Models\db\Satuan;
@@ -618,5 +621,76 @@ class DatabaseController extends Controller
         $packaging->delete();
 
         return redirect()->route('db.packaging')->with('success', 'Data berhasil dihapus');
+    }
+
+    public function kategori_inventaris()
+    {
+        $data = InventarisKategori::with(['jenis'])->whereHas('jenis')->get();
+        $kategori = InventarisKategori::all();
+
+        return view('db.kategori-inventaris.index', [
+            'data' => $data,
+            'kategori' => $kategori
+        ]);
+    }
+
+    public function kategori_inventaris_store(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+        ]);
+
+        InventarisKategori::create($data);
+
+        return redirect()->route('db.kategori-inventaris')->with('success', 'Data berhasil ditambahkan');
+    }
+
+    public function kategori_inventaris_update(InventarisKategori $kategori, Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+        ]);
+
+        $kategori->update($data);
+
+        return redirect()->route('db.kategori-inventaris')->with('success', 'Data berhasil diupdate');
+    }
+
+    public function kategori_inventaris_delete(InventarisKategori $kategori)
+    {
+        $kategori->delete();
+
+        return redirect()->route('db.kategori-inventaris')->with('success', 'Data berhasil dihapus');
+    }
+
+    public function jenis_inventaris_store(Request $request)
+    {
+        $data = $request->validate([
+            'kategori_id' => 'required|exists:inventaris_kategoris,id',
+            'nama' => 'required',
+        ]);
+
+        InventarisJenis::create($data);
+
+        return redirect()->route('db.kategori-inventaris')->with('success', 'Data berhasil ditambahkan');
+    }
+
+    public function jenis_inventaris_update(InventarisJenis $jenis, Request $request)
+    {
+        $data = $request->validate([
+            'kategori_id' => 'required|exists:inventaris_kategoris,id',
+            'nama' => 'required',
+        ]);
+
+        $jenis->update($data);
+
+        return redirect()->route('db.kategori-inventaris')->with('success', 'Data berhasil diupdate');
+    }
+
+    public function jenis_inventaris_delete(InventarisJenis $jenis)
+    {
+        $jenis->delete();
+
+        return redirect()->route('db.kategori-inventaris')->with('success', 'Data berhasil dihapus');
     }
 }

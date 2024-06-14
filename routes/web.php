@@ -54,6 +54,22 @@ Route::group(['middleware' => ['auth']], function() {
 
         Route::group(['middleware' => ['role:su,admin']], function() {
 
+            Route::prefix('kategori-inventaris')->group(function(){
+                Route::get('/', [App\Http\Controllers\DatabaseController::class, 'kategori_inventaris'])->name('db.kategori-inventaris');
+
+                Route::prefix('kategori')->group(function(){
+                    Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'kategori_inventaris_store'])->name('db.kategori-inventaris.store');
+                    Route::patch('/update/{kategori}', [App\Http\Controllers\DatabaseController::class, 'kategori_inventaris_update'])->name('db.kategori-inventaris.update');
+                    Route::delete('/delete/{kategori}', [App\Http\Controllers\DatabaseController::class, 'kategori_inventaris_delete'])->name('db.kategori-inventaris.delete');
+                });
+
+                Route::prefix('jenis')->group(function(){
+                    Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'jenis_inventaris_store'])->name('db.jenis-inventaris.store');
+                    Route::patch('/update/{jenis}', [App\Http\Controllers\DatabaseController::class, 'jenis_inventaris_update'])->name('db.jenis-inventaris.update');
+                    Route::delete('/delete/{jenis}', [App\Http\Controllers\DatabaseController::class, 'jenis_inventaris_delete'])->name('db.jenis-inventaris.delete');
+                });
+            });
+
             Route::prefix('kemasan')->group(function(){
                 Route::get('/', [App\Http\Controllers\DatabaseController::class, 'kemasan'])->name('db.kemasan');
                 Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'kemasan_store'])->name('db.kemasan.store');
