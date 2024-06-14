@@ -64,8 +64,9 @@
                     <div class="col-md-4">
                         <label for="persentase_${bahanId}" class="form-label">Persentase Jumlah</label>
                         <input type="number" name="jumlah[]" id="persentase_${bahanId}" class="form-control" required>
+                        <small class="text-danger">Gunakan "." untuk nilai desimal!!</small>
                     </div>
-                    <div class="col-md-2 d-flex d-block align-items-end">
+                    <div class="col-md-2 d-flex align-items-center">
                         <button type="button" class="btn btn-danger remove-bahan w-100" data-id="${bahanId}">Hapus</button>
                     </div>
                 </div>
