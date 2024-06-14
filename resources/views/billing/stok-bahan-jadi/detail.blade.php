@@ -47,11 +47,14 @@
                             Penjualan {{$d->invoiceJual->invoice}}
                             @endif
                         </td>
-                        <td class="text-center align-middle">
+                        <td class="text-start align-middle">
                             @if ($d->rencanaProduksi)
-                            {{$d->rencanaProduksi->stock_kemasan}}
+                            <ul>
+                                <li>Kemasan: {{$d->rencanaProduksi->produksi_detail->sum('total_kemasan')}}</li>
+                                <li>Packaging: {{$d->rencanaProduksi->real_packaging}}</li>
+                            </ul>
                             @elseif ($d->invoiceJual)
-                            {{$d->invoiceJual->jumlah}}
+                            {{$d->invoiceJual->detail->where('product_jadi_id', $d->product_jadi_id)->first()->jumlah}}
                             @endif
                         </td>
                     </tr>
