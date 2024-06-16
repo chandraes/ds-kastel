@@ -15,4 +15,9 @@ class InventarisJenis extends Model
     {
         return $this->belongsTo(InventarisKategori::class, 'kategori_id');
     }
+
+    public function rekap()
+    {
+        return $this->hasMany(InventarisRekap::class, 'inventaris_jenis_id');
+    }
 }

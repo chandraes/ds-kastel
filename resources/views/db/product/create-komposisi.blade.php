@@ -24,7 +24,23 @@
                 </select>
             </div>
 
-            <div id="bahanContainer"></div>
+            <div id="bahanContainer">
+                <table class="table table-bordered table-hover" id="tableBahan">
+                    <thead class="table-success">
+                        <tr>
+                            <th class="text-center align-middle">Bahan Baku</th>
+                            <th class="text-center align-middle">
+                                Persentase<br>
+                                <small class="text-danger">Gunakan "." untuk nilai desimal!!</small>
+                            </th>
+                            <th class="text-center align-middle">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bahanTable">
+
+                    </tbody>
+                </table>
+            </div>
             <div id="saveButton" class="col-md-12 mt-2" hidden>
                 <button type="submit" class="btn btn-primary d-block w-100">Simpan</button>
             </div>
@@ -40,67 +56,84 @@
     confirmAndSubmit('#masukForm', 'Pastikan data sudah benar dan jumlah persentase sudah 100%?');
 
     document.addEventListener('DOMContentLoaded', function () {
-    const bahanSelect = document.getElementById('bahanSelect');
-    const bahanContainer = document.getElementById('bahanContainer');
-    const selectedBahan = new Set();
+        const bahanSelect = document.getElementById('bahanSelect');
+        const bahanTable = document.getElementById('bahanTable');
+        const selectedBahan = new Set();
+        let grandTotal = 0;
 
-    bahanSelect.addEventListener('change', function () {
-        const selectedOption = this.options[this.selectedIndex];
-        const bahanId = selectedOption.value;
-        const bahanNama = selectedOption.getAttribute('data-nama');
+        // Create a row for the grand total
+        const totalRow = document.createElement('tr');
+        totalRow.innerHTML = `
+            <td  class="text-end">Persentase Total:</td>
+            <td id="grandTotal" class="text-center">0%</td>
+            <td></td>
+        `;
+        bahanTable.appendChild(totalRow);
 
-        if (bahanId && !selectedBahan.has(bahanId)) {
-            selectedBahan.add(bahanId);
+        bahanSelect.addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const bahanId = selectedOption.value;
+            const bahanNama = selectedOption.getAttribute('data-nama');
 
-            const row = document.createElement('div');
-            row.classList.add('mb-3', 'bahan-row');
-            row.innerHTML = `
-                <div class="row">
-                    <input type="hidden" name="bahan_baku_id[]" value="${bahanId}">
-                    <div class="col-md-6">
-                        <label class="form-label">&nbsp;</label>
+            if (bahanId && !selectedBahan.has(bahanId)) {
+                selectedBahan.add(bahanId);
+
+                const row = document.createElement('tr');
+                row.classList.add('bahan-row');
+                row.innerHTML = `
+                    <td>
+                        <input type="hidden" name="bahan_baku_id[]" value="${bahanId}">
                         <label class="form-control">${bahanNama}</label>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="persentase_${bahanId}" class="form-label">Persentase Jumlah</label>
-                        <input type="text" name="jumlah[]" id="persentase_${bahanId}" class="form-control" required>
-                        <small class="text-danger">Gunakan "." untuk nilai desimal!!</small>
-                    </div>
-                    <div class="col-md-2 d-flex align-items-center">
+                    </td>
+                    <td>
+                        <input type="text" name="jumlah[]" id="persentase_${bahanId}" class="form-control persentase" required value="0">
+                    </td>
+                    <td class="text-center align-middle">
                         <button type="button" class="btn btn-danger remove-bahan w-100" data-id="${bahanId}">Hapus</button>
-                    </div>
-                </div>
-            `;
-            bahanContainer.appendChild(row);
+                    </td>
+                `;
+                bahanTable.insertBefore(row, totalRow);
 
-            // Remove selected option from dropdown
-            selectedOption.style.display = 'none';
+                // Update the grand total
+                const persentaseInput = row.querySelector('.persentase');
+                persentaseInput.addEventListener('input', function () {
+                    grandTotal -= this.dataset.lastValue || 0;
+                    grandTotal += parseFloat(this.value) || 0;
+                    this.dataset.lastValue = this.value;
+                    document.getElementById('grandTotal').textContent = grandTotal.toFixed(2);
+                });
 
-            // Show the save button
-            document.getElementById('saveButton').hidden = false;
+                // Remove selected option from dropdown
+                selectedOption.style.display = 'none';
 
-            row.querySelector('.remove-bahan').addEventListener('click', function () {
-                const id = this.getAttribute('data-id');
-                selectedBahan.delete(id);
-                row.remove();
+                // Show the save button
+                document.getElementById('saveButton').hidden = false;
 
-                // Show the removed option back in the dropdown
-                const optionToShow = bahanSelect.querySelector(`option[value="${id}"]`);
-                if (optionToShow) {
-                    optionToShow.style.display = 'block';
-                }
+                row.querySelector('.remove-bahan').addEventListener('click', function () {
+                    const id = this.getAttribute('data-id');
+                    selectedBahan.delete(id);
+                    row.remove();
 
-                            // Hide the save button if there are no bahanIds left
-                if (selectedBahan.size === 0) {
-                    document.getElementById('saveButton').hidden = true;
-                }
-            });
+                    // Subtract the value of the removed item from the grand total
+                    grandTotal -= parseFloat(persentaseInput.value) || 0;
+                    document.getElementById('grandTotal').textContent = grandTotal.toFixed(2);
 
-        }
+                    // Show the removed option back in the dropdown
+                    const optionToShow = bahanSelect.querySelector(`option[value="${id}"]`);
+                    if (optionToShow) {
+                        optionToShow.style.display = 'block';
+                    }
 
-        // Reset the select box
-        this.value = '';
+                    // Hide the save button if there are no bahanIds left
+                    if (selectedBahan.size === 0) {
+                        document.getElementById('saveButton').hidden = true;
+                    }
+                });
+            }
+
+            // Reset the select box
+            this.value = '';
+        });
     });
-});
 </script>
 @endpush

@@ -83,7 +83,7 @@ class ProductController extends Controller
             'bahan_baku_id' => 'required|array',
             'bahan_baku_id.*' => 'required|exists:bahan_bakus,id', // '*' untuk array, '.' untuk 'bahan_baku_id.0
             'jumlah' => 'required|array',
-            'jumlah.*' => 'required|numeric',
+            'jumlah.*' => 'required',
         ]);
 
         // check if jumlah is 100
