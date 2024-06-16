@@ -38,7 +38,7 @@
         }
         else if(kemasanSelect == 'tempo')
         {
-            window.location.href = "{{route('billing.form-transaksi.bahan-baku.beli-tempo')}}";
+            window.location.href = "{{route('billing.form-transaksi.kemasan.tempo')}}";
         }
     }
 </script>

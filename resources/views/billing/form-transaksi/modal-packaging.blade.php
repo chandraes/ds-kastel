@@ -22,14 +22,14 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Tutup
                 </button>
-                <button type="button" class="btn btn-primary" onclick="funKemasan()">Lanjutkan</button>
+                <button type="button" class="btn btn-primary" onclick="funPackaging()">Lanjutkan</button>
             </div>
         </div>
     </div>
 </div>
 @push('js')
 <script>
-    function funKemasan()
+    function funPackaging()
     {
         var packagingSelect = document.getElementById('packagingSelect').value;
         if(packagingSelect == 'cash')

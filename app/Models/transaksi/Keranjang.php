@@ -183,9 +183,9 @@ class Keranjang extends Model
         return true;
     }
 
-    private function update_kemasan()
+    private function update_kemasan($tempo)
     {
-        $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', 2)->where('tempo', 0)->get();
+        $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', 2)->where('tempo', $tempo)->get();
 
         // Get all the bahan_baku_ids from the keranjang
         $bahan_baku_ids = $keranjang->pluck('kemasan_id')->toArray();
@@ -339,8 +339,9 @@ class Keranjang extends Model
         try {
 
             DB::beginTransaction();
+            $jenis = 1;
 
-            $store_inv = $this->invoice_checkout_tempo($data);
+            $store_inv = $this->invoice_checkout_tempo($data, $jenis);
 
             if ($data['dp'] > 0) {
 
@@ -398,7 +399,7 @@ class Keranjang extends Model
         return $result;
     }
 
-    private function invoice_checkout_tempo($data)
+    private function invoice_checkout_tempo($data, $jenis)
     {
         $db = new InvoiceBelanja();
 
@@ -425,19 +426,34 @@ class Keranjang extends Model
 
         $store = $db->create($invoice);
 
-        $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', 1)->where('tempo', 1)->get();
+        $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', $jenis)->where('tempo', 1)->get();
 
         foreach ($keranjang as $item) {
 
-            $rekap = RekapBahanBaku::create([
-                'bahan_baku_id' => $item->bahan_baku_id,
-                'nama' => $item->bahan_baku->nama,
+            $baseRekap = [
                 'jenis' => 0, //Pembelian
                 'jumlah' => $item->jumlah,
                 'harga' => $item->harga,
                 'satuan_id' => $item->satuan_id,
                 'add_fee' => $item->add_fee,
-            ]);
+            ];
+
+            switch ($jenis) {
+                case 1:
+                    $baseRekap['bahan_baku_id'] = $item->bahan_baku_id;
+                    $baseRekap['nama'] = $item->bahan_baku->nama;
+                    break;
+                case 2:
+                    $baseRekap['kemasan_id'] = $item->kemasan_id;
+                    $baseRekap['nama'] = $item->kemasan->nama;
+                    break;
+                case 3:
+                    $baseRekap['packaging_id'] = $item->packaging_id;
+                    $baseRekap['nama'] = $item->packaging->nama;
+                    break;
+            }
+
+            $rekap = RekapBahanBaku::create($baseRekap);
 
             $store->detail()->create([
                 'invoice_belanja_id' => $store->id,
@@ -490,6 +506,100 @@ class Keranjang extends Model
         return true;
     }
 
+    public function checkoutKemasanTempo($data)
+    {
+        $kas = new KasBesar();
+
+        $belanja = $this->where('user_id', auth()->user()->id)->where('jenis', 2)->where('tempo', 1)->get();
+
+        if($data['ppn'] == 1)
+        {
+            $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
+            $data['ppn'] = ($ppn/100) * ($belanja->sum('total') + $belanja->sum('add_fee'));
+
+        }
+        $data['dp'] = str_replace('.', '', $data['dp']);
+
+        $data['tempo'] = 1;
+
+        if ($kas->saldoTerakhir() < $data['dp']) {
+            return [
+                'status' => 'error',
+                'message' => 'Saldo kas besar tidak mencukupi. Saldo saat ini : '.number_format($kas->saldoTerakhir(), 0, ',', '.')
+            ];
+        }
+        $data['jatuh_tempo'] = Carbon::createFromFormat('d-m-Y', $data['jatuh_tempo'])->format('Y-m-d');
+        $data['diskon'] = str_replace('.', '', $data['diskon']);
+
+        $data['total'] = $belanja->sum('total') + $belanja->sum('add_fee') + $data['ppn'] - $data['diskon'];
+
+        $data['sisa'] = $data['total'] - $data['dp'];
+
+        $pesan = '';
+
+        try {
+
+            DB::beginTransaction();
+
+            $jenis = 2;
+
+            $store_inv = $this->invoice_checkout_tempo($data, $jenis);
+
+            if ($data['dp'] > 0) {
+                $store = $this->kas_checkout_tempo($data, $store_inv->id);
+
+                $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 0)->sum('ppn');
+
+                $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
+                            "*FORM BELI KEMASAN*\n".
+                            "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
+                            "Uraian :  *".$store->uraian."*\n\n".
+                            "Nilai    :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
+                            "Ditransfer ke rek:\n\n".
+                            "Bank      : ".$store->bank."\n".
+                            "Nama    : ".$store->nama_rek."\n".
+                            "No. Rek : ".$store->no_rek."\n\n".
+                            "==========================\n".
+                            "Sisa Saldo Kas Besar : \n".
+                            "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                            "Total Modal Investor : \n".
+                            "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                            "Total PPn Masukan : \n".
+                            "Rp. ".number_format($ppnMasukan, 0, ',', '.')."\n\n".
+                            "Terima kasih 🙏🙏🙏\n";
+
+                $group = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
+
+                $this->sendWa($group, $pesan);
+
+            }
+
+            $this->update_kemasan(1);
+
+            $this->where('user_id', auth()->user()->id)->where('jenis', 2)->where('tempo', 1)->delete();
+
+            DB::commit();
+
+            $result = [
+                'status' => 'success',
+                'message' => 'Data berhasil disimpan!'
+            ];
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            $result = [
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ];
+
+            return $result;
+        }
+
+        return $result;
+    }
+
     public function checkoutKemasan($data)
     {
         $kas = new KasBesar();
@@ -525,7 +635,7 @@ class Keranjang extends Model
 
             $store = $this->kas_checkout($data, $store_inv->id);
 
-            $this->update_kemasan();
+            $this->update_kemasan(0);
 
             $this->where('user_id', auth()->user()->id)->where('jenis', 2)->where('tempo', 0)->delete();
 

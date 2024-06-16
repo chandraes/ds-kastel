@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <div class="row justify-content-center mb-5">
         <div class="col-md-12 text-center">
-            <h1><u>Form Beli Bahan Baku</u></h1>
+            <h1><u>Form Beli Kemasan</u></h1>
             <h1><u>TEMPO</u></h1>
         </div>
     </div>
@@ -15,10 +15,10 @@
                         <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#keranjangBelanja" >
                             <i class="fa fa-shopping-cart"> Keranjang </i> ({{$keranjang->count()}})
                         </a>
-                        @include('billing.form-transaksi.bahan-baku.tempo.keranjang')
+                        @include('billing.form-transaksi.kemasan.tempo.keranjang')
                     </td>
                     <td>
-                        <form action="{{route('billing.form-transaksi.bahan-baku.keranjang-tempo.empty')}}" method="post" id="kosongKeranjang">
+                        <form action="{{route('billing.form-transaksi.kemasan.keranjang-tempo.empty')}}" method="post" id="kosongKeranjang">
                             @csrf
                             <button class="btn btn-danger" type="submit">
                                 <i class="fa fa-trash"> Kosongkan Keranjang </i>
@@ -30,35 +30,33 @@
         </div>
     </div>
     @include('swal')
-    <form action="{{route('billing.form-transaksi.bahan-baku.keranjang-tempo.store')}}" method="post" id="masukForm">
+    <form action="{{route('billing.form-transaksi.kemasan.keranjang-tempo.store')}}" method="post" id="masukForm">
         @csrf
         <div class="row">
             <div class="col-md-3">
                 <div class="mb-3">
-                    <label for="apa_konversi" class="form-label">Bahan</label>
-                    <select class="form-select" name="apa_konversi" id="apa_konversi" required>
-                        <option value=""> -- Pilih salah satu -- </option>
-                        <option value="1">Konversi</option>
-                        <option value="0">Non Konversi</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="mb-3">
-                    <label for="kategori_bahan_id" class="form-label">Kategori Barang</label>
-                    <select class="form-select" name="kategori_bahan_id" id="kategori_bahan_id" onchange="funGetBarang()" required>
-                        <option value=""> -- Pilih kategori barang -- </option>
+                    <label for="kategori_product_id" class="form-label">Kategori Product</label>
+                    <select class="form-select" id="kategori_product_id" onchange="getProduct()">
+                        <option value=""> -- Pilih kategori product -- </option>
                         @foreach ($kategori as $k)
                             <option value="{{$k->id}}">{{$k->nama}}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="mb-3">
-                    <label for="bahan_baku_id" class="form-label">Nama Barang</label>
-                    <select class="form-select" name="bahan_baku_id" id="bahan_baku_id" required>
-                        <option value=""> -- Pilih Bahan Baku -- </option>
+                    <label for="product_id" class="form-label">Jenis</label>
+                    <select class="form-select" id="product_id" onchange="getKemasan()">
+                        <option value=""> -- Pilih jenis -- </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label for="kemasan_id" class="form-label">Kemasan</label>
+                    <select class="form-select" id="kemasan_id" name="kemasan_id" required>
+                        <option value=""> -- Pilih Kemasan -- </option>
                     </select>
                 </div>
             </div>
@@ -67,18 +65,6 @@
                   <label for="jumlah" class="form-label">Jumlah</label>
                   <input type="number"
                     class="form-control" name="jumlah" id="jumlah" aria-describedby="helpId" placeholder="" required>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="mb-3">
-                  <label for="satuan_id" class="form-label">Satuan</label>
-                  {{-- select satuan_id --}}
-                    <select class="form-select" name="satuan_id" id="satuan_id" required>
-                        <option value=""> -- Pilih Satuan -- </option>
-                        @foreach ($satuan as $s)
-                            <option value="{{$s->id}}">{{$s->nama}}</option>
-                        @endforeach
-                    </select>
                 </div>
             </div>
             <div class="col-md-3 mb-3">
@@ -139,12 +125,13 @@
 
     function add_ppn(){
         var apa_ppn = document.getElementById('ppn').value;
-        console.log(apa_ppn);
+        var ppn = {!! $ppn !!} / 100;
+
         if (apa_ppn === "1") { // compare with string "1"
             var gt = Number(document.getElementById('tdTotalSetelahDiskon').textContent.replace(/\./g, ''));
 
-            var vPpn = gt * 0.11;
-            var totalap = gt + (gt * 0.11);
+            var vPpn = gt * ppn;
+            var totalap = gt + (gt *ppn);
 
             var tF = totalap.toLocaleString('id-ID');
             var vF = vPpn.toLocaleString('id-ID');
@@ -163,14 +150,6 @@
                 numeralDecimalMark: ',',
                 delimiter: '.'
             });
-
-            var dp = new Cleave('#dp', {
-                numeral: true,
-                numeralThousandsGroupStyle: 'thousand',
-                numeralDecimalMark: ',',
-                delimiter: '.'
-            });
-
             var diskoTn = new Cleave('#diskon', {
                 numeral: true,
                 numeralThousandsGroupStyle: 'thousand',
@@ -207,35 +186,74 @@
             });
         });
 
-        // funGetBarang
-        function funGetBarang() {
-            var kategori_bahan_id = $('#kategori_bahan_id').val();
-            var apa_konversi = $('#apa_konversi').val();
+        function getProduct()
+        {
+            var kategori_product_id = document.getElementById('kategori_product_id').value;
+            console.log(kategori_product_id);
             $.ajax({
-                url: "{{route('billing.form-transaksi.bahan-baku.get-barang')}}",
+                url: "{{route('billing.form-transaksi.kemasan.get-product')}}",
                 type: "GET",
                 data: {
-                    kategori_bahan_id: kategori_bahan_id,
-                    apa_konversi: apa_konversi
+                    kategori_product_id: kategori_product_id
                 },
                 success: function(data){
-                    $('#bahan_baku_id').empty();
-                    $('#bahan_baku_id').append('<option value=""> -- Pilih Bahan Baku -- </option>');
-                    $.each(data, function(index, value){
-                        $('#bahan_baku_id').append('<option value="'+value.id+'">'+value.nama+'</option>');
-                    });
+                    if (data.status == 0) {
+                        Swal.fire({
+                            title: "Gagal",
+                            text: data.message,
+                            icon: "error",
+                            button: "OK"
+                        });
+                        // make kategori_product_id to '' selected
+                        $('#kategori_product_id').val('');
+
+
+
+                    } else {
+                        var data = data.data;
+                        $('#product_id').empty();
+
+                        $('#product_id').append('<option value=""> -- Pilih Jenis-- </option>');
+                        $.each(data, function(index, value){
+                            $('#product_id').append('<option value="'+value.id+'">'+value.nama+'</option>');
+                        });
+                    }
+
                 }
             });
+        }
 
-            if (apa_konversi == 1) {
-                // set selected value satuan_id to 2 and make it readonly
-                $('#satuan_id').val(2);
-                $('#satuan_id').attr('disabled', true);
-            } else {
-                // set selected value satuan_id to null and remove readonly
-                $('#satuan_id').val('');
-                $('#satuan_id').removeAttr('disabled');
-            }
+        // funGetBarang
+
+        function getKemasan() {
+            var product_id = document.getElementById('product_id').value;
+            $.ajax({
+                url: "{{route('billing.form-transaksi.kemasan.get-kemasan')}}",
+                type: "GET",
+                data: {
+                    product_id: product_id
+                },
+                success: function(data){
+
+                    if (data.status == 0) {
+                        Swal.fire({
+                            title: "Gagal",
+                            text: data.message,
+                            icon: "error",
+                            button: "OK"
+                        });
+
+                        $('#kemasan_id').empty();
+                    } else {
+                        var data = data.data;
+                        $('#kemasan_id').empty();
+                        $('#kemasan_id').append('<option value=""> -- Pilih Kemasan -- </option>');
+                        $.each(data, function(index, value){
+                            $('#kemasan_id').append('<option value="'+value.id+'">'+value.nama+' ('+value.satuan.nama+')</option>');
+                        });
+                    }
+                }
+            });
         }
 
     </script>
