@@ -38,7 +38,7 @@
         }
         else if(packagingSelect == 'tempo')
         {
-            window.location.href = "#";
+            window.location.href = "{{route('billing.form-transaksi.packaging.tempo')}}";
         }
     }
 </script>

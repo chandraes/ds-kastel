@@ -81,23 +81,20 @@
                 </tr>
                 @endforeach
             </tbody>
-            {{-- <tfoot>
+            <tfoot>
                 <tr>
-                    <td colspan="3" class="text-center align-middle"><strong>GRAND TOTAL</strong></td>
-                    <td class="text-end align-middle"><strong>{{number_format($data->where('jenis',
-                            1)->sum('nominal'), 0, ',', '.')}}</strong></td>
-                    <td class="text-end align-middle text-danger"><strong>{{number_format($data->where('jenis',
-                            0)->sum('nominal'), 0, ',', '.')}}</strong></td>
-                    <td class="text-end align-middle">
-                        <strong>
-                            {{$data->last() ? number_format($data->last()->saldo, 0, ',', '.') : ''}}
-                        </strong>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td class="text-end align-middle" colspan="4">Grand Toal</td>
+                    <td class="text-end align-middle">{{number_format($data->sum('total')-$data->sum('ppn')+$data->sum('diskon'), 0, ',', '.')}}</td>
+                    <td class="text-end align-middle">{{number_format($data->sum('diskon'), 0, ',', '.')}}</td>
+                    <td class="text-end align-middle">{{number_format($data->sum('ppn'), 0, ',', '.')}}</td>
+                    <td class="text-end align-middle">{{number_format($data->sum('total'), 0, ',', '.')}}</td>
+                    <td class="text-end align-middle">{{number_format($data->sum('dp'), 0, ',', '.')}}</td>
+                    <td class="text-end align-middle">{{number_format($data->sum('sisa'), 0, ',', '.')}}</td>
+                    <td class="text-end align-middle"></td>
+                    <td class="text-end align-middle"></td>
                 </tr>
-            </tfoot> --}}
+            </tfoot>
+
         </table>
     </div>
 </div>
@@ -116,7 +113,6 @@
             "searching": false,
             "scrollCollapse": true,
             "scrollY": "550px",
-
         });
 
         $('.bayar-form').submit(function(e){

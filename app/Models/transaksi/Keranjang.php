@@ -203,9 +203,9 @@ class Keranjang extends Model
         return true;
     }
 
-    private function update_packaging()
+    private function update_packaging($tempo)
     {
-        $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', 3)->where('tempo', 0)->get();
+        $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', 3)->where('tempo', $tempo)->get();
 
         // Get all the bahan_baku_ids from the keranjang
         $bahan_baku_ids = $keranjang->pluck('packaging_id')->toArray();
@@ -720,7 +720,7 @@ class Keranjang extends Model
 
             $store = $this->kas_checkout($data, $store_inv->id);
 
-            $this->update_packaging();
+            $this->update_packaging(0);
 
             $this->where('user_id', auth()->user()->id)->where('jenis', 3)->where('tempo', 0)->delete();
 
@@ -749,6 +749,101 @@ class Keranjang extends Model
             $group = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
 
             $this->sendWa($group, $pesan);
+
+            $result = [
+                'status' => 'success',
+                'message' => 'Data berhasil disimpan!'
+            ];
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            $result = [
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ];
+
+            return $result;
+        }
+
+        return $result;
+    }
+
+    public function checkoutPackagingTempo($data)
+    {
+        $kas = new KasBesar();
+
+        $belanja = $this->where('user_id', auth()->user()->id)->where('jenis', 3)->where('tempo', 1)->get();
+
+        if($data['ppn'] == 1)
+        {
+            $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
+            $data['ppn'] = ($ppn/100) * ($belanja->sum('total') + $belanja->sum('add_fee'));
+
+        }
+        $data['dp'] = str_replace('.', '', $data['dp']);
+
+        $data['tempo'] = 1;
+
+        if ($kas->saldoTerakhir() < $data['dp']) {
+            return [
+                'status' => 'error',
+                'message' => 'Saldo kas besar tidak mencukupi. Saldo saat ini : '.number_format($kas->saldoTerakhir(), 0, ',', '.')
+            ];
+        }
+        $data['jatuh_tempo'] = Carbon::createFromFormat('d-m-Y', $data['jatuh_tempo'])->format('Y-m-d');
+        $data['diskon'] = str_replace('.', '', $data['diskon']);
+
+        $data['total'] = $belanja->sum('total') + $belanja->sum('add_fee') + $data['ppn'] - $data['diskon'];
+
+        $data['sisa'] = $data['total'] - $data['dp'];
+
+        $pesan = '';
+
+        try {
+
+            DB::beginTransaction();
+
+            $jenis = 3;
+
+            $store_inv = $this->invoice_checkout_tempo($data, $jenis);
+
+            if ($data['dp'] > 0) {
+
+                $store = $this->kas_checkout_tempo($data, $store_inv->id);
+
+                $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 0)->sum('ppn');
+
+                $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
+                            "*FORM BELI PACKAGING*\n".
+                            "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
+                            "Uraian :  *".$store->uraian."*\n\n".
+                            "Nilai    :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
+                            "Ditransfer ke rek:\n\n".
+                            "Bank      : ".$store->bank."\n".
+                            "Nama    : ".$store->nama_rek."\n".
+                            "No. Rek : ".$store->no_rek."\n\n".
+                            "==========================\n".
+                            "Sisa Saldo Kas Besar : \n".
+                            "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                            "Total Modal Investor : \n".
+                            "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                            "Total PPn Masukan : \n".
+                            "Rp. ".number_format($ppnMasukan, 0, ',', '.')."\n\n".
+                            "Terima kasih 🙏🙏🙏\n";
+
+                $group = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
+
+                $this->sendWa($group, $pesan);
+
+            }
+
+            $this->update_packaging(1);
+
+            $this->where('user_id', auth()->user()->id)->where('jenis', 3)->where('tempo', 1)->delete();
+
+            DB::commit();
 
             $result = [
                 'status' => 'success',
