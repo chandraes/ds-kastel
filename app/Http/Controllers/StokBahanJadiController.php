@@ -345,8 +345,46 @@ class StokBahanJadiController extends Controller
 
         $data = $rencanaProduksi->load('produksi_detail');
 
+        $realKemasan = $data->produksi_detail->sum('total_kemasan');
+        $realPackaging = $data->real_packaging;
+
+        $rencanaPackaging = $data->rencana_packaging;
+        $rencanaKemasan = $data->rencana_kemasan;
+
+
+
         try {
             DB::beginTransaction();
+
+            // cek nilai rencana dan real kemasan
+            // kalau tidak sama, ubah stok kemasan dengan selisihnya
+            if ($realKemasan != $rencanaKemasan) {
+                $kemasan = $realKemasan - $rencanaKemasan;
+
+                if($kemasan > 0) {
+                    // cek stok kemasan, kalau tidak cukup, return error
+                    if ($data->kemasan->stok < $kemasan) {
+                        return redirect()->back()->with('error', 'Stok kemasan tidak mencukupi');
+                    }
+
+                }
+                $dbKEmasan = $data->kemasan->decrement('stok', $kemasan);
+            }
+
+            // cek nilai rencana dan real packaging
+            // kalau tidak sama, ubah stok packaging dengan selisihnya
+            if ($realPackaging != $rencanaPackaging) {
+                $packaging = $realPackaging - $rencanaPackaging;
+
+                if($packaging > 0) {
+                    // cek stok packaging, kalau tidak cukup, return error
+                    if ($data->kemasan->packaging->stok < $packaging) {
+                        return redirect()->back()->with('error', 'Stok packaging tidak mencukupi');
+                    }
+                }
+                
+                $dbPackaging = $data->kemasan->packaging->decrement('stok', $packaging);
+            }
 
             $store = ProductJadi::firstOrCreate(
                 ['product_id' => $data->product_id, 'kemasan_id' => $data->kemasan_id],
@@ -356,18 +394,45 @@ class StokBahanJadiController extends Controller
             if (!$store->wasRecentlyCreated) {
                 $store->increment('stock_kemasan', $data->produksi_detail->sum('total_kemasan'));
                 $store->increment('stock_packaging', $data->real_packaging);
+
             }
 
             $data->update([
                 'approved' => 1
             ]);
 
-            ProductJadiRekap::create([
+            $lastRekap = ProductJadiRekap::where('product_jadi_id', $store->id)->orderBy('id', 'desc')->first()->total_sisa_kemasan ?? 0;
+
+            $pj = ProductJadi::with('kemasan')->where('id', $store->id)->first();
+
+            $konversi = $pj->kemasan->packaging ? $pj->kemasan->packaging->konversi_kemasan : 1;
+            $sisaKemasan = $data->produksi_detail->sum('total_kemasan') % $konversi;
+
+            $totalSisaKemasan = $lastRekap + $sisaKemasan;
+
+            if ($totalSisaKemasan >= $konversi) {
+
+                // check if there is a stock packaging
+                $packaging = $pj->kemasan->packaging->stok;
+
+                if ($packaging == 0) {
+                    return redirect()->back()->with('error', 'Stok packaging tidak mencukupi untuk menyimpan sisa kemasan');
+                } else {
+                    $pj->kemasan->packaging->decrement('stok');
+                }
+
+                $totalSisaKemasan -= $konversi;
+                $store->increment('stock_packaging');
+
+            }
+
+            $res = ProductJadiRekap::create([
                 'product_jadi_id' => $store->id,
                 'jenis' => 1,
                 'jumlah_kemasan' => $data->produksi_detail->sum('total_kemasan'),
                 'jumlah_packaging' => $data->real_packaging,
-                'sisa_kemasan' => $data->produksi_detail->sum('total_kemasan') % $data->real_packaging,
+                'sisa_kemasan' => $sisaKemasan,
+                'total_sisa_kemasan' => $totalSisaKemasan,
                 'rencana_produksi_id' => $data->id,
             ]);
 
