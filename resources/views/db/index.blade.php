@@ -38,14 +38,14 @@
                 <h5 class="mt-2">PERSENTASE<br>PAJAK</h5>
             </a>
         </div>
-    </div>
-    <div class="row justify-content-left">
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.staff')}}" class="text-decoration-none">
                 <img src="{{asset('images/karyawan.svg')}}" alt="" width="70">
                 <h5 class="mt-2">BIODATA<br>DIREKSI & STAFF</h5>
             </a>
         </div>
+    </div>
+    <div class="row justify-content-left">
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.supplier')}}" class="text-decoration-none">
                 <img src="{{asset('images/supplier.svg')}}" alt="" width="70">
