@@ -46,12 +46,12 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th class="text-center align-middle">NAMA</th>
-                                <th class="text-center align-middle">SATUAN</th>
-                                <th class="text-center align-middle">KONVERSI KE LITER</th>
+                                <th class="text-center align-middle">NAMA<br>KEMASAN</th>
+                                <th class="text-center align-middle">SATUAN<br>KEMASAN</th>
+                                <th class="text-center align-middle">LITER : ISI KEMASAN</th>
                                 <th class="text-center align-middle">PACKAGING</th>
                                 <th class="text-center align-middle">HARGA PER<br>PACKAGING</th>
-                                <th class="text-center align-middle">STOK KEMASAN</th>
+                                <th class="text-center align-middle">STOK<br>KEMASAN</th>
                                 <th class="text-center align-middle">ACT</th>
                             </tr>
                         </thead>
