@@ -50,6 +50,7 @@
                                 <th class="text-center align-middle">SATUAN<br>KEMASAN</th>
                                 <th class="text-center align-middle">LITER : ISI KEMASAN</th>
                                 <th class="text-center align-middle">PACKAGING</th>
+                                <th class="text-center align-middle">ISI PACKAGING</th>
                                 <th class="text-center align-middle">HARGA PER<br>PACKAGING</th>
                                 <th class="text-center align-middle">STOK<br>KEMASAN</th>
                                 <th class="text-center align-middle">ACT</th>
@@ -64,6 +65,13 @@
                                 <td class="text-center align-middle">
                                     @if ($k->packaging_id)
                                     {{$k->packaging->nama}}
+                                    @else
+                                    -
+                                    @endif
+                                </td>
+                                <td class="text-center align-middle">
+                                    @if ($k->packaging_id)
+                                    {{$k->packaging->konversi_kemasan}}
                                     @else
                                     -
                                     @endif
