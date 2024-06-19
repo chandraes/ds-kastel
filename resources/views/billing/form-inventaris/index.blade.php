@@ -6,7 +6,7 @@
 <div class="container mt-3">
     <div class="row justify-content-left">
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#bahanBakuModal">
+            <a href="{{route('billing.form-inventaris.beli')}}" class="text-decoration-none">
                 <img src="{{asset('images/form-bahan-baku.svg')}}" alt="" width="80">
                 <h3 class="mt-2">FORM INVENTARIS</h3>
             </a>
@@ -40,3 +40,4 @@
     </div>
 </div>
 @endsection
+

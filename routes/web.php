@@ -263,6 +263,9 @@ Route::group(['middleware' => ['auth']], function() {
 
             Route::prefix('form-inventaris')->group(function(){
                 Route::get('/', [App\Http\Controllers\BillingController::class, 'form_inventaris'])->name('billing.form-inventaris');
+                Route::get('/get-jenis', [App\Http\Controllers\FormInventaris::class, 'getJenis'])->name('billing.form-inventaris.get-jenis');
+                Route::get('/beli', [App\Http\Controllers\FormInventaris::class, 'index'])->name('billing.form-inventaris.beli');
+                Route::post('/beli/store', [App\Http\Controllers\FormInventaris::class, 'store'])->name('billing.form-inventaris.beli.store');
             });
             Route::prefix('form-cost-operational')->group(function(){
                 Route::view('/', 'billing.form-cost-operational.index')->name('billing.form-cost-operational');
