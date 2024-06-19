@@ -51,6 +51,7 @@
                                 <th class="text-center align-middle">LITER : ISI KEMASAN</th>
                                 <th class="text-center align-middle">PACKAGING</th>
                                 <th class="text-center align-middle">ISI<br>PACKAGING</th>
+                                <th class="text-center align-middle">HARGA PER<br>KEMASAN</th>
                                 <th class="text-center align-middle">HARGA PER<br>PACKAGING</th>
                                 <th class="text-center align-middle">STOK<br>KEMASAN</th>
                                 <th class="text-center align-middle">ACT</th>
@@ -76,6 +77,7 @@
                                     -
                                     @endif
                                 </td>
+                                <td class="text-end align-middle"></td>
                                 <td class="text-end align-middle">{{$k->nf_harga}}</td>
                                 <td class="text-center align-middle">{{$k->stok}}</td>
                                 <td class="text-center align-middle">
