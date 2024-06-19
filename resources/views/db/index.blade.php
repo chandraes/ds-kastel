@@ -78,7 +78,7 @@
         </div>
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="#" class="text-decoration-none">
-                <img src="{{asset('images/kemasan.svg')}}" alt="" width="70">
+                <img src="{{asset('images/kategori-kemasan.svg')}}" alt="" width="70">
                 <h5 class="mt-2">KATEGORI<br>NAMA KEMASAN</h5>
             </a>
         </div>
