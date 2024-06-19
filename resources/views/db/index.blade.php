@@ -70,9 +70,6 @@
                 <h5 class="mt-2">KATEGORI<br>INVENTARIS</h5>
             </a>
         </div>
-        @endif
-    </div>
-    <div class="row justify-content-left">
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.satuan')}}" class="text-decoration-none">
                 <img src="{{asset('images/satuan.svg')}}" alt="" width="70">
@@ -85,6 +82,9 @@
                 <h5 class="mt-2">KATEGORI<br>NAMA KEMASAN</h5>
             </a>
         </div>
+        @endif
+    </div>
+    <div class="row justify-content-left">
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.bahan-baku')}}" class="text-decoration-none">
                 <img src="{{asset('images/bahan-baku.svg')}}" alt="" width="70">
