@@ -94,7 +94,7 @@
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.product')}}" class="text-decoration-none">
                 <img src="{{asset('images/product.svg')}}" alt="" width="70">
-                <h5 class="mt-2">DAFTAR<br>PRODUCT</h5>
+                <h5 class="mt-2">DAFTAR & KOMPOSISI<br>PRODUCT</h5>
             </a>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
