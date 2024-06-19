@@ -54,6 +54,13 @@ Route::group(['middleware' => ['auth']], function() {
 
         Route::group(['middleware' => ['role:su,admin']], function() {
 
+            Route::prefix('kemasan-kategori')->group(function(){
+                Route::get('/', [App\Http\Controllers\DatabaseController::class, 'kemasan_kategori'])->name('db.kemasan-kategori');
+                Route::post('/store', [App\Http\Controllers\DatabaseController::class, 'kemasan_kategori_store'])->name('db.kemasan-kategori.store');
+                Route::patch('/update/{kategori}', [App\Http\Controllers\DatabaseController::class, 'kemasan_kategori_update'])->name('db.kemasan-kategori.update');
+                Route::delete('/delete/{kategori}', [App\Http\Controllers\DatabaseController::class, 'kemasan_kategori_delete'])->name('db.kemasan-kategori.delete');
+            });
+
             Route::prefix('kategori-inventaris')->group(function(){
                 Route::get('/', [App\Http\Controllers\DatabaseController::class, 'kategori_inventaris'])->name('db.kategori-inventaris');
 

@@ -9,6 +9,7 @@ use App\Models\db\Jabatan;
 use App\Models\db\Karyawan;
 use App\Models\db\KategoriInventaris;
 use App\Models\db\Kemasan;
+use App\Models\db\KemasanKategori;
 use App\Models\db\Packaging;
 use App\Models\db\Satuan;
 use App\Models\db\Supplier;
@@ -692,5 +693,43 @@ class DatabaseController extends Controller
         $jenis->delete();
 
         return redirect()->route('db.kategori-inventaris')->with('success', 'Data berhasil dihapus');
+    }
+
+    public function kemasan_kategori()
+    {
+        $data = KemasanKategori::all();
+
+        return view('db.kemasan-kategori.index', [
+            'data' => $data
+        ]);
+    }
+
+    public function kemasan_kategori_store(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+        ]);
+
+        KemasanKategori::create($data);
+
+        return redirect()->route('db.kemasan-kategori')->with('success', 'Data berhasil ditambahkan');
+    }
+
+    public function kemasan_kategori_update(KemasanKategori $kategori, Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+        ]);
+
+        $kategori->update($data);
+
+        return redirect()->route('db.kemasan-kategori')->with('success', 'Data berhasil diupdate');
+    }
+
+    public function kemasan_kategori_delete(KemasanKategori $kategori)
+    {
+        $kategori->delete();
+
+        return redirect()->route('db.kemasan-kategori')->with('success', 'Data berhasil dihapus');
     }
 }
