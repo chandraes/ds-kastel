@@ -19,7 +19,7 @@
                 <select id="bahanSelect" class="form-select">
                     <option value="">Tambahkan Bahan</option>
                     @foreach($bahan as $bahan)
-                        <option value="{{ $bahan->id }}" data-nama="{{$bahan->kategori->nama}} - {{ $bahan->nama }}">{{$bahan->kategori->nama}} - {{ $bahan->nama }}</option>
+                        <option value="{{ $bahan->id }}" data-nama="{{$bahan->kategori->nama}}" data-singkatan="{{ $bahan->nama }}">{{$bahan->kategori->nama}} - {{ $bahan->nama }}</option>
                     @endforeach
                 </select>
             </div>
@@ -28,7 +28,8 @@
                 <table class="table table-bordered table-hover" id="tableBahan">
                     <thead class="table-success">
                         <tr>
-                            <th class="text-center align-middle">Bahan Baku</th>
+                            <th class="text-center align-middle">NAMA KIMIA</th>
+                            <th class="text-center align-middle">SINGKATAN</th>
                             <th class="text-center align-middle">
                                 Persentase<br>
                                 <small class="text-danger">Gunakan "." untuk nilai desimal!!</small>
@@ -64,7 +65,7 @@
         // Create a row for the grand total
         const totalRow = document.createElement('tr');
         totalRow.innerHTML = `
-            <td  class="text-end">Persentase Total:</td>
+            <td  class="text-end" colspan="2">Persentase Total:</td>
             <td id="grandTotal" class="text-center">0%</td>
             <td></td>
         `;
@@ -74,6 +75,7 @@
             const selectedOption = this.options[this.selectedIndex];
             const bahanId = selectedOption.value;
             const bahanNama = selectedOption.getAttribute('data-nama');
+            const bahanSingkatan = selectedOption.getAttribute('data-singkatan');
 
             if (bahanId && !selectedBahan.has(bahanId)) {
                 selectedBahan.add(bahanId);
@@ -84,6 +86,10 @@
                     <td>
                         <input type="hidden" name="bahan_baku_id[]" value="${bahanId}">
                         <label class="form-control">${bahanNama}</label>
+                    </td>
+                     <td>
+                        <input type="hidden" name="singkatan[]" value="${bahanSingkatan}">
+                        <label class="form-control">${bahanSingkatan}</label>
                     </td>
                     <td>
                         <input type="text" name="jumlah[]" id="persentase_${bahanId}" class="form-control persentase" required value="0">
