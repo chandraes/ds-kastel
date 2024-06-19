@@ -20,7 +20,7 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="harga" class="form-label">Harga Jual</label>
+                            <label for="harga" class="form-label">Harga Jual Price list</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon1">Rp</span>
                                 <input type="text" class="form-control" name="harga" id="harga" required value="{{old('harga')}}">

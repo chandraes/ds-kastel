@@ -128,6 +128,8 @@
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
     function editInvestor(data, id) {
+        document.getElementById('edit_product_id').value = data.product_id;
+        document.getElementById('edit_harga').value = data.nf_harga;
         document.getElementById('edit_nama').value = data.nama;
         document.getElementById('edit_satuan_id').value = data.satuan_id;
         document.getElementById('edit_packaging_id').value = data.packaging_id;
