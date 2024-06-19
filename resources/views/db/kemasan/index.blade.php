@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
             <h1><u>KEMASAN</u></h1>
@@ -25,23 +25,21 @@
 </div>
 @include('db.kemasan.create')
 @include('db.kemasan.edit')
-<div class="container mt-5 table-responsive">
+<div class="container-fluid mt-5 table-responsive">
     <table class="table table-bordered table-hover" id="data">
         <thead class="table-warning bg-gradient">
             <tr>
                 <th class="text-center align-middle" style="width: 5%">NO</th>
-                <th class="text-center align-middle">NAMA</th>
+                <th class="text-center align-middle">KATEGORI</th>
+                <th class="text-center align-middle">JENIS</th>
                 <th class="text-center align-middle">KEMASAN</th>
-                {{-- <th class="text-center align-middle">KONVERSI KE LITER</th>
-                <th class="text-center align-middle">PACKAGING</th>
-                <th class="text-center align-middle">STOK</th>
-                <th class="text-center align-middle">ACT</th> --}}
             </tr>
         </thead>
         <tbody>
             @foreach ($data as $d)
             <tr>
                 <td class="text-center align-middle">{{$loop->iteration}}</td>
+                <td class="text-center align-middle">{{$d->kategori->nama}}</td>
                 <td class="text-center align-middle">{{$d->nama}}</td>
                 <td class="text-center align-middle">
                     @if ($d->kemasan)
