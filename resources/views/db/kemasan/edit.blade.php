@@ -21,12 +21,11 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="harga" class="form-label">Harga Jual Price list</label>
+                            <label for="harga" class="form-label">Harga Jual Price list (Per Packaging)</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon1">Rp</span>
                                 <input type="text" class="form-control" name="harga" id="edit_harga" required value="{{old('harga')}}">
                             </div>
-                            <small class="text-danger">Harga jual satuan per packaging</small>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="nama" class="form-label">Nama Kemasan</label>
@@ -34,7 +33,7 @@
                                 placeholder="" required value="{{old('nama')}}">
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="cp" class="form-label">Satuan</label>
+                            <label for="cp" class="form-label">Satuan Kemasan</label>
                             <select name="satuan_id" id="edit_satuan_id" class="form-select" required>
                                 <option value="" selected disabled>Pilih Satuan</option>
                                 @foreach ($satuan as $s)
