@@ -51,7 +51,9 @@
                             <tr>
                                 <th class="text-center align-middle">Nama Product</th>
                                 <th class="text-center align-middle">Kode</th>
-                                <th class="text-center align-middle">Komposisi</th>
+                                <th class="text-center align-middle">Nama Kimia</th>
+                                <th class="text-center align-middle">Singkatan</th>
+                                <th class="text-center align-middle">Persentase</th>
                                 <th class="text-center align-middle">Konversi</th>
                                 <th class="text-center align-middle">Action</th>
                             </tr>
@@ -67,7 +69,41 @@
                                     <ul>
                                         @foreach ($p->komposisi as $k)
                                         <li class="mb-2">
-                                            {{$k->bahan_baku->kategori ? $k->bahan_baku->kategori->nama : '-'}} - {{$k->bahan_baku->nama}} ({{number_format($k->jumlah, 2, ',','.')}}%)
+                                            {{$k->bahan_baku->kategori ? $k->bahan_baku->kategori->nama : '-'}}
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                    @else
+                                    <div class="row text-center">
+                                        <div class="col-md-12">
+                                            <a href="{{route('db.product.create-komposisi', ['product' => $p->id])}}" class="btn btn-primary m-2">Tambah Komposisi</a>
+                                        </div>
+                                    </div>
+                                    @endif
+                                </td>
+                                <td class="text-start align-middle">
+                                    @if ($p->komposisi->count() > 0)
+                                    <ul>
+                                        @foreach ($p->komposisi as $k)
+                                        <li class="mb-2">
+                                            {{$k->bahan_baku->nama}}
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                    @else
+                                    <div class="row text-center">
+                                        <div class="col-md-12">
+                                            <a href="{{route('db.product.create-komposisi', ['product' => $p->id])}}" class="btn btn-primary m-2">Tambah Komposisi</a>
+                                        </div>
+                                    </div>
+                                    @endif
+                                </td>
+                                <td class="text-start align-middle">
+                                    @if ($p->komposisi->count() > 0)
+                                    <ul>
+                                        @foreach ($p->komposisi as $k)
+                                        <li class="mb-2">
+                                            {{number_format($k->jumlah, 2, ',','.')}}%
                                         </li>
                                         @endforeach
                                     </ul>

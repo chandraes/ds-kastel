@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
-            <h1><u>TAMBAH KOMPOSISI PRODUCT</u></h1>
+            <h1><u>KOMPOSISI PRODUCT</u></h1>
             <h1><u>{{$product->kategori->nama}} - {{$product->nama}}</u></h1>
         </div>
     </div>
