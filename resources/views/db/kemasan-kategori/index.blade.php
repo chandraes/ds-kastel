@@ -3,11 +3,11 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
-            <h1><u>KATEGORI KEMASAN</u></h1>
+            <h1><u>KATEGORI NAMA KEMASAN</u></h1>
         </div>
     </div>
     <div class="flex-row justify-content-between mt-3">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <table class="table" id="data-table">
                 <tr>
                     <td><a href="{{route('home')}}"><img src="{{asset('images/dashboard.svg')}}" alt="dashboard"
@@ -15,7 +15,7 @@
                     <td><a href="{{route('db')}}"><img src="{{asset('images/database.svg')}}" alt="dokumen" width="30">
                             Database</a></td>
                     <td><a href="#" data-bs-toggle="modal" data-bs-target="#createCustomer"><img
-                                src="{{asset('images/satuan.svg')}}" width="30"> Tambah Kategori Kemasan</a>
+                                src="{{asset('images/kategori-kemasan.svg')}}" width="30"> Tambah Kategori Kemasan</a>
 
                     </td>
                 </tr>
@@ -30,7 +30,7 @@
         <thead class="table-warning bg-gradient">
             <tr>
                 <th class="text-center align-middle" style="width: 5%">NO</th>
-                <th class="text-center align-middle">Nama Kategori </th>
+                <th class="text-center align-middle">Kategori Nama Kemasan</th>
                 <th class="text-center align-middle">ACT</th>
             </tr>
         </thead>
@@ -44,7 +44,7 @@
                         <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
                             data-bs-target="#editProject" onclick="editProject({{$d}}, {{$d->id}})"><i
                                 class="fa fa-edit"></i></button>
-                        <form action="{{ route('db.satuan.delete', $d->id) }}" method="post" id="deleteForm{{ $d->id }}"
+                        <form action="{{ route('db.kemasan-kategori.delete', $d->id) }}" method="post" id="deleteForm{{ $d->id }}"
                             class="delete-form" data-id="{{ $d->id }}">
                             @csrf
                             @method('delete')
@@ -86,7 +86,7 @@
 
     function editProject(data, id) {
         document.getElementById('edit_nama').value = data.nama;
-        document.getElementById('editForm').action = '/db/satuan/update/' + id;
+        document.getElementById('editForm').action = '/db/kemasan-kategori/update/' + id;
     };
 
 
