@@ -32,6 +32,7 @@
                 <th class="text-center align-middle">ISI<br>PACKAGING</th>
                 <th class="text-center align-middle">HARGA PER<br>KEMASAN</th>
                 <th class="text-center align-middle">HARGA PER<br>PACKAGING</th>
+                <th class="text-center align-middle">HARGA PER<br>PACKAGING+PPN</th>
                 <th class="text-center align-middle">ACT</th>
             </tr>
         </thead>
@@ -85,6 +86,7 @@
                                 @endif
                             <td class="text-end align-middle">{{$k->nf_harga_satuan}}</td>
                             <td class="text-end align-middle">{{$k->nf_harga}}</td>
+                            <td class="text-end align-middle">{{$k->nf_harga_setelah_ppn}}</td>
                             <td class="text-center align-middle">
                                 <div class="d-flex justify-content-center">
                                     <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#editInvestor" onclick="editHargaJual({{ $k }}, {{ $k->id }})"><i class="fa fa-edit"></i> {{$k->harga != null ? 'Edit': 'Tambah'}} Harga</button>

@@ -11,7 +11,7 @@ class Kemasan extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    protected $appends = ['nf_harga', 'nf_harga_satuan'];
+    protected $appends = ['nf_harga', 'nf_harga_satuan', 'harga_setelah_ppn', 'nf_harga_setelah_ppn'];
 
     public function kategori()
     {
@@ -41,5 +41,19 @@ class Kemasan extends Model
     public function getNfHargaSatuanAttribute()
     {
         return number_format($this->harga_satuan, 0, ',', '.');
+    }
+
+    public function getHargaSetelahPpnAttribute()
+    {
+        $ppn = Pajak::where('untuk', 'ppn')->first();
+
+        $harga = $this->harga + ($this->harga * ($ppn->persen / 100));
+
+        return $harga;
+    }
+
+    public function getNfHargaSetelahPpnAttribute()
+    {
+        return number_format($this->harga_setelah_ppn, 0, ',', '.');
     }
 }
