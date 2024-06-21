@@ -32,7 +32,7 @@
                 <th class="text-center align-middle" style="width: 5%">NO</th>
                 <th class="text-center align-middle">KATEGORI</th>
                 <th class="text-center align-middle">JENIS</th>
-                <th class="text-center align-middle">NAMA KEMASAN</th>
+                <th class="text-center align-middle">BENTUK KEMASAN</th>
                 <th class="text-center align-middle">SATUAN KEMASAN</th>
                 <th class="text-center align-middle">LITER : ISI KEMASAN</th>
                 <th class="text-center align-middle">PACKAGING</th>

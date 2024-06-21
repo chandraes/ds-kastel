@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
-            <h1><u>KATEGORI NAMA KEMASAN</u></h1>
+            <h1><u>KATEGORI BENTUK KEMASAN</u></h1>
         </div>
     </div>
     <div class="flex-row justify-content-between mt-3">
@@ -30,7 +30,7 @@
         <thead class="table-warning bg-gradient">
             <tr>
                 <th class="text-center align-middle" style="width: 5%">NO</th>
-                <th class="text-center align-middle">Kategori Nama Kemasan</th>
+                <th class="text-center align-middle">Kategori Bentuk Kemasan</th>
                 <th class="text-center align-middle">ACT</th>
             </tr>
         </thead>

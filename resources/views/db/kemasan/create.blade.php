@@ -20,9 +20,9 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="kemasan_kategori_id" class="form-label">Nama Kemasan</label>
+                            <label for="kemasan_kategori_id" class="form-label">Bentuk Kemasan</label>
                             <select name="kemasan_kategori_id" id="kemasan_kategori_id" class="form-select" required>
-                                <option value="" selected disabled>Pilih Kemasan</option>
+                                <option value="" selected disabled>Pilih Bentuk Kemasan</option>
                                 @foreach ($kategori as $k)
                                 <option value="{{$k->id}}">{{$k->nama}}</option>
                                 @endforeach

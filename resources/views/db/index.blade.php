@@ -79,7 +79,7 @@
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
             <a href="{{route('db.kemasan-kategori')}}" class="text-decoration-none">
                 <img src="{{asset('images/kategori-kemasan.svg')}}" alt="" width="70">
-                <h5 class="mt-2">KATEGORI<br>NAMA KEMASAN</h5>
+                <h5 class="mt-2">KATEGORI<br>BENTUK KEMASAN</h5>
             </a>
         </div>
         @endif
