@@ -508,9 +508,9 @@ class DatabaseController extends Controller
 
     public function kemasan()
     {
-        $data = Product::has('kemasan')->with(['kemasan', 'kemasan.kategori'])->get();
+        $data = Product::has('kemasan')->with(['kemasan.kategori', 'kategori', 'kemasan.satuan', 'kemasan.packaging'])->get();
         $satuan = Satuan::all();
-        $product = Product::all();
+        $product = Product::with(['kategori'])->get();
         $packaging = Packaging::all();
         $kategori = KemasanKategori::all();
 
@@ -534,7 +534,7 @@ class DatabaseController extends Controller
         ]);
 
         $data['nama'] = KemasanKategori::find($data['kemasan_kategori_id'])->nama;
-        
+
         if ($data['packaging_id'] == 0) {
             $data['packaging_id'] = null;
         }
@@ -731,5 +731,41 @@ class DatabaseController extends Controller
         $kategori->delete();
 
         return redirect()->route('db.kemasan-kategori')->with('success', 'Data berhasil dihapus');
+    }
+
+    public function harga_jual()
+    {
+        $data = Product::has('kemasan')->with(['kemasan.kategori', 'kategori', 'kemasan.satuan', 'kemasan.packaging'])->get();
+        $satuan = Satuan::all();
+        $product = Product::with(['kategori'])->get();
+        $packaging = Packaging::all();
+        $kategori = KemasanKategori::all();
+
+        return view('db.kemasan-harga-jual.index', [
+            'data' => $data,
+            'satuan' => $satuan,
+            'packaging' => $packaging,
+            'product' => $product,
+            'kategori' => $kategori
+        ]);
+    }
+
+    public function harga_jual_update(Kemasan $kemasan, Request $request)
+    {
+        $data = $request->validate([
+            'harga_satuan' => 'required',
+        ]);
+
+        $data['harga_satuan'] = str_replace('.', '', $data['harga_satuan']);
+
+        if ($kemasan->packaging_id) {
+            $data['harga'] = $data['harga_satuan'] * $kemasan->packaging->konversi_kemasan;
+        } else {
+            $data['harga'] = $data['harga_satuan'];
+        }
+
+        $kemasan->update($data);
+
+        return redirect()->route('db.harga-jual')->with('success', 'Data berhasil diupdate');
     }
 }
