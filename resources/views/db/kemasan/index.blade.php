@@ -30,12 +30,12 @@
         <thead class="table-warning bg-gradient">
             <tr>
                 <th class="text-center align-middle" style="width: 5%">NO</th>
-                <th class="text-center align-middle">KATEGORI</th>
+                <th class="text-center align-middle">KATEGORI<br>PRODUCT</th>
                 <th class="text-center align-middle">NAMA<br>PRODUCT</th>
                 <th class="text-center align-middle">BENTUK<br>KEMASAN</th>
                 <th class="text-center align-middle">SATUAN<br>KEMASAN</th>
                 <th class="text-center align-middle">BENTUK KEMASAN : ISI KEMASAN<br>(Liter)</th>
-                <th class="text-center align-middle">PACKAGING</th>
+                <th class="text-center align-middle">BENTUK<br>PACKAGING</th>
                 <th class="text-center align-middle">ISI<br>PACKAGING</th>
                 <th class="text-center align-middle">STOK<br>KEMASAN</th>
                 <th class="text-center align-middle">ACT</th>
