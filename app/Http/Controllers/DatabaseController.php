@@ -509,7 +509,7 @@ class DatabaseController extends Controller
     public function kemasan()
     {
         $data = Product::has('kemasan')->with(['kemasan.kategori', 'kategori', 'kemasan.satuan', 'kemasan.packaging'])->get();
-        $satuan = Satuan::all();
+        $satuan = Satuan::where('nama', 'like', '%buah%')->get();
         $product = Product::with(['kategori'])->get();
         $packaging = Packaging::all();
         $kategori = KemasanKategori::all();
@@ -531,6 +531,8 @@ class DatabaseController extends Controller
             'konversi_liter' => 'required',
             'packaging_id' => 'required',
             'kemasan_kategori_id' => 'required|exists:kemasan_kategoris,id',
+            // make validation unique for product_id and kemasan_kategori_id
+            
         ]);
 
         $data['nama'] = KemasanKategori::find($data['kemasan_kategori_id'])->nama;

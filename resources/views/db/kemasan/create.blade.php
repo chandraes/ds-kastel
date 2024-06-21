@@ -31,9 +31,9 @@
                         <div class="col-md-6 mb-3">
                             <label for="cp" class="form-label">Satuan Kemasan</label>
                             <select name="satuan_id" id="satuan_id" class="form-select" required>
-                                <option value="" selected disabled>Pilih Satuan</option>
+                                <option value="" disabled>Pilih Satuan</option>
                                 @foreach ($satuan as $s)
-                                <option value="{{$s->id}}">{{$s->nama}}</option>
+                                <option value="{{$s->id}}" selected>{{$s->nama}}</option>
                                 @endforeach
                             </select>
                         </div>
