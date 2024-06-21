@@ -122,6 +122,16 @@ class ProductController extends Controller
         return redirect()->route('db.product')->with('success', 'Data berhasil disimpan');
     }
 
+    public function edit_komposisi(Product $product)
+    {
+        $bahan = BahanBaku::all();
+
+        return view('db.product.edit-komposisi', [
+            'product' => $product->load('komposisi'),
+            'bahan' => $bahan
+        ]);
+    }
+
     public function delete_komposisi(Product $product, BahanBaku $bahan)
     {
         ProductKomposisi::where('product_id', $product->id)->where('bahan_baku_id', $bahan->id)->delete();

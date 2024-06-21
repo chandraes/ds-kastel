@@ -7,7 +7,7 @@
         </div>
     </div>
     @include('swal')
-    <form action="{{route('billing.form-transaksi.packaging.store')}}" method="post" id="masukForm">
+    <form action="#" method="post" id="masukForm">
         @csrf
         <div class="row">
             <div class="col-md-12">

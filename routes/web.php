@@ -155,6 +155,7 @@ Route::group(['middleware' => ['auth']], function() {
                 Route::get('/create', [App\Http\Controllers\ProductController::class, 'create'])->name('db.product.create');
                 Route::post('/store', [App\Http\Controllers\ProductController::class, 'store'])->name('db.product.store');
                 Route::get('/create-komposisi/{product}', [App\Http\Controllers\ProductController::class, 'create_komposisi'])->name('db.product.create-komposisi');
+                Route::get('/edit-komposisi/{product}', [App\Http\Controllers\ProductController::class, 'edit_komposisi'])->name('db.product.edit-komposisi');
                 Route::post('/store-komposisi', [App\Http\Controllers\ProductController::class, 'store_komposisi'])->name('db.product.store-komposisi');
                 Route::delete('/delete-komposisi/{product}/{bahan}', [App\Http\Controllers\ProductController::class, 'delete_komposisi'])->name('db.product.delete-komposisi');
                 Route::post('/kosongkan-komposisi/{product}', [App\Http\Controllers\ProductController::class, 'kosongkan_komposisi'])->name('db.product.kosongkan-komposisi');
