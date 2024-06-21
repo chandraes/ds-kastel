@@ -20,6 +20,7 @@ use App\Models\db\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Validation\Rule;
 
 class DatabaseController extends Controller
 {
@@ -530,9 +531,16 @@ class DatabaseController extends Controller
             'satuan_id' => 'required',
             'konversi_liter' => 'required',
             'packaging_id' => 'required',
-            'kemasan_kategori_id' => 'required|exists:kemasan_kategoris,id',
-            // make validation unique for product_id and kemasan_kategori_id
-            
+            'kemasan_kategori_id' => [
+                'required',
+                'exists:kemasan_kategoris,id',
+                Rule::unique('kemasans') // ganti 'your_table_name' dengan nama tabel yang sesuai
+                    ->where(function ($query) use ($request) {
+                        return $query->where('product_id', $request->product_id)
+                                     ->where('kemasan_kategori_id', $request->kemasan_kategori_id);
+                    })
+            ],
+
         ]);
 
         $data['nama'] = KemasanKategori::find($data['kemasan_kategori_id'])->nama;
@@ -553,7 +561,16 @@ class DatabaseController extends Controller
             'satuan_id' => 'required',
             'konversi_liter' => 'required',
             'packaging_id' => 'required',
-            'kemasan_kategori_id' => 'required|exists:kemasan_kategoris,id',
+            'kemasan_kategori_id' => [
+                'required',
+                'exists:kemasan_kategoris,id',
+                Rule::unique('kemasans')
+                    ->where(function ($query) use ($request) {
+                        return $query->where('product_id', $request->product_id)
+                                    ->where('kemasan_kategori_id', $request->kemasan_kategori_id);
+                    })
+                    ->ignore($kemasan->id)
+            ],
         ]);
 
         $data['nama'] = KemasanKategori::find($data['kemasan_kategori_id'])->nama;
