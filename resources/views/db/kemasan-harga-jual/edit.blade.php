@@ -21,7 +21,7 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="kemasan_kategori_id" class="form-label">Nama Kemasan</label>
+                            <label for="kemasan_kategori_id" class="form-label">Bentuk Kemasan</label>
                             <input type="text" id="kemasan_kategori_id" disabled class="form-control">
                         </div>
                         <div class="col-md-6 mb-3">
@@ -51,7 +51,7 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="harga" class="form-label">Harga Satuan</label>
+                            <label for="harga" class="form-label">Harga Per Packaging</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon1">Rp</span>
                                 <input type="text" class="form-control" name="harga" id="edit_harga" required value="{{old('harga')}}" disabled>

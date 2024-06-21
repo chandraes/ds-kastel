@@ -25,13 +25,13 @@
         <thead class="table-warning bg-gradient">
             <tr>
                 <th class="text-center align-middle" style="width: 5%">NO</th>
-                <th class="text-center align-middle">KATEGORI</th>
-                <th class="text-center align-middle">JENIS</th>
-                <th class="text-center align-middle">NAMA KEMASAN</th>
-                <th class="text-center align-middle">PACKAGING</th>
-                <th class="text-center align-middle">ISI PACKAGING</th>
-                <th class="text-center align-middle">HARGA PER KEMASAN</th>
-                <th class="text-center align-middle">HARGA PER PACKAGING</th>
+                <th class="text-center align-middle">KATEGORI<br>PRODUCT</th>
+                <th class="text-center align-middle">NAMA<br>PRODUCKT</th>
+                <th class="text-center align-middle">BENTUK<br>KEMASAN</th>
+                <th class="text-center align-middle">BENTUK<br>PACKAGING</th>
+                <th class="text-center align-middle">ISI<br>PACKAGING</th>
+                <th class="text-center align-middle">HARGA PER<br>KEMASAN</th>
+                <th class="text-center align-middle">HARGA PER<br>PACKAGING</th>
                 <th class="text-center align-middle">ACT</th>
             </tr>
         </thead>
