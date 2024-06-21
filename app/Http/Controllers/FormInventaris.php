@@ -30,4 +30,11 @@ class FormInventaris extends Controller
 
         return response()->json($result);
     }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            
+        ]);
+    }
 }

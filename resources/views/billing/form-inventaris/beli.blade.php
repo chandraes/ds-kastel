@@ -60,7 +60,7 @@
                     <label for="jumlah" class="form-label">Jumlah</label>
                     <div class="input-group mb-3">
                         <input type="number" class="form-control" name="jumlah" id="jumlah" aria-describedby="helpId"
-                            placeholder="" required value="0">
+                            placeholder="" required value="0" onkeyup="calculateTotal()">
                         <span class="input-group-text" id="basic-addon1">Buah</span>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                     <span class="input-group-text" id="basic-addon1">Rp</span>
                     <input type="text" class="form-control @if ($errors->has('harga'))
                     is-invalid
-                @endif" name="harga" id="harga" data-thousands="." required value="">
+                @endif" name="harga" id="harga" data-thousands="." required value="0" onkeyup="calculateTotal()">
                 </div>
             </div>
             <div class="col-md-3 mb-3">
@@ -96,7 +96,7 @@
         <hr>
 
         <div class="d-grid gap-3 mt-3">
-            <button class="btn btn-primary">Masukan Keranjang</button>
+            <button class="btn btn-primary">Beli</button>
             <a href="{{route('billing.form-transaksi')}}" class="btn btn-secondary" type="button">Batal</a>
         </div>
     </form>
@@ -141,6 +141,27 @@
                     document.getElementById('inventaris_jenis_id').innerHTML = html;
                 }
             });
+        }
+
+        function calculateTotal(){
+            var harga = document.getElementById('harga').value;
+            harga = harga.replace(/\./g, '');
+            var jumlah = document.getElementById('jumlah').value;
+            var apa_ppn = document.getElementById('apa_ppn').value;
+            if (apa_ppn === "1") {
+                var ppn = {!! $ppn !!} / 100;
+                var tot = (harga * jumlah);
+                document.getElementById('ppn').value = ((tot * ppn)).toLocaleString('id-ID');
+            } else {
+                document.getElementById('ppn').value = 0;
+                var tot = (harga * jumlah);
+            }
+            var ppn = document.getElementById('ppn').value;
+            ppn = ppn.replace(/\./g, '');
+
+            var total = (harga * jumlah) + Number(ppn);
+            total = total.toLocaleString('id-ID');
+            document.getElementById('total').value = total;
         }
 
     function add_ppn(){
