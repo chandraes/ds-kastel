@@ -20,16 +20,13 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="harga" class="form-label">Harga Jual Price list (Per Packaging)</label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">Rp</span>
-                                <input type="text" class="form-control" name="harga" id="harga" required value="{{old('harga')}}">
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="nama" class="form-label">Nama Kemasan</label>
-                            <input type="text" class="form-control" name="nama" id="nama" aria-describedby="helpId"
-                                placeholder="" required value="{{old('nama')}}">
+                            <label for="kemasan_kategori_id" class="form-label">Nama Kemasan</label>
+                            <select name="kemasan_kategori_id" id="kemasan_kategori_id" class="form-select" required>
+                                <option value="" selected disabled>Pilih Kemasan</option>
+                                @foreach ($kategori as $k)
+                                <option value="{{$k->id}}">{{$k->nama}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="cp" class="form-label">Satuan Kemasan</label>

@@ -13,6 +13,11 @@ class Kemasan extends Model
 
     protected $appends = ['nf_harga'];
 
+    public function kategori()
+    {
+        return $this->belongsTo(KemasanKategori::class, 'kemasan_kategori_id');
+    }
+
     public function satuan()
     {
         return $this->belongsTo(Satuan::class);

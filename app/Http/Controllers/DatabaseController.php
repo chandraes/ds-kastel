@@ -508,16 +508,18 @@ class DatabaseController extends Controller
 
     public function kemasan()
     {
-        $data = Product::has('kemasan')->with(['kemasan'])->get();
+        $data = Product::has('kemasan')->with(['kemasan', 'kemasan.kategori'])->get();
         $satuan = Satuan::all();
         $product = Product::all();
         $packaging = Packaging::all();
+        $kategori = KemasanKategori::all();
 
         return view('db.kemasan.index', [
             'data' => $data,
             'satuan' => $satuan,
             'packaging' => $packaging,
-            'product' => $product
+            'product' => $product,
+            'kategori' => $kategori
         ]);
     }
 
@@ -525,18 +527,17 @@ class DatabaseController extends Controller
     {
         $data= $request->validate([
             'product_id' => 'required|exists:products,id',
-            'nama' => 'required',
             'satuan_id' => 'required',
             'konversi_liter' => 'required',
             'packaging_id' => 'required',
-            'harga' => 'required',
+            'kemasan_kategori_id' => 'required|exists:kemasan_kategoris,id',
         ]);
 
+        $data['nama'] = KemasanKategori::find($data['kemasan_kategori_id'])->nama;
+        
         if ($data['packaging_id'] == 0) {
             $data['packaging_id'] = null;
         }
-
-        $data['harga'] = str_replace('.', '', $data['harga']);
 
         Kemasan::create($data);
 
@@ -547,18 +548,17 @@ class DatabaseController extends Controller
     {
         $data = $request->validate([
             'product_id' => 'required|exists:products,id',
-            'nama' => 'required',
             'satuan_id' => 'required',
             'konversi_liter' => 'required',
             'packaging_id' => 'required',
-            'harga' => 'required',
+            'kemasan_kategori_id' => 'required|exists:kemasan_kategoris,id',
         ]);
+
+        $data['nama'] = KemasanKategori::find($data['kemasan_kategori_id'])->nama;
 
         if ($data['packaging_id'] == 0) {
             $data['packaging_id'] = null;
         }
-
-        $data['harga'] = str_replace('.', '', $data['harga']);
 
         $kemasan->update($data);
 
