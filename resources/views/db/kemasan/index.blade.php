@@ -34,7 +34,7 @@
                 <th class="text-center align-middle">NAMA<br>PRODUCT</th>
                 <th class="text-center align-middle">BENTUK KEMASAN</th>
                 <th class="text-center align-middle">SATUAN KEMASAN</th>
-                <th class="text-center align-middle">LITER : ISI KEMASAN</th>
+                <th class="text-center align-middle">BENTUK KEMASAN : ISI KEMASAN<br>(Liter)</th>
                 <th class="text-center align-middle">PACKAGING</th>
                 <th class="text-center align-middle">ISI PACKAGING</th>
                 <th class="text-center align-middle">STOK KEMASAN</th>

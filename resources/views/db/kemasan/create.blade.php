@@ -48,7 +48,7 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="konversi_liter" class="form-label">Liter : Isi Kemasan</label>
+                            <label for="konversi_liter" class="form-label">BENTUK KEMASAN : ISI KEMASAN (Liter)</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon1">1</span>
                                 <span class="input-group-text" id="basic-addon1">:</span>
