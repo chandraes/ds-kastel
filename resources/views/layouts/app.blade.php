@@ -20,6 +20,7 @@
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/sweetalert.js')}}"></script>
     <link href="{{asset('assets/css/dt.min.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/js/flatpickr/flatpickr.min.css')}}" rel="stylesheet">
     @stack('css')
     <style>
         .centered {
@@ -112,6 +113,7 @@
             @yield('content')
         </main>
     </div>
+    <script src="{{asset('assets/js/flatpickr/flatpickr.js')}}"></script>
     <script src="{{asset('assets/js/cleave.min.js')}}"></script>
     <script src="{{asset('assets/js/swalConfirm.js')}}"></script>
     <script src="{{asset('assets/js/dt5.min.js')}}"></script>

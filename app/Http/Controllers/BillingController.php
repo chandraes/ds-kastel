@@ -11,6 +11,7 @@ use App\Models\KasBesar;
 use App\Models\Produksi\RencanaProduksi;
 use App\Models\RekapGaji;
 use App\Models\RekapGajiDetail;
+use App\Models\transaksi\InventarisInvoice;
 use App\Models\transaksi\InvoiceBelanja;
 use App\Models\transaksi\InvoiceJual;
 use App\Services\StarSender;
@@ -271,6 +272,10 @@ class BillingController extends Controller
 
     public function form_inventaris()
     {
-        return view('billing.form-inventaris.index');
+        $hi = InventarisInvoice::where('pembayaran', 2)->where('lunas', 0)->count();
+
+        return view('billing.form-inventaris.index', [
+            'hi' => $hi,
+        ]);
     }
 }

@@ -12,13 +12,15 @@
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#kemasanModal">
+            <a href="{{route('billing.form-inventaris.hutang')}}" class="text-decoration-none">
                 <img src="{{asset('images/kemasan.svg')}}" alt="" width="80">
-                <h3 class="mt-2">HUTANG INVENTARIS</h3>
+                <h3 class="mt-2">HUTANG INVENTARIS
+                    @if($hi != 0) <span class="text-danger">({{$hi}})</span> @endif
+                </h3>
             </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
-            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#packagingModal">
+            <a href="#" class="text-decoration-none">
                 <img src="{{asset('images/packaging.svg')}}" alt="" width="80">
                 <h3 class="mt-2">KREDIT INVENTARIS</h3>
             </a>

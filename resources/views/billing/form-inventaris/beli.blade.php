@@ -101,6 +101,26 @@
                 </div>
             </div>
         </div>
+        <div class="row" id="row-dp">
+            <div class="col-md-4 mb-3">
+                <label for="dp" class="form-label">DP</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Rp</span>
+                    <input type="text" class="form-control @if ($errors->has('dp'))
+                    is-invalid
+                @endif" name="dp" id="dp" data-thousands="." value="0" disabled>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="tanggal_jatuh_tempo" class="form-label">Tanggal Jatuh Tempo</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                    <input type="text" class="form-control @if ($errors->has('dp'))
+                    is-invalid
+                @endif" name="tanggal_jatuh_tempo" id="tanggal_jatuh_tempo" disabled >
+                </div>
+            </div>
+        </div>
         <div class="row">
             <hr>
             <h3>Transfer Ke : </h3>
@@ -158,9 +178,22 @@
                 delimiter: '.'
             });
 
+            var dp = new Cleave('#dp', {
+                numeral: true,
+                numeralThousandsGroupStyle: 'thousand',
+                numeralDecimalMark: ',',
+                delimiter: '.'
+            });
+
             var no_rek = new Cleave('#no_rek', {
                 delimiter: '-',
                 blocks: [4, 4, 8]
+            });
+
+            // flatpickr id tanggal_jatuh_tempo
+            flatpickr('#tanggal_jatuh_tempo', {
+                enableTime: false,
+                dateFormat: "d-m-Y",
             });
 
         });
@@ -168,10 +201,27 @@
         function checkPembayaran(){
             console.log('checkPembayaran');
             var pembayaran = document.getElementById('pembayaran').value;
-            if (pembayaran != "") {
-                document.getElementById('row-first').hidden = false;
-            } else {
-                document.getElementById('row-first').hidden = true;
+            if(pembayaran == 1)
+            {
+                dp = document.getElementById('dp');
+                dp.setAttribute('disabled', 'disabled');
+                // required false
+                dp.removeAttribute('required');
+                tanggal_jatuh_tempo = document.getElementById('tanggal_jatuh_tempo');
+                tanggal_jatuh_tempo.setAttribute('disabled', 'disabled');
+                // required false
+                tanggal_jatuh_tempo.removeAttribute('required');
+                dp.value = 0;
+                tanggal_jatuh_tempo.value = '';
+            } else if(pembayaran == 2){
+                dp = document.getElementById('dp');
+                dp.removeAttribute('disabled');
+                // required true
+                dp.setAttribute('required', 'required');
+                tanggal_jatuh_tempo = document.getElementById('tanggal_jatuh_tempo');
+                tanggal_jatuh_tempo.removeAttribute('disabled');
+                // required true
+                tanggal_jatuh_tempo.setAttribute('required', 'required');
             }
         }
 

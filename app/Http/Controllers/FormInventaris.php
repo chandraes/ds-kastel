@@ -48,6 +48,7 @@ class FormInventaris extends Controller
             'no_rek' => 'required',
             'bank' => 'required',
             'dp' => 'required_unless:pembayaran,1',
+            'tanggal_jatuh_tempo' => 'required_unless:pembayaran,1',
         ]);
 
         $data['ppn'] = str_replace('.', '', $data['ppn']);
@@ -61,5 +62,23 @@ class FormInventaris extends Controller
 
         return redirect()->back()->with($res['status'], $res['message']);
 
+    }
+
+    public function hutang()
+    {
+        $data = InventarisInvoice::where('pembayaran', 2)->where('lunas', 0)->get();
+
+        return view('billing.form-inventaris.hutang', [
+            'data' => $data
+        ]);
+    }
+
+    public function pelunasan(InventarisInvoice $invoice)
+    {
+        $db = new InventarisInvoice();
+
+        $res = $db->pelunasan($invoice->id);
+
+        return redirect()->back()->with($res['status'], $res['message']);
     }
 }
