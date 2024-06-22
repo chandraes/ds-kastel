@@ -46,9 +46,9 @@
             </div>
             <div class="col-md-3">
                 <div class="mb-3">
-                    <label for="product_id" class="form-label">Jenis</label>
+                    <label for="product_id" class="form-label">Nama Product</label>
                     <select class="form-select" id="product_id" onchange="getKemasan()">
-                        <option value=""> -- Pilih jenis -- </option>
+                        <option value=""> -- Pilih Nama Product -- </option>
                     </select>
                 </div>
             </div>
@@ -213,7 +213,7 @@
                         var data = data.data;
                         $('#product_id').empty();
 
-                        $('#product_id').append('<option value=""> -- Pilih Jenis-- </option>');
+                        $('#product_id').append('<option value=""> -- Pilih Nama Product-- </option>');
                         $.each(data, function(index, value){
                             $('#product_id').append('<option value="'+value.id+'">'+value.nama+'</option>');
                         });
