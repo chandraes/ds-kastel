@@ -2,8 +2,10 @@
 
 namespace App\Models\db;
 
+use App\Models\transaksi\InventarisInvoice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class InventarisRekap extends Model
 {
@@ -11,6 +13,11 @@ class InventarisRekap extends Model
     protected $guarded = ['id'];
 
     protected $appends = ['nf_harga_satuan', 'nf_jumlah', 'total', 'nf_total', 'tanggal'];
+
+    public function invoice()
+    {
+        return $this->hasOne(InventarisInvoice::class, 'inventaris_id');
+    }
 
     public function jenis()
     {
@@ -41,4 +48,5 @@ class InventarisRekap extends Model
     {
         return $this->created_at->format('d-m-Y');
     }
+
 }

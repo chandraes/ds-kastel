@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\db\InventarisJenis;
 use App\Models\db\InventarisKategori;
+use App\Models\db\InventarisRekap;
 use App\Models\db\Pajak;
+use App\Models\transaksi\InventarisInvoice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FormInventaris extends Controller
 {
@@ -34,7 +37,29 @@ class FormInventaris extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            
+            'pembayaran' => 'required',
+            'inventaris_jenis_id' => 'required|exists:inventaris_jenis,id',
+            'apa_ppn' => 'required',
+            'uraian' => 'required',
+            'jumlah' => 'required',
+            'harga_satuan' => 'required',
+            'ppn' => 'required',
+            'nama_rek' => 'required',
+            'no_rek' => 'required',
+            'bank' => 'required',
+            'dp' => 'required_unless:pembayaran,1',
         ]);
+
+        $data['ppn'] = str_replace('.', '', $data['ppn']);
+        $data['harga_satuan'] = str_replace('.', '', $data['harga_satuan']);
+        $data['status'] = 'beli';
+        $data['jenis'] = 1;
+
+        $db = new InventarisInvoice();
+
+        $res = $db->beliInventaris($data);
+
+        return redirect()->back()->with($res['status'], $res['message']);
+
     }
 }
