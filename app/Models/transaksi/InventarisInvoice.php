@@ -159,7 +159,7 @@ class InventarisInvoice extends Model
                      "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                      "Subtotal ".$inv->kategori->nama." : \n".
                      "Rp. ".number_format(0, 0, ',', '.')."\n\n".
-                     "Grand Total ".$inv->kategori->nama." : \n".
+                     "Grand Total Inventaris: \n".
                      "Rp. ".number_format(0, 0, ',', '.')."\n\n".
                      "Terima kasih 🙏🙏🙏\n";
 
