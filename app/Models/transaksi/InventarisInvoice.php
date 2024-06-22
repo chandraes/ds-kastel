@@ -38,8 +38,6 @@ class InventarisInvoice extends Model
                 ];
             }
 
-
-
             $inventaris = InventarisRekap::create([
                 'inventaris_jenis_id' => $data['inventaris_jenis_id'],
                 'status' => $data['status'],
@@ -47,11 +45,13 @@ class InventarisInvoice extends Model
                 'uraian' => $data['uraian'],
                 'jumlah' => $data['jumlah'],
                 'harga_satuan' => $data['harga_satuan'],
+                'total' => $data['jumlah'] * $data['harga_satuan'],
             ]);
 
             if($data['pembayaran'] == 1){
                 $invoice = $this->create([
                     'inventaris_id' => $inventaris->id,
+                    'uraian' => $data['uraian'],
                     'pembayaran' => $data['pembayaran'],
                     'jumlah' => $data['jumlah'],
                     'harga_satuan' => $data['harga_satuan'],

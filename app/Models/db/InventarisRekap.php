@@ -34,11 +34,6 @@ class InventarisRekap extends Model
         return number_format($this->jumlah, 0, ',', '.');
     }
 
-    public function getTotalAttribute()
-    {
-        return $this->jumlah * $this->harga_satuan;
-    }
-
     public function getNfTotalAttribute()
     {
         return number_format($this->total, 0, ',', '.');

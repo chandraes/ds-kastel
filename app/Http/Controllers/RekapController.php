@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\db\InventarisJenis;
+use App\Models\db\InventarisKategori;
 use App\Models\db\Konsumen;
 use App\Models\GroupWa;
 use App\Models\InvestorModal;
@@ -516,6 +518,26 @@ class RekapController extends Controller
             'dataTahun' => $dataTahun,
             'tahun' => $tahun,
             'kelebihan' => $kelebihan,
+        ]);
+    }
+
+    public function inventaris()
+    {
+        $data = InventarisKategori::has('jenis.rekap')->with('jenis.rekap')->get();
+
+        return view('rekap.inventaris.index', [
+            'data' => $data,
+        ]);
+
+    }
+
+    public function inventaris_detail(InventarisJenis $jenis)
+    {
+        $data = $jenis->rekap;
+
+        return view('rekap.inventaris.detail', [
+            'data' => $data,
+            'inventaris' => $jenis->load('kategori'),
         ]);
     }
 }

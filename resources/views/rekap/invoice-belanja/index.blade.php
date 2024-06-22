@@ -115,7 +115,7 @@
 @push('js')
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
-    
+
     $(document).ready(function() {
         $('#rekapTable').DataTable({
             "paging": false,

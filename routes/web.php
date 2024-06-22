@@ -266,6 +266,11 @@ Route::group(['middleware' => ['auth']], function() {
             Route::prefix('pph-badan')->group(function(){
                 Route::get('/', [App\Http\Controllers\RekapController::class, 'pph_badan'])->name('rekap.pph-badan');
             });
+
+            Route::prefix('inventaris')->group(function(){
+                Route::get('/', [App\Http\Controllers\RekapController::class, 'inventaris'])->name('rekap.inventaris');
+                Route::get('/{jenis}', [App\Http\Controllers\RekapController::class, 'inventaris_detail'])->name('rekap.inventaris.detail');
+            });
         });
     });
 
