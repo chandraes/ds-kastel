@@ -2,6 +2,7 @@
 
 namespace App\Models\transaksi;
 
+use App\Models\db\InventarisJenis;
 use App\Models\db\InventarisRekap;
 use App\Models\GroupWa;
 use App\Models\KasBesar;
@@ -135,13 +136,14 @@ class InventarisInvoice extends Model
                 'modal_investor_terakhir' => $kas->modalInvestorTerakhir(),
                 'invoice_inventaris_id' => $invoice->id,
             ]);
-
+            $inv = InventarisJenis::find($data['inventaris_jenis_id']);
             // Construct the message dynamically
             $uraianText = $data['pembayaran'] == 2 && $data['dp'] > 0 ? "DP ".$store->uraian : $store->uraian;
 
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                      "*FORM INVENTARIS*\n".
                      "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
+                     "Kategori : ".$inv->kategori->nama."\n\n".
                      "Uraian :  *".$uraianText."*\n\n".
                      "Nilai    :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
                      "Ditransfer ke rek:\n\n".
