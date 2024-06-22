@@ -140,6 +140,8 @@ class InventarisInvoice extends Model
             // Construct the message dynamically
             $uraianText = $data['pembayaran'] == 2 && $data['dp'] > 0 ? "DP ".$store->uraian : $store->uraian;
 
+            // tampilkan setiap sub total per kategori
+
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                      "*FORM INVENTARIS*\n".
                      "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
@@ -155,6 +157,10 @@ class InventarisInvoice extends Model
                      "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
                      "Total Modal Investor : \n".
                      "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                     "Subtotal ".$inv->kategori->nama." : \n".
+                     "Rp. ".number_format(0, 0, ',', '.')."\n\n".
+                     "Grand Total ".$inv->kategori->nama." : \n".
+                     "Rp. ".number_format(0, 0, ',', '.')."\n\n".
                      "Terima kasih 🙏🙏🙏\n";
 
             // Retrieve the group name once, as it's the same for both conditions
