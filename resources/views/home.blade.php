@@ -8,43 +8,53 @@
         @if (auth()->user()->role != 'supplier' && auth()->user()->role != 'investor')
         <div class="col-md-3 text-center mb-5 mt-3">
             <a href="{{route('db')}}" class="text-decoration-none">
-                <img src="{{asset('images/database.svg')}}" alt="" width="80">
-                <h3 class="mt-2">DATABASE</h3>
+                <img src="{{asset('images/database.svg')}}" alt="" width="70">
+                <h4 class="mt-2">DATABASE</h4>
             </a>
         </div>
         @endif
         @if (auth()->user()->role != 'supplier' && auth()->user()->role != 'investor')
         <div class="col-md-3 text-center mb-5 mt-3">
             <a href="{{route('billing')}}" class="text-decoration-none">
-                <img src="{{asset('images/billing.svg')}}" alt="" width="80">
-                <h3 class="mt-2">BILLING</h3>
+                <img src="{{asset('images/billing.svg')}}" alt="" width="70">
+                <h4 class="mt-2">BILLING</h4>
             </a>
         </div>
         @endif
         @if (auth()->user()->role != 'supplier')
         <div class="col-md-3 text-center mb-5 mt-3">
             <a href="{{route('rekap')}}" class="text-decoration-none">
-                <img src="{{asset('images/rekap.svg')}}" alt="" width="80">
-                <h3 class="mt-2">REKAP</h3>
+                <img src="{{asset('images/rekap.svg')}}" alt="" width="70">
+                <h4 class="mt-2">REKAP</h4>
             </a>
         </div>
         @endif
-        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'su')
+    </div>
+    <div class="row justify-content-left">
+        <div class="col-md-3 text-center mb-5 mt-3">
+            <a href="{{route('inventaris.index')}}" class="text-decoration-none">
+                <img src="{{asset('images/inventaris-menu.svg')}}" alt="" width="70">
+                <h4 class="mt-2">INVENTARIS</h4>
+            </a>
+        </div>
+        <div class="col-md-3 text-center mb-5 mt-3">
+            <a href="{{route('pajak.index')}}" class="text-decoration-none">
+                <img src="{{asset('images/pajak-menu.svg')}}" alt="" width="70">
+                <h4 class="mt-2">PAJAK</h4>
+            </a>
+        </div>
+        <div class="col-md-3 text-center mb-5 mt-3">
+            <a href="{{route('laporan-keuangan.index')}}" class="text-decoration-none">
+                <img src="{{asset('images/laporan-keuangan.svg')}}" alt="" width="70">
+                <h4 class="mt-2">LAPORAN<br>KEUANGAN</h4>
+            </a>
+        </div>
         <div class="col-md-3 text-center mb-5 mt-3">
             <a href="{{route('pengaturan')}}" class="text-decoration-none">
-                <img src="{{asset('images/pengaturan.svg')}}" alt="" width="80">
-                <h3 class="mt-2">PENGATURAN</h3>
+                <img src="{{asset('images/pengaturan.svg')}}" alt="" width="70">
+                <h4 class="mt-2">PENGATURAN</h4>
             </a>
         </div>
-        @endif
-        @if (auth()->user()->role == 'supplier')
-        <div class="col-md-3 text-center mb-5 mt-3">
-            <a href="{{route('kas-per-supplier')}}" class="text-decoration-none">
-                <img src="{{asset('images/kas-supplier.svg')}}" alt="" width="80">
-                <h3 class="mt-2">KAS SUPPLIER</h3>
-            </a>
-        </div>
-        @endif
     </div>
 </div>
 @endsection

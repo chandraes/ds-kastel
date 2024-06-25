@@ -24,6 +24,18 @@ Auth::routes([
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+    Route::prefix('inventaris')->group(function(){
+        Route::view('/inventaris', 'inventaris.index')->name('inventaris.index');
+    });
+
+    Route::prefix('pajak')->group(function(){
+        Route::view('/pajak', 'pajak.index')->name('pajak.index');
+    });
+
+    Route::prefix('laporan-keuangan')->group(function(){
+        Route::view('/laporan-keuangan', 'laporan-keuangan.index')->name('laporan-keuangan.index');
+    });
+
     Route::group(['middleware' => ['role:su,admin']], function() {
         // ROUTE PENGATURAN
         // Route::view('pengaturan', 'pengaturan.index')->name('pengaturan');

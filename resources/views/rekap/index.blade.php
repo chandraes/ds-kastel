@@ -43,18 +43,7 @@
                 <h3 class="mt-2">INVOICE PENJUALAN</h3>
             </a>
         </div>
-        <div class="col-lg-3 mt-3 mb-3 text-center">
-            <a href="{{route('rekap.pph-masa')}}" class="text-decoration-none">
-                <img src="{{asset('images/pph-masa.svg')}}" alt="" width="70">
-                <h3 class="mt-2">PPH MASA</h3>
-            </a>
-        </div>
-        <div class="col-lg-3 mt-3 mb-3 text-center">
-            <a href="{{route('rekap.pph-badan')}}" class="text-decoration-none">
-                <img src="{{asset('images/pph-badan.svg')}}" alt="" width="70">
-                <h3 class="mt-2">PPH BADAN</h3>
-            </a>
-        </div>
+     
         <div class="col-lg-3 mt-3 mb-3 text-center">
             <a href="{{route('rekap.gaji')}}" class="text-decoration-none">
                 <img src="{{asset('images/rekap-gaji.svg')}}" alt="" width="70">

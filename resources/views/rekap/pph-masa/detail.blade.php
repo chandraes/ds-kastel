@@ -32,8 +32,6 @@
                 <tr class="text-center">
                     <td><a href="{{route('home')}}"><img src="{{asset('images/dashboard.svg')}}" alt="dashboard"
                                 width="30"> Dashboard</a></td>
-                    <td><a href="{{route('rekap')}}"><img src="{{asset('images/rekap.svg')}}" alt="dokumen" width="30">
-                            REKAP</a></td>
                     <td><a href="{{route('rekap.pph-masa')}}"><img src="{{asset('images/back.svg')}}" alt="dokumen" width="30">
                         KEMBALI</a></td>
                 </tr>
