@@ -320,6 +320,7 @@ class FormTransaksiController extends Controller
         $data['user_id'] = auth()->user()->id;
 
         $data['harga'] = str_replace('.', '', $data['harga']);
+        $data['jumlah'] = str_replace('.', '', $data['jumlah']);
         $data['total'] = $data['jumlah'] * $data['harga'];
         $data['add_fee'] = str_replace('.', '', $data['add_fee']);
         $data['jenis'] = 2;
@@ -345,6 +346,7 @@ class FormTransaksiController extends Controller
             'bank' => 'required',
             'supplier_id' => 'required|exists:suppliers,id',
             'dp' => 'required',
+            'dp_ppn' => 'required',
             'jatuh_tempo' => 'required',
         ]);
 

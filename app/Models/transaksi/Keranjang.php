@@ -414,6 +414,8 @@ class Keranjang extends Model
             'diskon' => str_replace('.', '', $data['diskon']),
             'total' => $data['total'],
             'dp' => $data['dp'],
+            'dp_ppn' => $data['dp_ppn'],
+            'sisa_ppn' => $data['sisa_ppn'],
             'sisa' => $data['sisa'],
             'nama_rek' => $data['nama_rek'],
             'no_rek' => $data['no_rek'],
@@ -471,8 +473,8 @@ class Keranjang extends Model
         $kas = [
             'uraian' => 'DP '.$data['uraian'],
             'jenis' => 0,
-            'nominal' => $data['dp'],
-            'saldo' => $db->saldoTerakhir() - $data['dp'],
+            'nominal' => $data['dp']+ $data['dp_ppn'],
+            'saldo' => $db->saldoTerakhir() - ($data['dp'] + $data['dp_ppn']),
             'no_rek' => $data['no_rek'],
             'nama_rek' => $data['nama_rek'],
             'bank' => $data['bank'],
@@ -511,18 +513,27 @@ class Keranjang extends Model
         $kas = new KasBesar();
 
         $belanja = $this->where('user_id', auth()->user()->id)->where('jenis', 2)->where('tempo', 1)->get();
+        $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
 
         if($data['ppn'] == 1)
         {
-            $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
             $data['ppn'] = ($ppn/100) * ($belanja->sum('total') + $belanja->sum('add_fee'));
-
         }
+
         $data['dp'] = str_replace('.', '', $data['dp']);
+
+        if($data['dp_ppn'] == 1)
+        {
+            $data['dp_ppn'] = ($ppn/100) * $data['dp'];
+            $data['sisa_ppn'] = $data['ppn'] - $data['dp_ppn'];
+        } else {
+            $data['dp_ppn'] = 0;
+            $data['sisa_ppn'] = $data['ppn'];
+        }
 
         $data['tempo'] = 1;
 
-        if ($kas->saldoTerakhir() < $data['dp']) {
+        if ($kas->saldoTerakhir() < ($data['dp'] + $data['dp_ppn'])) {
             return [
                 'status' => 'error',
                 'message' => 'Saldo kas besar tidak mencukupi. Saldo saat ini : '.number_format($kas->saldoTerakhir(), 0, ',', '.')
@@ -533,7 +544,7 @@ class Keranjang extends Model
 
         $data['total'] = $belanja->sum('total') + $belanja->sum('add_fee') + $data['ppn'] - $data['diskon'];
 
-        $data['sisa'] = $data['total'] - $data['dp'];
+        $data['sisa'] = $data['total'] - $data['dp'] - $data['dp_ppn'];
 
         $pesan = '';
 

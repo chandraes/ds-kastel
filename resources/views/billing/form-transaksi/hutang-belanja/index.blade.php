@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
             <h1><u>HUTANG BELANJA</u></h1>
@@ -19,7 +19,7 @@
         </div>
     </div>
 </div>
-<div class="container table-responsive ml-3">
+<div class="container-fluid table-responsive ml-3">
     <div class="row mt-3">
         <table class="table table-hover table-bordered" id="rekapTable">
             <thead class=" table-success">
@@ -33,10 +33,11 @@
                     <th class="text-center align-middle">PPn</th>
                     <th class="text-center align-middle">Total<br>Belanja</th>
                     <th class="text-center align-middle">DP</th>
+                    <th class="text-center align-middle">DP<br>PPN</th>
+                    <th class="text-center align-middle">Sisa<br>PPN</th>
                     <th class="text-center align-middle">Sisa<br>Tagihan</th>
                     <th class="text-center align-middle">Jatuh<br>Tempo</th>
                     <th class="text-center align-middle">ACT</th>
-
                 </tr>
             </thead>
             <tbody>
@@ -66,6 +67,12 @@
                         {{$d->nf_dp}}
                     </td>
                     <td class="text-end align-middle">
+                        {{$d->nf_dp_ppn}}
+                    </td>
+                    <td class="text-end align-middle">
+                        {{$d->nf_sisa_ppn}}
+                    </td>
+                    <td class="text-end align-middle">
                         {{$d->nf_sisa}}
                     </td>
                     <td class="text-center align-middle">
@@ -89,6 +96,8 @@
                     <td class="text-end align-middle">{{number_format($data->sum('ppn'), 0, ',', '.')}}</td>
                     <td class="text-end align-middle">{{number_format($data->sum('total'), 0, ',', '.')}}</td>
                     <td class="text-end align-middle">{{number_format($data->sum('dp'), 0, ',', '.')}}</td>
+                    <td class="text-end align-middle">{{number_format($data->sum('dp_ppn'), 0, ',', '.')}}</td>
+                    <td class="text-end align-middle">{{number_format($data->sum('sisa_ppn'), 0, ',', '.')}}</td>
                     <td class="text-end align-middle">{{number_format($data->sum('sisa'), 0, ',', '.')}}</td>
                     <td class="text-end align-middle"></td>
                     <td class="text-end align-middle"></td>

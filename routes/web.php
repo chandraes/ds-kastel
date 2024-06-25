@@ -29,7 +29,8 @@ Route::group(['middleware' => ['auth']], function() {
     });
 
     Route::prefix('pajak')->group(function(){
-        Route::view('/pajak', 'pajak.index')->name('pajak.index');
+        // Route::view('/pajak', 'pajak.index')->name('pajak.index');
+        Route::get('/', [App\Http\Controllers\PajakController::class, 'index'])->name('pajak.index');
     });
 
     Route::prefix('laporan-keuangan')->group(function(){

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('invoice_belanjas', function (Blueprint $table) {
             $table->integer('dp_ppn')->default(0)->after('dp');
-            $table->integer('sisa_pph')->default(0)->after('sisa');
+            $table->integer('sisa_ppn')->default(0)->after('sisa');
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
     {
         Schema::table('invoice_belanjas', function (Blueprint $table) {
             $table->dropColumn('dp_ppn');
-            $table->dropColumn('sisa_pph');
+            $table->dropColumn('sisa_ppn');
         });
     }
 };

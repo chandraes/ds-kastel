@@ -13,90 +13,7 @@
             $add_fee = $keranjang ? $keranjang->sum('add_fee') : 0;
             @endphp
             <div class="modal-body">
-                <table class="table table-bordered">
-                    <thead class="table-success">
-                        <tr>
-                            <th class="text-center align-middle">Nama Kemasan</th>
-                            <th class="text-center align-middle">Banyak</th>
-                            <th class="text-center align-middle">Satuan</th>
-                            <th class="text-center align-middle">Harga Satuan</th>
-                            <th class="text-center align-middle">Biaya Tambahan</th>
-                            <th class="text-center align-middle">Total</th>
-                            <th class="text-center align-middle">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($keranjang as $b)
-                        <tr>
-                            <td class="text-center align-middle">{{$b->kemasan->nama}}</td>
-                            <td class="text-center align-middle">{{$b->nf_jumlah}}</td>
-                            <td class="text-center align-middle">{{$b->satuan->nama}}</td>
-                            <td class="text-center align-middle">{{number_format($b->harga, 0, ',','.')}}</td>
-                            <td class="text-center align-middle">{{number_format($b->add_fee, 0, ',','.')}}</td>
-                            <td class="text-end align-middle">{{number_format($b->total + $b->add_fee, 0, ',','.')}}
-                            </td>
-                            <td class="text-center align-middle">
-                                <form action="{{ route('billing.form-transaksi.kemasan.keranjang.delete', $b->id) }}" method="post" id="deleteForm{{ $b->id }}"
-                                    class="delete-form" data-id="{{ $b->id }}">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-danger">Hapus</button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td class="text-center align-middle"></td>
-                            <td class="text-center align-middle">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('jumlah'), 0, ',','.') : ''}}</td>
-                            <td class="text-center align-middle"></td>
-                            <td class="text-center align-middle">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('harga'), 0, ',','.') : ''}}</td>
-                            <td class="text-center align-middle">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('add_fee'), 0, ',','.') : ''}}</td>
-                            <td class="text-end align-middle">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('total'), 0, ',','.') : ''}}</td>
-                            <td class="text-center align-middle"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-end align-middle" colspan="5">Total DPP</td>
-                            <td class="text-end align-middle" id="tdTotal">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('total') + $keranjang->sum('add_fee'), 0, ',','.') : ''}}
-                            </td>
-                            <td class="text-center align-middle"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-end align-middle" colspan="5">Diskon</td>
-                            <td class="text-end align-middle" id="tdDiskon">
-                                {{number_format($diskon, 0, ',','.')}}
-                            </td>
-                            <td class="text-center align-middle"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-end align-middle" colspan="5">Total DPP Setelah Diskon</td>
-                            <td class="text-end align-middle" id="tdTotalSetelahDiskon">
-                                {{number_format($total-$diskon, 0, ',','.')}}
-                            </td>
-                            <td class="text-center align-middle"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-end align-middle" colspan="5">PPN</td>
-                            <td class="text-end align-middle" id="tdPpn">
-                                0
-                            </td>
-                            <td class="text-center align-middle"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-end align-middle" colspan="5">Grand Total</td>
-                            <td class="text-end align-middle" id="grand_total">
-                                {{number_format($total + $add_fee + $ppn - $diskon, 0, ',','.')}}
-                            </td>
-                            <td class="text-center align-middle"></td>
-                        </tr>
-                    </tfoot>
-                </table>
+
                 <form action="{{route('billing.form-transaksi.kemasan.keranjang.checkout')}}" method="post" id="beliBarang">
                     @csrf
                     <div class="row">
@@ -173,6 +90,91 @@
                             @endif
                         </div>
                     </div>
+
+                    <table class="table table-bordered">
+                        <thead class="table-success">
+                            <tr>
+                                <th class="text-center align-middle">Nama Kemasan</th>
+                                <th class="text-center align-middle">Banyak</th>
+                                <th class="text-center align-middle">Satuan</th>
+                                <th class="text-center align-middle">Harga Satuan</th>
+                                <th class="text-center align-middle">Biaya Tambahan</th>
+                                <th class="text-center align-middle">Total</th>
+                                <th class="text-center align-middle">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($keranjang as $b)
+                            <tr>
+                                <td class="text-center align-middle">{{$b->kemasan->nama}}</td>
+                                <td class="text-center align-middle">{{$b->nf_jumlah}}</td>
+                                <td class="text-center align-middle">{{$b->satuan->nama}}</td>
+                                <td class="text-center align-middle">{{number_format($b->harga, 0, ',','.')}}</td>
+                                <td class="text-center align-middle">{{number_format($b->add_fee, 0, ',','.')}}</td>
+                                <td class="text-end align-middle">{{number_format($b->total + $b->add_fee, 0, ',','.')}}
+                                </td>
+                                <td class="text-center align-middle">
+                                    <form action="{{ route('billing.form-transaksi.kemasan.keranjang.delete', $b->id) }}" method="post" id="deleteForm{{ $b->id }}"
+                                        class="delete-form" data-id="{{ $b->id }}">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center align-middle"></td>
+                                <td class="text-center align-middle">{{count($keranjang) > 0 ?
+                                    number_format($keranjang->sum('jumlah'), 0, ',','.') : ''}}</td>
+                                <td class="text-center align-middle"></td>
+                                <td class="text-center align-middle">{{count($keranjang) > 0 ?
+                                    number_format($keranjang->sum('harga'), 0, ',','.') : ''}}</td>
+                                <td class="text-center align-middle">{{count($keranjang) > 0 ?
+                                    number_format($keranjang->sum('add_fee'), 0, ',','.') : ''}}</td>
+                                <td class="text-end align-middle">{{count($keranjang) > 0 ?
+                                    number_format($keranjang->sum('total'), 0, ',','.') : ''}}</td>
+                                <td class="text-center align-middle"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-end align-middle" colspan="5">Total DPP</td>
+                                <td class="text-end align-middle" id="tdTotal">{{count($keranjang) > 0 ?
+                                    number_format($keranjang->sum('total') + $keranjang->sum('add_fee'), 0, ',','.') : ''}}
+                                </td>
+                                <td class="text-center align-middle"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-end align-middle" colspan="5">Diskon</td>
+                                <td class="text-end align-middle" id="tdDiskon">
+                                    {{number_format($diskon, 0, ',','.')}}
+                                </td>
+                                <td class="text-center align-middle"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-end align-middle" colspan="5">Total DPP Setelah Diskon</td>
+                                <td class="text-end align-middle" id="tdTotalSetelahDiskon">
+                                    {{number_format($total-$diskon, 0, ',','.')}}
+                                </td>
+                                <td class="text-center align-middle"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-end align-middle" colspan="5">PPN</td>
+                                <td class="text-end align-middle" id="tdPpn">
+                                    0
+                                </td>
+                                <td class="text-center align-middle"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-end align-middle" colspan="5">Grand Total</td>
+                                <td class="text-end align-middle" id="grand_total">
+                                    {{number_format($total + $add_fee + $ppn - $diskon, 0, ',','.')}}
+                                </td>
+                                <td class="text-center align-middle"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
             </div>
 
             <div class="modal-footer">

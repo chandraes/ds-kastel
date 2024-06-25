@@ -18,7 +18,7 @@ class InvoiceBelanja extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    protected $appends = ['tanggal', 'nf_diskon', 'nf_ppn', 'nf_total', 'id_jatuh_tempo', 'kode', 'nf_dp', 'nf_sisa', 'dpp'];
+    protected $appends = ['tanggal', 'nf_diskon', 'nf_ppn', 'nf_total', 'id_jatuh_tempo', 'kode', 'nf_dp', 'nf_sisa', 'dpp', 'nf_dp_ppn', 'nf_sisa_ppn'];
 
 
     public function dataTahun()
@@ -55,6 +55,16 @@ class InvoiceBelanja extends Model
         $dpp = $this->total + $this->diskon - $this->ppn;
 
         return number_format($dpp, 0, ',', '.');
+    }
+
+    public function getNfDpPpnAttribute()
+    {
+        return number_format($this->dp_ppn, 0, ',', '.');
+    }
+
+    public function getNfSisaPpnAttribute()
+    {
+        return number_format($this->sisa_ppn, 0, ',', '.');
     }
 
     public function getTanggalAttribute()
