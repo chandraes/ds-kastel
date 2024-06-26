@@ -559,7 +559,8 @@ class Keranjang extends Model
             if ($data['dp'] > 0) {
                 $store = $this->kas_checkout_tempo($data, $store_inv->id);
 
-                $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 0)->sum('ppn');
+                $dbInvoice = new InvoiceBelanja();
+                $ppnMasukan = $dbInvoice->sumNilaiPpn();
 
                 $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                             "*FORM BELI KEMASAN*\n".
@@ -652,7 +653,8 @@ class Keranjang extends Model
 
             DB::commit();
 
-            $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 0)->sum('ppn');
+            $dbInvoice = new InvoiceBelanja();
+            $ppnMasukan = $dbInvoice->sumNilaiPpn();
 
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                         "*FORM BELI KEMASAN*\n".
@@ -737,7 +739,8 @@ class Keranjang extends Model
 
             DB::commit();
 
-            $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 0)->sum('ppn');
+            $dbInvoice = new InvoiceBelanja();
+            $ppnMasukan = $dbInvoice->sumNilaiPpn();
 
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                         "*FORM BELI PACKAGING*\n".
@@ -824,7 +827,8 @@ class Keranjang extends Model
 
                 $store = $this->kas_checkout_tempo($data, $store_inv->id);
 
-                $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 0)->sum('ppn');
+                $dbInvoice = new InvoiceBelanja();
+                $ppnMasukan = $dbInvoice->sumNilaiPpn();
 
                 $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                             "*FORM BELI PACKAGING*\n".

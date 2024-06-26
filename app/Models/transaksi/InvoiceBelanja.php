@@ -299,6 +299,21 @@ class InvoiceBelanja extends Model
         return $data;
     }
 
+    public function sumNilaiPpn()
+    {
+        // Directly sum the relevant columns based on conditions
+        $sum = $this->newQuery()
+                    ->selectRaw('SUM(CASE
+                                        WHEN dp_ppn > 0 THEN dp_ppn
+                                        WHEN sisa_ppn > 0 AND tempo = 0 THEN sisa_ppn
+                                        WHEN dp_ppn = 0 AND ppn > 0 AND tempo = 0 THEN ppn
+                                        ELSE 0
+                                    END) as total_nilai_ppn')
+                    ->value('total_nilai_ppn');
+
+        return $sum;
+    }
+
     public function getFormattedTglAttribute()
     {
         // Check if 'tgl' attribute is set
