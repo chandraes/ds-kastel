@@ -92,7 +92,7 @@
                                     -
                                 @endif
                             </td>
-                            <td class="text-center align-middle">{{ $k->stok }}</td>
+                            <td class="text-center align-middle">{{ $k->nf_stok }}</td>
                             <td class="text-center align-middle">
                                 <div class="d-flex justify-content-center">
                                     <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#editInvestor" onclick="editInvestor({{ $k }}, {{ $k->id }})"><i class="fa fa-edit"></i></button>

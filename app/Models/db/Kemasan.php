@@ -11,7 +11,7 @@ class Kemasan extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    protected $appends = ['nf_harga', 'nf_harga_satuan', 'harga_setelah_ppn', 'nf_harga_setelah_ppn'];
+    protected $appends = ['nf_harga', 'nf_harga_satuan', 'harga_setelah_ppn', 'nf_harga_setelah_ppn', 'nf_stok'];
 
     public function kategori()
     {
@@ -46,6 +46,11 @@ class Kemasan extends Model
     public function getNfHargaSatuanAttribute()
     {
         return number_format($this->harga_satuan, 0, ',', '.');
+    }
+
+    public function getNfStokAttribute()
+    {
+        return number_format($this->stok, 0, ',', '.');
     }
 
     public function getHargaSetelahPpnAttribute()
