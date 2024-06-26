@@ -116,23 +116,25 @@
 
         function check_sisa(){
             var grand_total = document.getElementById('grand_total').textContent;
-            var grand_total = grand_total.replace(/\./g, '');
+            grand_total = parseInt(grand_total.replace(/\./g, ''), 10);
             var dp = document.getElementById('dpTd').textContent;
-            var dp = dp.replace(/\./g, '');
+            dp = parseInt(dp.replace(/\./g, ''), 10);
             var dpPPNtd = document.getElementById('dpPPNtd').textContent;
-            var dpPPNtd = dpPPNtd.replace(/\./g, '');
+            dpPPNtd = parseInt(dpPPNtd.replace(/\./g, ''), 10);
 
             var sisa = grand_total - dp - dpPPNtd;
-
             var sisaF = sisa.toLocaleString('id-ID');
 
             var tdPPN = document.getElementById('tdPpn').textContent;
-            var tdPPN = tdPPN.replace(/\./g, '');
+            tdPPN = parseInt(tdPPN.replace(/\./g, ''), 10);
 
             var sisaPPN = tdPPN - dpPPNtd;
 
             document.getElementById('sisa').textContent = sisaF;
             document.getElementById('sisaPPN').textContent = sisaPPN.toLocaleString('id-ID');
+
+            var totalDp = dp + dpPPNtd;
+            document.getElementById('totalDpTd').textContent = totalDp.toLocaleString('id-ID');
 
         }
 

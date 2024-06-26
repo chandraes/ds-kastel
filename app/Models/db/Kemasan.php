@@ -28,6 +28,11 @@ class Kemasan extends Model
         return $this->belongsTo(Packaging::class);
     }
 
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
     public function rencana_produksi()
     {
         return $this->hasMany(RencanaProduksi::class);
