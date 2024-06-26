@@ -29,12 +29,18 @@
                     <th class="text-center align-middle">Jenis</th>
                     <th class="text-center align-middle">Jumlah</th>
                     <th class="text-center align-middle">Total Harga</th>
+                    <th class="text-center align-middle">Subtotal Harga</th>
                 </tr>
             </thead>
             <div>
                 <tbody>
                     @foreach ($data as $d)
                     @php
+                        $subtotal = 0;
+                        foreach ($d->jenis as $j) {
+                            $subtotal += $j->rekap->sum('total');
+                        }
+
                         $rowspan = $d->jenis->count();
                     @endphp
                     @foreach ($d->jenis as $index => $j)
@@ -49,6 +55,7 @@
                                 </td>
                                 <td class="text-center align-middle">{{number_format($j->rekap->sum('jumlah'), 0, ',', '.')}}</td>
                                 <td class="text-end align-middle">{{number_format($j->rekap->sum('total'), 0, ',', '.')}}</td>
+                                <td class="text-end align-middle" rowspan="{{$rowspan}}">{{number_format($subtotal, 0, ',', '.')}}</td>
                             </tr>
                         @else
                             <tr>

@@ -121,7 +121,7 @@
                         $d->nf_nominal : ''}}
                     </td>
                     <td class="text-end align-middle">{{$d->nf_saldo}}</td>
-                    <td class="text-center align-middle">{{$d->nama_rek}}</td>
+                    <td class="text-start align-middle">{{ Str::limit($d->nama_rek, 20) }}</td>
                     <td class="text-center align-middle">{{$d->bank}}</td>
                     <td class="text-end align-middle">{{$d->nf_modal_investor}}</td>
                 </tr>
