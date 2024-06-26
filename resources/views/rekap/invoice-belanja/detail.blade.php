@@ -26,9 +26,15 @@
             <thead class=" table-success">
                 <tr>
                     @if ($data->rekap[0]->bahan_baku)
-                    <th class="text-center align-middle">Kategori Barang</th>
+                    <th class="text-center align-middle">Nama Kimia</th>
+                    <th class="text-center align-middle">Singkatan</th>
                     @endif
-                    <th class="text-center align-middle">Nama Barang</th>
+                    @if ($data->rekap[0]->kemasan)
+                    <th class="text-center align-middle">Product</th>
+                    <th class="text-center align-middle">Kemasan</th>
+                    @elseif ($data->rekap[0]->packaging)
+                    <th class="text-center align-middle">Packaging</th>
+                    @endif
                     <th class="text-center align-middle">Banyak</th>
                     <th class="text-center align-middle">Satuan</th>
                     <th class="text-center align-middle">Harga Satuan</th>
@@ -44,7 +50,11 @@
                         {{$d->bahan_baku->kategori->nama}}
                     </td>
                     @endif
-
+                    @if($d->kemasan)
+                    <td class="text-center align-middle">
+                        {{$d->kemasan->product->nama}}
+                    </td>
+                    @endif
                     <td class="text-center align-middle">
                         {{$d->nama}}
                     </td>
@@ -68,76 +78,64 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th class="text-center align-middle"
-                    @if ($data->rekap[0]->bahan_baku)
-                    colspan="2"
-                    @endif
-                    >SUBTOTAL</th>
-                    <th class="text-center align-middle">{{
-                        number_format($data->rekap->sum('jumlah'), 0, ',','.')}}</th>
-                    <th class="text-center align-middle"></th>
-                    <th class="text-end align-middle">{{
-                        number_format($data->rekap->sum('harga'), 0, ',','.')}}</th>
-                    <th class="text-end align-middle">{{
-                        number_format($data->rekap->sum('add_fee'), 0, ',','.')}}</th>
-                    <th class="text-end align-middle">{{
-                        number_format($data->rekap->sum('total'), 0, ',','.')}}</th>
-                </tr>
-                <tr>
-                    <td class="text-end align-middle"
-                    @if ($data->rekap[0]->bahan_baku)
-                    colspan="6"
-                    @else
-                    colspan="5"
-                    @endif
-                    >Total DPP</td>
+                    <td class="text-end align-middle" colspan="{{$data->rekap[0]->packaging ? 5 : 6}}">Total DPP</td>
                     <td class="text-end align-middle" id="tdTotal">
                         {{number_format($data->rekap->sum('total') + $data->rekap->sum('add_fee'), 0, ',','.')}}
                     </td>
                 </tr>
                 <tr>
-                    <td class="text-end align-middle"
-                    @if ($data->rekap[0]->bahan_baku)
-                    colspan="6"
-                    @else
-                    colspan="5"
-                    @endif
+                    <td class="text-end align-middle" colspan="{{$data->rekap[0]->packaging ? 5 : 6}}"
                     >Diskon</td>
                     <td class="text-end align-middle" id="tdDiskon">
                         {{$data->nf_diskon}}
                     </td>
                 </tr>
                 <tr>
-                    <td class="text-end align-middle"
-                    @if ($data->rekap[0]->bahan_baku)
-                    colspan="6"
-                    @else
-                    colspan="5"
-                    @endif>Total DPP Setelah Diskon</td>
+                    <td class="text-end align-middle" colspan="{{$data->rekap[0]->packaging ? 5 : 6}}" >Total DPP Setelah Diskon</td>
                     <td class="text-end align-middle" id="tdTotalSetelahDiskon">
                         {{number_format($data->rekap->sum('total')-$data->diskon, 0, ',','.')}}
                     </td>
                 </tr>
                 <tr>
-                    <td class="text-end align-middle"
-                    @if ($data->rekap[0]->bahan_baku)
-                    colspan="6"
-                    @else
-                    colspan="5"
-                    @endif>PPN</td>
+                    <td class="text-end align-middle" colspan="{{$data->rekap[0]->packaging ? 5 : 6}}" >PPN</td>
                     <td class="text-end align-middle" id="tdPpn">
                         {{$data->nf_ppn}}
                     </td>
                 </tr>
                 <tr>
-                    <th class="text-end align-middle"
-                    @if ($data->rekap[0]->bahan_baku)
-                    colspan="6"
-                    @else
-                    colspan="5"
-                    @endif>Grand Total</th>
+                    <th class="text-end align-middle" colspan="{{$data->rekap[0]->packaging ? 5 : 6}}" >Grand Total</th>
                     <th class="text-end align-middle" id="grand_total">
                         {{$data->nf_total}}
+                    </th>
+                </tr>
+                <tr>
+                    <td class="text-end align-middle" colspan="{{$data->rekap[0]->packaging ? 5 : 6}}" >DP</td>
+                    <td class="text-end align-middle" id="tdPpn">
+                        {{$data->nf_dp}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-end align-middle" colspan="{{$data->rekap[0]->packaging ? 5 : 6}}" >DP PPN</td>
+                    <td class="text-end align-middle" id="tdPpn">
+                        {{$data->nf_dp_ppn}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-end align-middle" colspan="{{$data->rekap[0]->packaging ? 5 : 6}}" >Total DP</td>
+                    <td class="text-end align-middle" id="tdPpn">
+                        {{$data->nf_total_dp}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-end align-middle" colspan="{{$data->rekap[0]->packaging ? 5 : 6}}" >Sisa PPN</td>
+                    <td class="text-end align-middle" id="tdPpn">
+                        {{$data->nf_sisa_ppn}}
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-end align-middle" colspan="{{$data->rekap[0]->packaging ? 5 : 6}}" >Sisa Tagian</th>
+                    <th class="text-end align-middle" id="grand_total">
+                        {{$data->nf_sisa}}
                     </th>
                 </tr>
             </tfoot>

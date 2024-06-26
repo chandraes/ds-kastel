@@ -84,23 +84,6 @@
                     <th class="text-end align-middle">{{number_format($data->sum('nilai_ppn'), 0, ',','.')}}</th>
                 </tr>
             </tfoot>
-            {{-- <tfoot>
-                <tr>
-                    <td colspan="3" class="text-center align-middle"><strong>GRAND TOTAL</strong></td>
-                    <td class="text-end align-middle"><strong>{{number_format($data->where('jenis',
-                            1)->sum('nominal'), 0, ',', '.')}}</strong></td>
-                    <td class="text-end align-middle text-danger"><strong>{{number_format($data->where('jenis',
-                            0)->sum('nominal'), 0, ',', '.')}}</strong></td>
-                    <td class="text-end align-middle">
-                        <strong>
-                            {{$data->last() ? number_format($data->last()->saldo, 0, ',', '.') : ''}}
-                        </strong>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tfoot> --}}
         </table>
     </div>
 </div>
