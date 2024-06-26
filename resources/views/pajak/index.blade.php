@@ -6,8 +6,8 @@
 <div class="container mt-3">
     <div class="row justify-content-left">
         <div class="col-md-3 text-center mb-5 mt-3">
-            <a href="{{route('rekap')}}" class="text-decoration-none">
-                <img src="{{asset('images/rekap.svg')}}" alt="" width="70">
+            <a href="{{route('pajak.ppn-masukan')}}" class="text-decoration-none">
+                <img src="{{asset('images/ppn-masukan.svg')}}" alt="" width="70">
                 <h4 class="mt-2">PPN MASUKAN</h4>
             </a>
         </div>

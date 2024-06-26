@@ -9,6 +9,7 @@ use App\Models\KasBesar;
 use App\Models\PesanWa;
 use App\Models\Rekening;
 use App\Services\StarSender;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -269,5 +270,32 @@ class InvoiceBelanja extends Model
         }
 
         return $result;
+    }
+
+    public function ppn_masukan()
+    {
+        $data = $this->with('supplier')->select('id', 'nomor_bb', 'supplier_id', 'dp_ppn as nilai_ppn', 'created_at as tgl')
+                 ->where('dp_ppn', '>', 0)
+                 ->union($this->select('id', 'nomor_bb', 'supplier_id', 'sisa_ppn as nilai_ppn', 'updated_at as tgl')
+                         ->where('sisa_ppn', '>', 0)
+                         ->where('tempo', 0))
+                 ->union($this->select('id', 'nomor_bb', 'supplier_id', 'ppn as nilai_ppn', 'created_at as tgl')
+                         ->where('dp_ppn', 0)
+                         ->where('ppn', '>', 0)
+                         ->where('tempo', 0))
+                 ->get();
+
+        return $data;
+    }
+
+    public function getFormattedTglAttribute()
+    {
+        // Check if 'tgl' attribute is set
+        if ($this->attributes['tgl']) {
+            // Parse the 'tgl' attribute as a Carbon instance and format it
+            return Carbon::parse($this->attributes['tgl'])->format('d-m-Y');
+        }
+
+        return null;
     }
 }
