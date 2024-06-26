@@ -68,7 +68,7 @@
                 </div>
             </div>
             <div class="col-md-3 mb-3">
-                <label for="harga" class="form-label">Harga Satuan</label>
+                <label for="harga" class="form-label">Harga Satuan (HPP)</label>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Rp</span>
                     <input type="text" class="form-control @if ($errors->has('harga'))
