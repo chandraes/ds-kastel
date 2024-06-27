@@ -12,7 +12,7 @@
             <table>
                 <tr>
                     <td>
-                        <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#keranjangBelanja" >
+                        <a href="#" class="btn btn-success {{$keranjang->count() == 0 ? 'disabled' : ''}}"" data-bs-toggle="modal" data-bs-target="#keranjangBelanja" >
                             <i class="fa fa-shopping-cart"> Keranjang </i> ({{$keranjang->count()}})
                         </a>
                         @include('billing.form-transaksi.kemasan.tempo.keranjang')
@@ -20,7 +20,7 @@
                     <td>
                         <form action="{{route('billing.form-transaksi.kemasan.keranjang-tempo.empty')}}" method="post" id="kosongKeranjang">
                             @csrf
-                            <button class="btn btn-danger" type="submit">
+                            <button class="btn btn-danger" type="submit" {{$keranjang->count() == 0 ? 'disabled' : ''}}">
                                 <i class="fa fa-trash"> Kosongkan Keranjang </i>
                             </button>
                         </form>

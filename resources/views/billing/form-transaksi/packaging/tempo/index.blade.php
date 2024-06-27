@@ -12,7 +12,7 @@
             <table>
                 <tr>
                     <td>
-                        <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#keranjangBelanja" >
+                        <a href="#" class="btn btn-success {{$keranjang->count() == 0 ? 'disabled' : ''}}"" data-bs-toggle="modal" data-bs-target="#keranjangBelanja" >
                             <i class="fa fa-shopping-cart"> Keranjang </i> ({{$keranjang->count()}})
                         </a>
                         @include('billing.form-transaksi.packaging.tempo.keranjang')
@@ -20,7 +20,7 @@
                     <td>
                         <form action="{{route('billing.form-transaksi.packaging.keranjang-tempo.empty')}}" method="post" id="kosongKeranjang">
                             @csrf
-                            <button class="btn btn-danger" type="submit">
+                            <button class="btn btn-danger" type="submit" {{$keranjang->count() == 0 ? 'disabled' : ''}}">
                                 <i class="fa fa-trash"> Kosongkan Keranjang </i>
                             </button>
                         </form>
@@ -81,6 +81,92 @@
 @endsection
 @push('js')
     <script>
+        function submitBeli(){
+            Swal.fire({
+                title: "Apakah Anda Yakin?" ,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#spinner').show();
+                    document.getElementById('beliBarang').submit();
+                }
+            })
+        }
+
+        function check_sisa(){
+            var grand_total = document.getElementById('grand_total').textContent;
+            grand_total = parseInt(grand_total.replace(/\./g, ''), 10);
+            var dp = document.getElementById('dpTd').textContent;
+            dp = parseInt(dp.replace(/\./g, ''), 10);
+            var dpPPNtd = document.getElementById('dpPPNtd').textContent;
+            dpPPNtd = parseInt(dpPPNtd.replace(/\./g, ''), 10);
+
+            var sisa = grand_total - dp - dpPPNtd;
+            var sisaF = sisa.toLocaleString('id-ID');
+
+            var tdPPN = document.getElementById('tdPpn').textContent;
+            tdPPN = parseInt(tdPPN.replace(/\./g, ''), 10);
+
+            var sisaPPN = tdPPN - dpPPNtd;
+
+            document.getElementById('sisa').textContent = sisaF;
+            document.getElementById('sisaPPN').textContent = sisaPPN.toLocaleString('id-ID');
+
+            var totalDp = dp + dpPPNtd;
+            document.getElementById('totalDpTd').textContent = totalDp.toLocaleString('id-ID');
+
+        }
+
+        function add_dp_ppn(){
+            var apa_dp_ppn = document.getElementById('dp_ppn').value;
+            if(apa_dp_ppn === '1')
+            {
+                var dp_ppn = document.getElementById('dp').value;
+                var dp_ppn = dp_ppn.replace(/\./g, '');
+                var ppn = {!! $ppn !!} / 100;
+
+                var ppn_dp_num = dp_ppn * ppn;
+
+                ppn_dp = ppn_dp_num.toLocaleString('id-ID');
+
+                document.getElementById('dpPPNtd').textContent = ppn_dp;
+
+                var ppn_total = document.getElementById('tdPpn').textContent;
+                ppn_total = ppn_total.replace(/\./g, '');
+
+                var sisa_ppn = ppn_total - ppn_dp_num;
+
+                var sisa_ppnF = sisa_ppn.toLocaleString('id-ID');
+
+                document.getElementById('sisaPPN').textContent = sisa_ppnF;
+
+
+            } else {
+                document.getElementById('dpPPNtd').textContent = 0;
+                document.getElementById('sisaPPN').textContent = 0;
+
+            }
+
+            check_sisa();
+        }
+
+        function add_dp(){
+            // get value from dp
+            var dpT = document.getElementById('dp').value;
+            var dp = dpT.replace(/\./g, '');
+
+            // get element value tdTotal
+            document.getElementById('dpTd').textContent = dpT;
+            add_dp_ppn();
+            check_sisa();
+            // set value to dpTd
+            // var dpTable = Number(dp).toLocaleString('id-ID');
+
+        }
 
     function add_diskon() {
         // get value from tdDiskon
@@ -105,6 +191,8 @@
         document.getElementById('tdDiskon').textContent = diskonT;
         document.getElementById('tdTotalSetelahDiskon').textContent = totalFormatted;
         document.getElementById('grand_total').textContent = gF;
+
+        check_sisa();
     }
 
     function add_ppn(){
@@ -121,10 +209,18 @@
             var vF = vPpn.toLocaleString('id-ID');
             document.getElementById('grand_total').textContent = tF;
             document.getElementById('tdPpn').textContent = vF;
+            // unhide select option dp_ppn
+            document.getElementById('dp_ppn').style.display = 'block';
         } else {
             document.getElementById('tdPpn').textContent = 0;
+            document.getElementById('dp_ppn').value = 0;
+            // make select option dp_ppn to hidden
+            document.getElementById('dp_ppn').style.display = 'none';
+
             add_diskon();
         }
+
+        check_sisa();
     }
 
         $(function() {

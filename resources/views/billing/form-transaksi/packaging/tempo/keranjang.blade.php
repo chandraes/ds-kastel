@@ -9,10 +9,119 @@
             @php
             $diskon = 0;
             $ppn = 0;
+            $dp = 0;
+            $dpPPN = 0;
+            $totalDp = 0;
+            $sisa = 0;
+            $sisaPPN = 0;
             $total = $keranjang ? $keranjang->sum('total') : 0;
             $add_fee = $keranjang ? $keranjang->sum('add_fee') : 0;
             @endphp
             <div class="modal-body">
+                <form action="{{route('billing.form-transaksi.packaging.keranjang-tempo.checkout')}}" method="post"
+                    id="beliBarang">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="uraian" class="form-label">Uraian</label>
+                                <input type="text" class="form-control" name="uraian" id="uraian"
+                                    aria-describedby="helpId" placeholder="" required maxlength="20"
+                                    value="{{old('uraian')}}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="uraian" class="form-label">Apakah menggunakan PPn?</label>
+                                <select class="form-select" name="ppn" id="ppn" onchange="add_ppn()">
+                                    <option value="">-- Pilih Salah Satu --</option>
+                                    <option value="1">Dengan PPn</option>
+                                    <option value="0">Tanpa PPn</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="diskon" class="form-label">Diskon</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Rp</span>
+                                    <input type="text" class="form-control" name="diskon" id="diskon"
+                                        aria-describedby="helpId" placeholder="" required value="0"
+                                        onkeyup="add_diskon()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="dp" class="form-label">DP</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Rp</span>
+                                    <input type="text" class="form-control" name="dp" id="dp" aria-describedby="helpId"
+                                        placeholder="" required value="0" onkeyup="add_dp()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="jatuh_tempo" class="form-label">Tgl Jatuh Tempo</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1"><i
+                                            class="fa fa-calendar"></i></span>
+                                    <input type="text" class="form-control" name="jatuh_tempo" id="jatuh_tempo"
+                                        aria-describedby="helpId" placeholder="" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="supplier_id" class="form-label">Supplier Bahan Baku</label>
+                            <select class="form-select" name="supplier_id" id="supplier_id" onchange="funSupplier()">
+                                <option value="">-- Pilih Supplier --</option>
+                                @foreach ($supplier as $s)
+                                <option value="{{$s->id}}">{{$s->nama}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="nama_rek" class="form-label">Nama Rekening</label>
+                            <input type="text" class="form-control @if ($errors->has('nama_rek'))
+                        is-invalid
+                    @endif" name="nama_rek" id="nama_rek" value="{{old('nama_rek')}}" maxlength="15" required
+                                value="{{old('nama_rek')}}" readonly>
+                            @if ($errors->has('nama_rek'))
+                            <div class="invalid-feedback">
+                                {{$errors->first('nama_rek')}}
+                            </div>
+                            @endif
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="bank" class="form-label">Bank</label>
+                            <input type="text" class="form-control @if ($errors->has('bank'))
+                        is-invalid
+                    @endif" name="bank" id="bank" value="{{old('bank')}}" maxlength="10" required
+                                value="{{old('bank')}}" readonly>
+                            @if ($errors->has('bank'))
+                            <div class="invalid-feedback">
+                                {{$errors->first('bank')}}
+                            </div>
+                            @endif
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="no_rek" class="form-label">Nomor Rekening</label>
+                            <input type="text" class="form-control @if ($errors->has('no_rek'))
+                        is-invalid
+                    @endif" name="no_rek" id="no_rek" value="{{old('no_rek')}}" required value="{{old('no_rek')}}"
+                                readonly>
+                            @if ($errors->has('no_rek'))
+                            <div class="invalid-feedback">
+                                {{$errors->first('no_rek')}}
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </form>
                 <table class="table table-bordered">
                     <thead class="table-success">
                         <tr>
@@ -36,8 +145,9 @@
                             <td class="text-end align-middle">{{number_format($b->total + $b->add_fee, 0, ',','.')}}
                             </td>
                             <td class="text-center align-middle">
-                                <form action="{{ route('billing.form-transaksi.packaging.keranjang.delete', $b->id) }}" method="post" id="deleteForm{{ $b->id }}"
-                                    class="delete-form" data-id="{{ $b->id }}">
+                                <form action="{{ route('billing.form-transaksi.packaging.keranjang.delete', $b->id) }}"
+                                    method="post" id="deleteForm{{ $b->id }}" class="delete-form"
+                                    data-id="{{ $b->id }}">
                                     @csrf
                                     @method('delete')
                                     <button type="submit" class="btn btn-danger">Hapus</button>
@@ -97,119 +207,22 @@
                         </tr>
                     </tfoot>
                 </table>
-                <form action="{{route('billing.form-transaksi.packaging.keranjang-tempo.checkout')}}" method="post" id="beliBarang">
-                    @csrf
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="uraian" class="form-label">Uraian</label>
-                                <input type="text" class="form-control" name="uraian" id="uraian"
-                                    aria-describedby="helpId" placeholder="" required maxlength="20" value="{{old('uraian')}}">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="uraian" class="form-label">Apakah menggunakan PPn?</label>
-                                <select class="form-select" name="ppn" id="ppn" onchange="add_ppn()">
-                                    <option value="">-- Pilih Salah Satu --</option>
-                                    <option value="1">Dengan PPn</option>
-                                    <option value="0">Tanpa PPn</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="diskon" class="form-label">Diskon</label>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1">Rp</span>
-                                    <input type="text" class="form-control" name="diskon" id="diskon"
-                                        aria-describedby="helpId" placeholder="" required value="0" onkeyup="add_diskon()">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="dp" class="form-label">DP</label>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1">Rp</span>
-                                    <input type="text" class="form-control" name="dp" id="dp"
-                                        aria-describedby="helpId" placeholder="" required value="0" onkeyup="add_dp()">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="jatuh_tempo" class="form-label">Tgl Jatuh Tempo</label>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" class="form-control" name="jatuh_tempo" id="jatuh_tempo"
-                                        aria-describedby="helpId" placeholder="" readonly>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="supplier_id" class="form-label">Supplier Bahan Baku</label>
-                            <select class="form-select" name="supplier_id" id="supplier_id" onchange="funSupplier()">
-                                <option value="">-- Pilih Supplier --</option>
-                                @foreach ($supplier as $s)
-                                <option value="{{$s->id}}">{{$s->nama}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="nama_rek" class="form-label">Nama Rekening</label>
-                            <input type="text" class="form-control @if ($errors->has('nama_rek'))
-                        is-invalid
-                    @endif" name="nama_rek" id="nama_rek" value="{{old('nama_rek')}}" maxlength="15" required value="{{old('nama_rek')}}" readonly>
-                            @if ($errors->has('nama_rek'))
-                            <div class="invalid-feedback">
-                                {{$errors->first('nama_rek')}}
-                            </div>
-                            @endif
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="bank" class="form-label">Bank</label>
-                            <input type="text" class="form-control @if ($errors->has('bank'))
-                        is-invalid
-                    @endif" name="bank" id="bank" value="{{old('bank')}}" maxlength="10" required value="{{old('bank')}}" readonly>
-                            @if ($errors->has('bank'))
-                            <div class="invalid-feedback">
-                                {{$errors->first('bank')}}
-                            </div>
-                            @endif
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="no_rek" class="form-label">Nomor Rekening</label>
-                            <input type="text" class="form-control @if ($errors->has('no_rek'))
-                        is-invalid
-                    @endif" name="no_rek" id="no_rek" value="{{old('no_rek')}}" required value="{{old('no_rek')}}" readonly>
-                            @if ($errors->has('no_rek'))
-                            <div class="invalid-feedback">
-                                {{$errors->first('no_rek')}}
-                            </div>
-                            @endif
-                        </div>
-                    </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="submit" class="btn btn-primary">Checkout</button>
-                </form>
+                <button type="button" class="btn btn-primary" onclick="submitBeli()">Beli Barang</button>
             </div>
         </div>
     </div>
 </div>
 @push('css')
-    <link rel="stylesheet" href="{{asset('/assets/js/flatpickr/flatpickr.min.css')}}">
+<link rel="stylesheet" href="{{asset('/assets/js/flatpickr/flatpickr.min.css')}}">
 @endpush
 @push('js')
-    <script src="{{asset('/assets/js/flatpickr/flatpickr.js')}}"></script>
-    <script>
-         flatpickr("#jatuh_tempo", {
+<script src="{{asset('/assets/js/flatpickr/flatpickr.js')}}"></script>
+<script>
+    flatpickr("#jatuh_tempo", {
             dateFormat: "d-m-Y",
         });
 
@@ -236,5 +249,5 @@
                 }
             });
         }
-    </script>
+</script>
 @endpush

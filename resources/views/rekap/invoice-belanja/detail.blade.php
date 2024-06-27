@@ -133,7 +133,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="text-end align-middle" colspan="{{$data->rekap[0]->packaging ? 5 : 6}}" >Sisa Tagian</th>
+                    <th class="text-end align-middle" colspan="{{$data->rekap[0]->packaging ? 5 : 6}}" >Sisa Tagihan</th>
                     <th class="text-end align-middle" id="grand_total">
                         {{$data->nf_sisa}}
                     </th>
