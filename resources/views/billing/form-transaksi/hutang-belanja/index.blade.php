@@ -17,7 +17,26 @@
                 </tr>
             </table>
         </div>
+
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <form action="{{ route('billing.form-transaksi.bahan-baku.hutang-belanja') }}" method="GET" class="form-inline">
+                <div class="form-group mb-2">
+                    <label for="supplier_id" class="sr-only">Supplier:</label>
+                    <select name="supplier_id" id="supplier_id" class="form-control">
+                        <option value="" disabled selected>Pilih Supplier</option>
+                        @foreach($supplier as $sup)
+                            <option value="{{ $sup->id }}" {{ request('supplier_id') == $sup->id ? 'selected' : '' }}>{{ $sup->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Filter</button>
+                <a href="{{ route('billing.form-transaksi.bahan-baku.hutang-belanja') }}" class="btn btn-secondary mb-2">Reset Filter</a>
+            </form>
+        </div>
+    </div>
+
 </div>
 <div class="container-fluid table-responsive ml-3">
     <div class="row mt-3">
@@ -109,9 +128,12 @@
 </div>
 @endsection
 @push('css')
+<link rel="stylesheet" href="{{asset('assets/plugins/select2/select2.bootstrap5.css')}}">
+<link rel="stylesheet" href="{{asset('assets/plugins/select2/select2.min.css')}}">
 <link href="{{asset('assets/css/dt.min.css')}}" rel="stylesheet">
 @endpush
 @push('js')
+<script src="{{asset('assets/plugins/select2/select2.full.min.js')}}"></script>
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
 
@@ -122,6 +144,11 @@
             "searching": false,
             "scrollCollapse": true,
             "scrollY": "550px",
+        });
+
+        $('#supplier_id').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
         });
 
         $('.bayar-form').submit(function(e){

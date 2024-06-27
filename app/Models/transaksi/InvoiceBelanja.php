@@ -2,6 +2,9 @@
 
 namespace App\Models\transaksi;
 
+use App\Models\db\BahanBaku;
+use App\Models\db\Kemasan;
+use App\Models\db\Packaging;
 use App\Models\db\RekapBahanBaku;
 use App\Models\db\Supplier;
 use App\Models\GroupWa;
@@ -243,7 +246,8 @@ class InvoiceBelanja extends Model
 
             DB::commit();
 
-            $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 0)->sum('ppn');
+            $dbInvoice = new InvoiceBelanja();
+            $ppnMasukan = $dbInvoice->sumNilaiPpn();
 
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                         "*FORM BELI BAHAN BAKU*\n".
@@ -287,13 +291,16 @@ class InvoiceBelanja extends Model
     {
         $data = $this->with('supplier')->select('id', 'nomor_bb', 'supplier_id', 'dp_ppn as nilai_ppn', 'created_at as tgl')
                  ->where('dp_ppn', '>', 0)
+                 ->where('void', 0)
                  ->union($this->select('id', 'nomor_bb', 'supplier_id', 'sisa_ppn as nilai_ppn', 'updated_at as tgl')
                          ->where('sisa_ppn', '>', 0)
-                         ->where('tempo', 0))
+                         ->where('tempo', 0)
+                         ->where('void', 0))
                  ->union($this->select('id', 'nomor_bb', 'supplier_id', 'ppn as nilai_ppn', 'created_at as tgl')
                          ->where('dp_ppn', 0)
                          ->where('ppn', '>', 0)
-                         ->where('tempo', 0))
+                         ->where('tempo', 0)
+                         ->where('void', 0))
                  ->get();
 
         return $data;
@@ -301,15 +308,16 @@ class InvoiceBelanja extends Model
 
     public function sumNilaiPpn()
     {
-        // Directly sum the relevant columns based on conditions
+       // Directly sum the relevant columns based on conditions, including where void is 0
         $sum = $this->newQuery()
-                    ->selectRaw('SUM(CASE
-                                        WHEN dp_ppn > 0 THEN dp_ppn
-                                        WHEN sisa_ppn > 0 AND tempo = 0 THEN sisa_ppn
-                                        WHEN dp_ppn = 0 AND ppn > 0 AND tempo = 0 THEN ppn
-                                        ELSE 0
-                                    END) as total_nilai_ppn')
-                    ->value('total_nilai_ppn');
+            ->where('void', 0) // Add this line to include the condition
+            ->selectRaw('SUM(CASE
+                                WHEN dp_ppn > 0 THEN dp_ppn
+                                WHEN sisa_ppn > 0 AND tempo = 0 THEN sisa_ppn
+                                WHEN dp_ppn = 0 AND ppn > 0 AND tempo = 0 THEN ppn
+                                ELSE 0
+                            END) as total_nilai_ppn')
+            ->value('total_nilai_ppn');
 
         return $sum;
     }
@@ -332,9 +340,57 @@ class InvoiceBelanja extends Model
         // 2. kurangi stock baik itu kemasan, packaging, maupun bahan baku berdasarkan jenis dan id
 
         $invoice = $this->find($id);
+        $detail = $invoice->detail();
 
         try {
             DB::beginTransaction();
+
+            foreach ($detail as $d) {
+
+                $rekap_id = $d->rekap_bahan_baku_id;
+
+                $this->update_stok($rekap_id);
+
+            }
+
+            $rekening = Rekening::where('untuk', 'kas-besar')->first();
+
+            $kas = new KasBesar();
+
+            $store = $kas->create([
+                'uraian' => "Pembatalan ".$invoice->uraian,
+
+            ]);
+
+            // DB::commit();
+
+            $dbInvoice = new InvoiceBelanja();
+            $ppnMasukan = $dbInvoice->sumNilaiPpn();
+
+            $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
+                        "*FORM BELI BAHAN BAKU*\n".
+                        "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
+                        "Uraian :  *".$store->uraian."*\n\n".
+                        "Nilai    :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
+                        "Ditransfer ke rek:\n\n".
+                        "Bank      : ".$store->bank."\n".
+                        "Nama    : ".$store->nama_rek."\n".
+                        "No. Rek : ".$store->no_rek."\n\n".
+                        "==========================\n".
+                        "Sisa Saldo Kas Besar : \n".
+                        "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                        "Total Modal Investor : \n".
+                        "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                        "Total PPn Masukan : \n".
+                        "Rp. ".number_format($ppnMasukan, 0, ',', '.')."\n\n".
+                        "Terima kasih 🙏🙏🙏\n";
+
+            $group = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
+
+            return [
+                'status' => 'success',
+                'message' => 'Pembelian berhasil dibatalkan.',
+            ];
 
         } catch (\Throwable $th) {
             //throw $th;
@@ -345,5 +401,23 @@ class InvoiceBelanja extends Model
                 'message' => 'Gagal Membatalkan Pesanan. '.$th->getMessage(),
             ];
         }
+    }
+
+    private function update_stok($rekap_id)
+    {
+        $rekap = RekapBahanBaku::find($rekap_id);
+
+        if($rekap->bahan_baku_id)
+        {
+            BahanBaku::find($rekap->bahan_baku_id)->decrement('stock', $rekap->jumlah);
+        } elseif($rekap->kemasan_id) {
+            Kemasan::find($rekap->kemasan_id)->decrement('stok', $rekap->jumlah);
+        } elseif($rekap->packaging_id) {
+            Packaging::find($rekap->packaging_id)->decrement('stok', $rekap->jumlah);
+        }
+
+        $rekap->delete();
+
+        return true;
     }
 }
