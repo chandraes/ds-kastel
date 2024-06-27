@@ -76,7 +76,8 @@ class InventarisInvoice extends Model
             $kas = new KasBesar();
             $saldo = $kas->saldoTerakhir();
 
-            $total = ($data['jumlah'] * $data['harga_satuan']) + $data['ppn'];
+            $total = ($data['jumlah'] * $data['harga_satuan']) + $data['ppn'] + $data['add_fee'] - $data['diskon'];
+
             $checker = $data['pembayaran'] == 1 ? $total : str_replace('.', '', $data['dp']);
 
             isset($data['dp']) ? $data['dp'] = str_replace('.', '', $data['dp']) : 0;
@@ -105,6 +106,8 @@ class InventarisInvoice extends Model
                 'jumlah' => $data['jumlah'],
                 'harga_satuan' => $data['harga_satuan'],
                 'ppn' => $data['ppn'],
+                'add_fee' => $data['add_fee'],
+                'diskon' => $data['diskon'],
                 'total' => $total,
                 'nama_rek' => $data['nama_rek'],
                 'no_rek' => $data['no_rek'],

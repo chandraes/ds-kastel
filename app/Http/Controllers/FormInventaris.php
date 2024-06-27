@@ -47,12 +47,16 @@ class FormInventaris extends Controller
             'nama_rek' => 'required',
             'no_rek' => 'required',
             'bank' => 'required',
+            'add_fee' => 'required',
+            'diskon' => 'required',
             'dp' => 'required_unless:pembayaran,1',
             'tanggal_jatuh_tempo' => 'required_unless:pembayaran,1',
         ]);
 
         $data['ppn'] = str_replace('.', '', $data['ppn']);
         $data['harga_satuan'] = str_replace('.', '', $data['harga_satuan']);
+        $data['add_fee'] = str_replace('.', '', $data['add_fee']);
+        $data['diskon'] = str_replace('.', '', $data['diskon']);
         $data['status'] = 'beli';
         $data['jenis'] = 1;
 

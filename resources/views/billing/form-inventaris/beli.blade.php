@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="row" id="row-second">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="mb-3">
                     <label for="uraian" class="form-label">Uraian</label>
                     <div class="input-group mb-3">
@@ -89,6 +89,24 @@
                     <input type="text" class="form-control @if ($errors->has('ppn'))
                     is-invalid
                 @endif" name="ppn" id="ppn" required readonly value="0">
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="add_fee" class="form-label">Additional Fee</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Rp</span>
+                    <input type="text" class="form-control @if ($errors->has('add_fee'))
+                    is-invalid
+                @endif" name="add_fee" id="add_fee" required value="0" onkeyup="calculateTotal()">
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="diskon" class="form-label">Diskon</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Rp</span>
+                    <input type="text" class="form-control @if ($errors->has('diskon'))
+                    is-invalid
+                @endif" name="diskon" id="diskon" required value="0" onkeyup="calculateTotal()">
                 </div>
             </div>
             <div class="col-md-4 mb-3">
@@ -185,6 +203,20 @@
                 delimiter: '.'
             });
 
+            var add_fee = new Cleave('#add_fee', {
+                numeral: true,
+                numeralThousandsGroupStyle: 'thousand',
+                numeralDecimalMark: ',',
+                delimiter: '.'
+            });
+
+            var diskon = new Cleave('#diskon', {
+                numeral: true,
+                numeralThousandsGroupStyle: 'thousand',
+                numeralDecimalMark: ',',
+                delimiter: '.'
+            });
+
             var no_rek = new Cleave('#no_rek', {
                 delimiter: '-',
                 blocks: [4, 4, 8]
@@ -258,6 +290,9 @@
     function calculateTotal(){
         var harga = parseInt(document.getElementById('harga_satuan').value.replace(/\./g, ''), 10);
         var jumlah = parseInt(document.getElementById('jumlah').value, 10);
+        var add_fee = parseInt(document.getElementById('add_fee').value.replace(/\./g, ''), 10);
+        var diskon = parseInt(document.getElementById('diskon').value.replace(/\./g, ''), 10);
+
         var apa_ppn = document.getElementById('apa_ppn').value;
         var ppn = 0;
         var tot = harga * jumlah;
@@ -267,7 +302,7 @@
             ppn = tot * (ppnRate / 100);
         }
 
-        var total = tot + ppn;
+        var total = tot + ppn - diskon + add_fee;
         document.getElementById('ppn').value = ppn.toLocaleString('id-ID');
         document.getElementById('total').value = total.toLocaleString('id-ID');
     }
