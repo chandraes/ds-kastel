@@ -798,29 +798,39 @@ class Keranjang extends Model
         $kas = new KasBesar();
 
         $belanja = $this->where('user_id', auth()->user()->id)->where('jenis', 3)->where('tempo', 1)->get();
+        $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
 
         if($data['ppn'] == 1)
         {
-            $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
             $data['ppn'] = ($ppn/100) * ($belanja->sum('total') + $belanja->sum('add_fee'));
-
         }
+
         $data['dp'] = str_replace('.', '', $data['dp']);
+
+        if($data['dp_ppn'] == 1)
+        {
+            $data['dp_ppn'] = ($ppn/100) * $data['dp'];
+            $data['sisa_ppn'] = $data['ppn'] - $data['dp_ppn'];
+        } else {
+            $data['dp_ppn'] = 0;
+            $data['sisa_ppn'] = $data['ppn'];
+        }
 
         $data['tempo'] = 1;
 
-        if ($kas->saldoTerakhir() < $data['dp']) {
+        if ($kas->saldoTerakhir() < ($data['dp'] + $data['dp_ppn'])) {
             return [
                 'status' => 'error',
                 'message' => 'Saldo kas besar tidak mencukupi. Saldo saat ini : '.number_format($kas->saldoTerakhir(), 0, ',', '.')
             ];
         }
+
         $data['jatuh_tempo'] = Carbon::createFromFormat('d-m-Y', $data['jatuh_tempo'])->format('Y-m-d');
         $data['diskon'] = str_replace('.', '', $data['diskon']);
 
         $data['total'] = $belanja->sum('total') + $belanja->sum('add_fee') + $data['ppn'] - $data['diskon'];
 
-        $data['sisa'] = $data['total'] - $data['dp'];
+        $data['sisa'] = $data['total'] - $data['dp'] - $data['dp_ppn'];
 
         $pesan = '';
 

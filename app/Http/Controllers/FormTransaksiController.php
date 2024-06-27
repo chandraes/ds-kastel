@@ -219,7 +219,7 @@ class FormTransaksiController extends Controller
 
         $db = new Keranjang();
         $dp = str_replace('.', '', $data['dp']);
-        
+
         if ($db->where('user_id', auth()->id())->where('jenis', 1)->where('tempo', 1)->count() == 0) {
             return redirect()->back()->with('error', 'Keranjang kosong');
         }
@@ -617,6 +617,7 @@ class FormTransaksiController extends Controller
             'bank' => 'required',
             'supplier_id' => 'required|exists:suppliers,id',
             'dp' => 'required',
+            'dp_ppn' => 'required',
             'jatuh_tempo' => 'required',
         ]);
 
