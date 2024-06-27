@@ -24,12 +24,17 @@ class FormTransaksiController extends Controller
         ]);
     }
 
-    public function hutang_belanja()
+    public function hutang_belanja(Request $request)
     {
-        $data = InvoiceBelanja::where('tempo', 1)->get();
+        $data = InvoiceBelanja::with(['supplier'])->where('tempo', 1)->get();
+        // get unique supplier_id from $data
+        $supplierIds = $data->pluck('supplier_id')->unique();
+
+        $supplier = Supplier::where('status', 1)->whereIn('id', $supplierIds)->get();
 
         return view('billing.form-transaksi.hutang-belanja.index', [
             'data' => $data,
+            'supplier' => $supplier
         ]);
     }
 
@@ -635,5 +640,14 @@ class FormTransaksiController extends Controller
         $store = $db->checkoutPackagingTempo($data);
 
         return redirect()->back()->with($store['status'], $store['message']);
+    }
+
+    public function void(InvoiceBelanja $invoice)
+    {
+        $db = new InvoiceBelanja();
+
+        $res = $db->void_belanja($invoice->id);
+
+        return redirect()->back()->with($res['status'], $res['message']);
     }
 }

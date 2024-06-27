@@ -324,4 +324,26 @@ class InvoiceBelanja extends Model
 
         return null;
     }
+
+    public function void_belanja($id)
+    {
+        // TODO:
+        // 1. Kembalikan DP + DP PPN
+        // 2. kurangi stock baik itu kemasan, packaging, maupun bahan baku berdasarkan jenis dan id
+
+        $invoice = $this->find($id);
+
+        try {
+            DB::beginTransaction();
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+
+            return [
+                'status' => 'error',
+                'message' => 'Gagal Membatalkan Pesanan. '.$th->getMessage(),
+            ];
+        }
+    }
 }

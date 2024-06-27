@@ -118,7 +118,7 @@
     $(document).ready(function() {
         $('#rekapTable').DataTable({
             "paging": false,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
             "scrollCollapse": true,
             "scrollY": "550px",
