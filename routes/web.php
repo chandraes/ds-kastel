@@ -63,7 +63,7 @@ Route::group(['middleware' => ['auth']], function() {
     });
 
         // ROUTE DB
-    Route::view('db', 'db.index')->name('db')->middleware('role:su,admin,user');
+    Route::view('db', 'db.index')->name('db')->middleware('role:su,admin');
     Route::prefix('db')->group(function () {
 
         Route::group(['middleware' => ['role:su,admin']], function() {

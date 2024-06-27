@@ -144,12 +144,14 @@ class FormTransaksiController extends Controller
         $kategori = KategoriBahan::all();
         $keranjang = Keranjang::with(['bahan_baku'])->where('user_id', auth()->id())->where('jenis', 1)->where('tempo', 1)->get();
         $satuan = Satuan::all();
+        $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
 
         return view('billing.form-transaksi.bahan-baku.tempo.index', [
             'kategori' => $kategori,
             'keranjang' => $keranjang,
             'satuan' => $satuan,
-            'supplier' => $supplier
+            'supplier' => $supplier,
+            'ppn' => $ppn
         ]);
     }
 
@@ -209,11 +211,15 @@ class FormTransaksiController extends Controller
             'nama_rek' => 'required',
             'no_rek' => 'required',
             'bank' => 'required',
-            'supplier_id' => 'required|exists:suppliers,id'
+            'supplier_id' => 'required|exists:suppliers,id',
+            'dp' => 'required',
+            'dp_ppn' => 'required',
+            'jatuh_tempo' => 'required',
         ]);
 
         $db = new Keranjang();
-
+        $dp = str_replace('.', '', $data['dp']);
+        
         if ($db->where('user_id', auth()->id())->where('jenis', 1)->where('tempo', 1)->count() == 0) {
             return redirect()->back()->with('error', 'Keranjang kosong');
         }
