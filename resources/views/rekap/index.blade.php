@@ -43,17 +43,11 @@
                 <h3 class="mt-2">INVOICE PENJUALAN</h3>
             </a>
         </div>
-     
+
         <div class="col-lg-3 mt-3 mb-3 text-center">
             <a href="{{route('rekap.gaji')}}" class="text-decoration-none">
                 <img src="{{asset('images/rekap-gaji.svg')}}" alt="" width="70">
                 <h3 class="mt-2">GAJI STAFF</h3>
-            </a>
-        </div>
-        <div class="col-lg-3 mt-3 mb-3 text-center">
-            <a href="{{route('rekap.inventaris')}}" class="text-decoration-none">
-                <img src="{{asset('images/inventaris.svg')}}" alt="" width="70">
-                <h3 class="mt-2">INVENTARIS</h3>
             </a>
         </div>
         <div class="col-lg-3 mt-3 mb-3 text-center">
