@@ -430,7 +430,19 @@ class InvoiceBelanja extends Model
             Packaging::find($rekap->packaging_id)->decrement('stok', $rekap->jumlah);
         }
 
-        $rekap->delete();
+        RekapBahanBaku::create([
+            'bahan_baku_id' => $rekap->bahan_baku_id ?? null,
+            'kemasan_id' => $rekap->kemasan_id ?? null,
+            'packaging_id' => $rekap->packaging_id ?? null,
+            'jumlah' => $rekap->jumlah,
+            'nama' => $rekap->nama,
+            'satuan_id' => $rekap->satuan_id,
+            'harga' => $rekap->harga,
+            'add_fee' => $rekap->add_fee,
+            'uraian' => 'Pembatalan '.$rekap->uraian,
+            'jenis' => 0,
+        ]);
+        // $rekap->delete();
 
         return true;
     }
