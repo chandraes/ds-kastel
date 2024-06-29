@@ -251,7 +251,8 @@ class Keranjang extends Model
         foreach ($keranjang as $item) {
 
             $baseRekap = [
-                'jenis' => 0, //Pembelian
+                'jenis' => 1, //Pembelian
+                'uraian' => $data['uraian'],
                 'jumlah' => $item->jumlah,
                 'harga' => $item->harga,
                 'satuan_id' => $item->satuan_id,
