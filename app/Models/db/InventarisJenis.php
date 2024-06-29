@@ -9,7 +9,7 @@ class InventarisJenis extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'sum_jumlah', 'nf_sum_jumlah'];
 
     public function kategori()
     {
@@ -19,5 +19,15 @@ class InventarisJenis extends Model
     public function rekap()
     {
         return $this->hasMany(InventarisRekap::class, 'inventaris_jenis_id');
+    }
+
+    public function getSumJumlahAttribute()
+    {
+        return $this->rekap->sum('jumlah');
+    }
+
+    public function getNfSumJumlahAttribute()
+    {
+        return number_format($this->sum_jumlah, 0, ',','.');
     }
 }

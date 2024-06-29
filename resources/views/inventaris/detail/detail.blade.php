@@ -13,8 +13,8 @@
                 <tr class="text-center">
                     <td><a href="{{route('home')}}"><img src="{{asset('images/dashboard.svg')}}" alt="dashboard"
                                 width="30"> Dashboard</a></td>
-                    <td><a href="{{route('rekap')}}"><img src="{{asset('images/rekap.svg')}}" alt="dokumen" width="30">
-                            REKAP</a></td>
+                    <td><a href="{{route('inventaris.index')}}"><img src="{{asset('images/inventaris.svg')}}" alt="dokumen" width="30">
+                            INVENTARIS</a></td>
                     <td><a href="{{url()->previous()}}"><img src="{{asset('images/back.svg')}}" alt="dokumen" width="30">
                         KEMBALI</a></td>
                 </tr>
@@ -22,6 +22,7 @@
         </div>
     </div>
 </div>
+@include('inventaris.detail.aksi-modal')
 <div class="container table-responsive ml-3">
     <div class="row mt-3">
         <table class="table table-bordered" id="rekapTable">
@@ -45,9 +46,12 @@
                         <td class="text-end align-middle">{{$d->nf_harga_satuan}}</td>
                         <td class="text-end align-middle">{{$d->nf_total}}</td>
                         <td class="text-center align-middle">
-
+                            @if ($d->jenis == 1 && $d->pengurangan < $d->jumlah)
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#aksiModal" onclick="aksiFun({{$d}})"><i class="fa fa-exclamation-triangle"></i> Aksi</button>
+                            @endif
                         </td>
                     </tr>
+
                     @endforeach
                 </tbody>
                 <tfoot>
@@ -72,10 +76,15 @@
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
 
-    $(document).ready(function() {
+    function aksiFun(data) {
 
+        $('#jumlah_beli').val(data.jumlah);
+        $('#harga_satuan_beli').val(data.nf_harga_satuan);
+        $('#total_harga_beli').val(data.nf_total);
+        $('#pengurangan').val(data.pengurangan);
 
-    });
+        document.getElementById('aksiForm').action = '/inventaris/' + '{{ $kategori->id }}' + '/' + '{{ $inventaris->id }}' + '/' + data.id;
+    }
 
 
 </script>

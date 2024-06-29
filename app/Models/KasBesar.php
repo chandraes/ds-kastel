@@ -272,7 +272,7 @@ class KasBesar extends Model
         return $store;
     }
 
-    private function sendWa($tujuan, $pesan)
+    public function sendWa($tujuan, $pesan)
     {
         $send = new StarSender($tujuan, $pesan);
         $res = $send->sendGroup();

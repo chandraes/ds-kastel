@@ -25,7 +25,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::prefix('inventaris')->group(function(){
-        Route::view('/inventaris', 'inventaris.index')->name('inventaris.index');
+        Route::get('/', [App\Http\Controllers\InventarisController::class, 'index'])->name('inventaris.index');
+        Route::prefix('/{kategori}')->group(function(){
+            Route::get('/', [App\Http\Controllers\InventarisController::class, 'detail'])->name('inventaris.detail');
+            Route::get('/{jenis}', [App\Http\Controllers\InventarisController::class, 'detail_jenis'])->name('inventaris.detail.jenis');
+            Route::post('/{jenis}/{inventaris}', [App\Http\Controllers\InventarisController::class, 'aksi'])->name('inventaris.aksi');
+        });
     });
 
     Route::prefix('pajak')->group(function(){
