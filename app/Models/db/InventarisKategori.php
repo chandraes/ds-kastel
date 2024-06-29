@@ -14,4 +14,14 @@ class InventarisKategori extends Model
     {
         return $this->hasMany(InventarisJenis::class, 'kategori_id', 'id');
     }
+
+    public function getSumJumlahAttribute()
+    {
+        return $this->jenis->sum('sum_jumlah');
+    }
+
+    public function getSumTotalAttribute()
+    {
+        return $this->jenis->sum('sum_total');
+    }
 }
