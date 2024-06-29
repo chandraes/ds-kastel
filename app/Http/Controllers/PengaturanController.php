@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 Use App\Http\Controllers\Hash;
 use App\Models\PasswordKonfirmasi;
+use App\Models\Pengaturan;
 use Illuminate\Http\Request;
 
 class PengaturanController extends Controller
@@ -166,6 +167,15 @@ class PengaturanController extends Controller
         });
 
         return redirect()->route('pengaturan.akun')->with('success', 'User has been deleted');
+    }
+
+    public function batasan()
+    {
+        $data = Pengaturan::all();
+
+        return view('pengaturan.batasan.index', [
+            'data' => $data
+        ]);
     }
 
 }
