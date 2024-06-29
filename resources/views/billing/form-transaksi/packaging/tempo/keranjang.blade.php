@@ -63,6 +63,17 @@
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
+                                <label for="uraian" class="form-label">Apakah DP menggunakan PPn? <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" name="dp_ppn" id="dp_ppn" onchange="add_dp_ppn()" required>
+                                    <option value="">-- Pilih Salah Satu --</option>
+                                    <option value="1">Dengan PPn</option>
+                                    <option value="0">Tanpa PPn</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
                                 <label for="jatuh_tempo" class="form-label">Tgl Jatuh Tempo</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1"><i
