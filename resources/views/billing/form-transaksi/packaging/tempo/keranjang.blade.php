@@ -169,50 +169,73 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td class="text-center align-middle"></td>
-                            <td class="text-center align-middle">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('jumlah'), 0, ',','.') : ''}}</td>
-                            <td class="text-center align-middle"></td>
-                            <td class="text-center align-middle">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('harga'), 0, ',','.') : ''}}</td>
-                            <td class="text-center align-middle">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('add_fee'), 0, ',','.') : ''}}</td>
-                            <td class="text-end align-middle">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('total'), 0, ',','.') : ''}}</td>
-                            <td class="text-center align-middle"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-end align-middle" colspan="5">Total DPP</td>
+                            <td class="text-end align-middle" colspan="6">Total DPP</td>
                             <td class="text-end align-middle" id="tdTotal">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('total') + $keranjang->sum('add_fee'), 0, ',','.') : ''}}
+                                number_format($keranjang->sum('total') + $keranjang->sum('add_fee'), 0, ',','.') :
+                                ''}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="5">Diskon</td>
+                            <td class="text-end align-middle" colspan="6">Diskon</td>
                             <td class="text-end align-middle" id="tdDiskon">
                                 {{number_format($diskon, 0, ',','.')}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="5">Total DPP Setelah Diskon</td>
+                            <td class="text-end align-middle" colspan="6">Total DPP Setelah Diskon</td>
                             <td class="text-end align-middle" id="tdTotalSetelahDiskon">
                                 {{number_format($total-$diskon, 0, ',','.')}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="5">PPN</td>
+                            <td class="text-end align-middle" colspan="6">PPN</td>
                             <td class="text-end align-middle" id="tdPpn">
                                 0
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="5">Grand Total</td>
+                            <td class="text-end align-middle" colspan="6">Grand Total</td>
                             <td class="text-end align-middle" id="grand_total">
                                 {{number_format($total + $add_fee + $ppn - $diskon, 0, ',','.')}}
+                            </td>
+                            <td class="text-center align-middle"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-end align-middle" colspan="6">DP</td>
+                            <td class="text-end align-middle" id="dpTd">
+                                {{number_format($dp, 0, ',','.')}}
+                            </td>
+                            <td class="text-center align-middle"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-end align-middle" colspan="6">DP PPN</td>
+                            <td class="text-end align-middle" id="dpPPNtd">
+                                {{number_format($dpPPN, 0, ',','.')}}
+                            </td>
+                            <td class="text-center align-middle"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-end align-middle" colspan="6">Total DP</td>
+                            <td class="text-end align-middle" id="totalDpTd">
+                                {{number_format($totalDp, 0, ',','.')}}
+                            </td>
+                            <td class="text-center align-middle"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-end align-middle" colspan="6">Sisa PPN</td>
+                            <td class="text-end align-middle" id="sisaPPN">
+                                {{number_format($sisaPPN, 0, ',','.')}}
+                            </td>
+                            <td class="text-center align-middle"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-end align-middle" colspan="6">Sisa Tagihan</td>
+                            <td class="text-end align-middle" id="sisa">
+                                {{number_format($total + $add_fee + $ppn - $diskon - $sisaPPN, 0, ',','.')}}
                             </td>
                             <td class="text-center align-middle"></td>
                         </tr>
