@@ -339,16 +339,15 @@ class InvoiceBelanja extends Model
         // 1. Kembalikan DP + DP PPN
         // 2. kurangi stock baik itu kemasan, packaging, maupun bahan baku berdasarkan jenis dan id
 
-        $invoice = $this->find($id);
-        $detail = $invoice->detail();
+        $invoice = $this->with('detail.rekap')->where('id',$id)->first();
 
         try {
             DB::beginTransaction();
 
-            foreach ($detail as $d) {
+            foreach ($invoice->detail as $d) {
 
                 $rekap_id = $d->rekap_bahan_baku_id;
-
+                // dd($rekap_id);
                 $this->update_stok($rekap_id);
 
             }
@@ -357,19 +356,30 @@ class InvoiceBelanja extends Model
 
             $kas = new KasBesar();
 
+            $nominal = $invoice->dp + $invoice->dp_ppn;
+
             $store = $kas->create([
                 'uraian' => "Pembatalan ".$invoice->uraian,
-
+                'jenis' => 1,
+                'nomor_bb' => $invoice->nomor_bb,
+                'nominal' => $nominal,
+                'saldo' => $kas->saldoTerakhir() + $nominal,
+                'no_rek' => $rekening->no_rek,
+                'nama_rek' => $rekening->nama_rek,
+                'bank' => $rekening->bank,
+                'modal_investor_terakhir' => $kas->modalInvestorTerakhir(),
+                'invoice_belanja_id' => $invoice->id
             ]);
 
-            // DB::commit();
+            $invoice->update(['void' => 1]);
 
-            $dbInvoice = new InvoiceBelanja();
-            $ppnMasukan = $dbInvoice->sumNilaiPpn();
+            DB::commit();
 
-            $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
+            $ppnMasukan = $this->sumNilaiPpn();
+
+            $pesan = "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
                         "*FORM BELI BAHAN BAKU*\n".
-                        "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
+                        "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
                         "Uraian :  *".$store->uraian."*\n\n".
                         "Nilai    :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
                         "Ditransfer ke rek:\n\n".
@@ -386,6 +396,8 @@ class InvoiceBelanja extends Model
                         "Terima kasih 🙏🙏🙏\n";
 
             $group = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
+
+            $kas->sendWa($group, $pesan);
 
             return [
                 'status' => 'success',
@@ -409,9 +421,11 @@ class InvoiceBelanja extends Model
 
         if($rekap->bahan_baku_id)
         {
-            BahanBaku::find($rekap->bahan_baku_id)->decrement('stock', $rekap->jumlah);
+            $bahan = BahanBaku::find($rekap->bahan_baku_id);
+            $bahan->decrement('stock', $rekap->jumlah);
         } elseif($rekap->kemasan_id) {
-            Kemasan::find($rekap->kemasan_id)->decrement('stok', $rekap->jumlah);
+            $bahan = Kemasan::find($rekap->kemasan_id);
+            $bahan->decrement('stok', $rekap->jumlah);
         } elseif($rekap->packaging_id) {
             Packaging::find($rekap->packaging_id)->decrement('stok', $rekap->jumlah);
         }

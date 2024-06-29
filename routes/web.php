@@ -420,6 +420,7 @@ Route::group(['middleware' => ['auth']], function() {
                     Route::prefix('hutang-belanja')->group(function(){
                         Route::get('/', [App\Http\Controllers\FormTransaksiController::class, 'hutang_belanja'])->name('billing.form-transaksi.bahan-baku.hutang-belanja');
                         Route::post('/bayar/{invoice}', [App\Http\Controllers\FormTransaksiController::class, 'hutang_belanja_bayar'])->name('billing.form-transaksi.bahan-baku.hutang-belanja.bayar');
+                        Route::post('/void/{invoice}', [App\Http\Controllers\FormTransaksiController::class, 'void'])->name('billing.form-transaksi.bahan-baku.hutang-belanja.void');
                     });
 
                 });

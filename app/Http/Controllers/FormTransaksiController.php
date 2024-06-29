@@ -18,7 +18,7 @@ class FormTransaksiController extends Controller
 {
     public function index()
     {
-        $hb = InvoiceBelanja::where('tempo', 1)->count();
+        $hb = InvoiceBelanja::where('tempo', 1)->where('void', 0)->count();
         return view('billing.form-transaksi.index', [
             'hb' => $hb,
         ]);
@@ -26,7 +26,7 @@ class FormTransaksiController extends Controller
 
     public function hutang_belanja(Request $request)
     {
-        $data = InvoiceBelanja::with(['supplier'])->where('tempo', 1)->get();
+        $data = InvoiceBelanja::with(['supplier'])->where('tempo', 1)->where('void', 0)->get();
         // get unique supplier_id from $data
         $supplierIds = $data->pluck('supplier_id')->unique();
 

@@ -101,7 +101,12 @@
                         <form action="{{route('billing.form-transaksi.bahan-baku.hutang-belanja.bayar', ['invoice' => $d])}}" method="post" id="bayarForm{{ $d->id }}"
                             class="bayar-form" data-id="{{ $d->id }}" data-nominal="{{$d->nf_sisa}}">
                             @csrf
-                            <button type="submit" class="btn btn-sm btn-success">Bayar</button>
+                                <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-credit-card"></i> Bayar</button>
+                        </form>
+                        <form action="{{route('billing.form-transaksi.bahan-baku.hutang-belanja.void', ['invoice' => $d])}}" method="post" id="voidForm{{ $d->id }}"
+                            class="void-form m-3" data-id="{{ $d->id }}">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-exclamation-circle"></i> Void</button>
                         </form>
                     </td>
                 </tr>
@@ -131,6 +136,7 @@
 <link rel="stylesheet" href="{{asset('assets/plugins/select2/select2.bootstrap5.css')}}">
 <link rel="stylesheet" href="{{asset('assets/plugins/select2/select2.min.css')}}">
 <link href="{{asset('assets/css/dt.min.css')}}" rel="stylesheet">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @endpush
 @push('js')
 <script src="{{asset('assets/plugins/select2/select2.full.min.js')}}"></script>
@@ -166,6 +172,64 @@
                 if (result.isConfirmed) {
                     $(`#bayarForm${formId}`).unbind('submit').submit();
                     $('#spinner').show();
+                }
+            });
+        });
+
+
+
+        $('.void-form').submit(function(e){
+            e.preventDefault();
+            var formId = $(this).data('id'); // Store a reference to the form
+
+            Swal.fire({
+                title: 'Apakah anda Yakin Ingin Melakukan Void? Masukkan Password Konfirmasi',
+                input: 'password',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                showLoaderOnConfirm: true,
+                preConfirm: (password) => {
+                    return new Promise((resolve, reject) => {
+                        $.ajax({
+                            url: '{{route('pengaturan.password-konfirmasi-cek')}}',
+                            type: 'POST',
+                            data: JSON.stringify({ password: password }),
+                            contentType: 'application/json',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    resolve();
+                                } else {
+                                    // swal show error message\
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: data.message
+                                    });
+                                }
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: textStatus
+                                    });
+                            }
+                        });
+                    });
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(`#voidForm${formId}`).unbind('submit').submit();
+                    $('#spinner').show();
+
                 }
             });
         });
