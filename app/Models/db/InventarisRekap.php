@@ -91,6 +91,9 @@ class InventarisRekap extends Model
                     'modal_investor_terakhir' => $kas->modalInvestorTerakhir()
                 ]);
 
+                $inv = InventarisJenis::find($data[$rekap->inventaris_jenis_id]);
+                $inv_tot = InventarisRekap::sum('total');
+
                 $pesan = "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
                         "*FORM INVENTARIS*\n".
                         "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
@@ -105,6 +108,10 @@ class InventarisRekap extends Model
                         "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
                         "Total Modal Investor : \n".
                         "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                        "Sub total ".$inv->kategori->nama." : \n".
+                        "Rp. ".number_format($inv->kategori->sum_total, 0, ',', '.')."\n\n".
+                        "Grand Total Inventaris: \n".
+                        "Rp. ".number_format($inv_tot, 0, ',', '.')."\n\n".
                         "Terima kasih 🙏🙏🙏\n";
 
                 // Retrieve the group name once, as it's the same for both conditions
