@@ -378,7 +378,7 @@ class InvoiceBelanja extends Model
             $ppnMasukan = $this->sumNilaiPpn();
 
             $pesan = "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
-                        "*FORM BELI BAHAN BAKU*\n".
+                        "*VOID BELI BAHAN BAKU*\n".
                         "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
                         "Uraian :  *".$store->uraian."*\n\n".
                         "Nilai    :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
