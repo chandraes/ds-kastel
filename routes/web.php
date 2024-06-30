@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth']], function() {
 
             Route::prefix('batasan')->group(function(){
                 Route::get('/', [App\Http\Controllers\PengaturanController::class, 'batasan'])->name('pengaturan.batasan');
+                Route::patch('/update/{batasan}', [App\Http\Controllers\PengaturanController::class, 'batasan_update'])->name('pengaturan.batasan.update');
             });
         });
 

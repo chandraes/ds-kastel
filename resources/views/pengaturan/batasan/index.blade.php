@@ -7,6 +7,7 @@
         </div>
     </div>
     @include('swal')
+    @include('pengaturan.batasan.edit')
     <div class="flex-row justify-content-between mt-3">
         <div class="col-md-4">
             <table class="table">
@@ -35,7 +36,8 @@
                     <td class="text-center align-middle">{{$d->untuk}}</td>
                     <td class="text-end align-middle">
                         <div class="row px-5">
-                            <button class="btn btn-outline-dark">{{$d->nf_nilai}}</button>
+                            <button class="btn btn-outline-dark" data-bs-toggle="modal"
+                                data-bs-target="#editModal" onclick="edit({{$d}}, {{$d->id}})">{{$d->nf_nilai}}</button>
                         </div>
                     </td>
                 </tr>
@@ -47,22 +49,14 @@
 @endsection
 @push('js')
 <script>
-    // masukForm on submit, sweetalert confirm
-        $('#masukForm').submit(function(e){
-            e.preventDefault();
-            Swal.fire({
-                title: 'Apakah anda yakin untuk Permintaan Dana ini?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, simpan!'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#spinner').show();
-                    this.submit();
-                }
-            })
-        });
+   function edit(data, id)
+   {
+        document.getElementById('nilai').value = data.nf_nilai;
+        // Populate other fields...
+        document.getElementById('editForm').action = '/pengaturan/batasan/update/' + id;
+
+   }
+
+   confirmAndSubmit('#editForm', "Apakah anda yakin?");
 </script>
 @endpush

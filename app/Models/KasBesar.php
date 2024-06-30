@@ -245,7 +245,6 @@ class KasBesar extends Model
     {
         $rekening = Rekening::where('untuk', 'kas-besar')->first();
 
-        $data['nominal'] = str_replace('.', '', $data['nominal']);
         $data['saldo'] = $this->saldoTerakhir() + $data['nominal'];
         $data['jenis'] = 1;
         $data['no_rek'] = $rekening->no_rek;
@@ -254,9 +253,48 @@ class KasBesar extends Model
         $data['lain_lain'] = 1;
         $data['modal_investor_terakhir'] = $this->modalInvestorTerakhir();
 
-        $store = $this->create($data);
+        try {
+            DB::beginTransaction();
 
-        return $store;
+            $store = $this->create($data);
+
+            DB::commit();
+
+            $group = GroupWa::where('untuk', 'kas-besar')->first();
+
+            $pesan ="🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
+                    "*Form Lain2 (Dana Masuk)*\n".
+                    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
+                    "Uraian :  ".$store->uraian."\n".
+                    "Nilai :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
+                    "Ditransfer ke rek:\n\n".
+                    "Bank      : ".$store->bank."\n".
+                    "Nama    : ".$store->nama_rek."\n".
+                    "No. Rek : ".$store->no_rek."\n\n".
+                    "==========================\n".
+                    "Sisa Saldo Kas Besar : \n".
+                    "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                    "Total Modal Investor : \n".
+                    "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                    "Terima kasih 🙏🙏🙏\n";
+
+            $this->sendWa($group->nama_group, $pesan);
+
+            return [
+                'status' => "success",
+                'message' => 'Berhasil menambahkan data',
+                'data' => $store,
+            ];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+
+            return [
+                'status' => "error",
+                'message' => $th->getMessage(),
+            ];
+        }
     }
 
     public function lainKeluar($data)

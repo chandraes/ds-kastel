@@ -20,7 +20,6 @@
             </a>
             @include('billing.modal-form-kas-kecil')
         </div>
-        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'su')
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalLain">
                 <img src="{{asset('images/form-lain.svg')}}" alt="" width="70">
@@ -48,7 +47,6 @@
                 </div>
             </div>
         </div>
-        @endif
         <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
             <a href="{{route('billing.form-transaksi')}}" class="text-decoration-none">
                 <img src="{{asset('images/transaksi.svg')}}" alt="" width="70">

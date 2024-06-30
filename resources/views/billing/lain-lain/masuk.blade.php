@@ -27,7 +27,7 @@
                     <span class="input-group-text" id="basic-addon1">Rp</span>
                     <input type="text" class="form-control @if ($errors->has('nominal'))
                     is-invalid
-                @endif" name="nominal" id="nominal" data-thousands=".">
+                @endif" name="nominal" id="nominal"  @if (auth()->user()->role != 'admin' || auth()->user()->role != 'su')  onkeyup="checkNominal()" @endif>
                   </div>
                 @if ($errors->has('nominal'))
                 <div class="invalid-feedback">
@@ -84,9 +84,22 @@
 </div>
 @endsection
 @push('js')
-
-    <script src="{{asset('assets/js/cleave.min.js')}}"></script>
     <script>
+
+        function checkNominal() {
+            var nominal = document.getElementById('nominal').value;
+            nominal = nominal.replace(/\./g, '');
+            var batasan = {!! $batasan !!};
+            if (nominal > batasan) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Nominal melebihi batasan!',
+                })
+                document.getElementById('nominal').value = '';
+            }
+        }
+
         var nominal = new Cleave('#nominal', {
             numeral: true,
             numeralThousandsGroupStyle: 'thousand',

@@ -103,11 +103,13 @@
                             @csrf
                                 <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-credit-card"></i> Bayar</button>
                         </form>
+                        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'su')
                         <form action="{{route('billing.form-transaksi.bahan-baku.hutang-belanja.void', ['invoice' => $d])}}" method="post" id="voidForm{{ $d->id }}"
                             class="void-form m-3" data-id="{{ $d->id }}">
                             @csrf
                             <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-exclamation-circle"></i> Void</button>
                         </form>
+                        @endif
                     </td>
                 </tr>
                 @endforeach

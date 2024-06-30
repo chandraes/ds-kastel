@@ -178,4 +178,17 @@ class PengaturanController extends Controller
         ]);
     }
 
+    public function batasan_update(Pengaturan $batasan, Request $request)
+    {
+        $data = $request->validate([
+            'nilai' => 'required'
+        ]);
+
+        $data['nilai'] = str_replace('.', '', $data['nilai']);
+
+        $batasan->update($data);
+
+        return redirect()->route('pengaturan.batasan')->with('success', 'Data berhasil diubah!');
+    }
+
 }

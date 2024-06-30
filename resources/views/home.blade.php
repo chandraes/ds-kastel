@@ -5,7 +5,7 @@
 </div>
 <div class="container mt-3">
     <div class="row justify-content-left">
-        @if (auth()->user()->role != 'supplier' && auth()->user()->role != 'investor')
+        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'su')
         <div class="col-md-3 text-center mb-5 mt-3">
             <a href="{{route('db')}}" class="text-decoration-none">
                 <img src="{{asset('images/database.svg')}}" alt="" width="70">
@@ -13,14 +13,12 @@
             </a>
         </div>
         @endif
-        @if (auth()->user()->role != 'supplier' && auth()->user()->role != 'investor')
         <div class="col-md-3 text-center mb-5 mt-3">
             <a href="{{route('billing')}}" class="text-decoration-none">
                 <img src="{{asset('images/billing.svg')}}" alt="" width="70">
                 <h4 class="mt-2">BILLING</h4>
             </a>
         </div>
-        @endif
         <div class="col-md-3 text-center mb-5 mt-3">
             <a href="{{route('rekap')}}" class="text-decoration-none">
                 <img src="{{asset('images/rekap.svg')}}" alt="" width="70">
@@ -29,7 +27,7 @@
         </div>
         <div class="col-md-3 text-center mb-5 mt-3">
             <a href="#" class="text-decoration-none">
-                <img src="{{asset('images/rekap.svg')}}" alt="" width="70">
+                <img src="{{asset('images/po.svg')}}" alt="" width="70">
                 <h4 class="mt-2">PURCHASE<br>ORDER</h4>
             </a>
         </div>
@@ -47,6 +45,7 @@
                 <h4 class="mt-2">PAJAK</h4>
             </a>
         </div>
+        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'su')
         <div class="col-md-3 text-center mb-5 mt-3">
             <a href="{{route('laporan-keuangan.index')}}" class="text-decoration-none">
                 <img src="{{asset('images/laporan-keuangan.svg')}}" alt="" width="70">
@@ -59,6 +58,7 @@
                 <h4 class="mt-2">PENGATURAN</h4>
             </a>
         </div>
+        @endif
     </div>
 </div>
 @endsection
