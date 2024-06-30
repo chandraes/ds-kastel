@@ -67,17 +67,17 @@
         <table class="table table-hover table-bordered" id="rekapTable">
             <thead class=" table-success">
             <tr>
-                <th class="text-center align-middle">Tanggal</th>
-                <th class="text-center align-middle">Uraian</th>
-                <th class="text-center align-middle">Deposit</th>
-                <th class="text-center align-middle">Kas<br>Kecil</th>
-                <th class="text-center align-middle">Beli<br>bahan</th>
-                <th class="text-center align-middle">Masuk</th>
-                <th class="text-center align-middle">Keluar</th>
-                <th class="text-center align-middle">Saldo</th>
-                <th class="text-center align-middle">Transfer Ke Rekening</th>
-                <th class="text-center align-middle">Bank</th>
-                <th class="text-center align-middle">Modal<br>Investor</th>
+                <th class="text-center align-middle">TGL</th>
+                <th class="text-center align-middle">URAIAN</th>
+                <th class="text-center align-middle">DEPOSIT</th>
+                <th class="text-center align-middle">KAS<br>KECIL</th>
+                <th class="text-center align-middle">BELI<br>BAHAN</th>
+                <th class="text-center align-middle">MASUK</th>
+                <th class="text-center align-middle">KELUAR</th>
+                <th class="text-center align-middle">SALDO</th>
+                <th class="text-center align-middle">TRANSFER KE<br>REKENING</th>
+                <th class="text-center align-middle">BANK</th>
+                <th class="text-center align-middle">MODAL<br>INVESTOR</th>
             </tr>
             <tr class="table-warning">
                 <td colspan="6" class="text-center align-middle">Saldo Bulan
@@ -121,7 +121,7 @@
                         $d->nf_nominal : ''}}
                     </td>
                     <td class="text-end align-middle">{{$d->nf_saldo}}</td>
-                    <td class="text-start align-middle">{{ Str::limit($d->nama_rek, 20) }}</td>
+                    <td class="text-start align-middle">{{ Str::limit($d->nama_rek, 15) }}</td>
                     <td class="text-center align-middle">{{$d->bank}}</td>
                     <td class="text-end align-middle">{{$d->nf_modal_investor}}</td>
                 </tr>

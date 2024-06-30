@@ -13,9 +13,9 @@
             <tr>
                 <th class="text-center align-middle table-pdf text-pdf">Tanggal</th>
                 <th class="text-center align-middle table-pdf text-pdf">Uraian</th>
-                <th class="text-center align-middle table-pdf text-pdf">Project</th>
                 <th class="text-center align-middle table-pdf text-pdf">Deposit</th>
                 <th class="text-center align-middle table-pdf text-pdf">Kas Kecil</th>
+                <th class="text-center align-middle table-pdf text-pdf">Beli<br>Bahan</th>
                 <th class="text-center align-middle table-pdf text-pdf">Masuk</th>
                 <th class="text-center align-middle table-pdf text-pdf">Keluar</th>
                 <th class="text-center align-middle table-pdf text-pdf">Saldo</th>
@@ -49,18 +49,25 @@
                         @endif
 
                     </td>
-                    <td class="text-center align-middle table-pdf text-pdf">{{$d->project ? 'P'.str_pad($d->project->kode, 2, '0', STR_PAD_LEFT) : ''}}</td>
                     <td class="text-center align-middle table-pdf text-pdf">{{$d->kode_deposit}}</td>
                     <td class="text-center align-middle table-pdf text-pdf">{{$d->kode_kas_kecil}}</td>
+                    <td class="text-center align-middle table-pdf text-pdf">
+                        @if ($d->invoice_belanja_id)
+                            {{$d->invoice_belanja->kode}}
+                        @endif
+                    </td>
                     <td class="text-end align-middle table-pdf text-pdf">{{$d->jenis === 1 ?
                        $d->nf_nominal : ''}}
                     </td>
                     <td class="text-end align-middle table-pdf text-pdf text-danger">
-                        {{$d->jenis === 0 ?
+                        <span style="color:red">
+                            {{$d->jenis === 0 ?
                         $d->nf_nominal : ''}}
+                        </span>
+
                     </td>
                     <td class="text-end align-middle table-pdf text-pdf">{{$d->nf_saldo}}</td>
-                    <td class="text-center align-middle table-pdf text-pdf">{{$d->nama_rek}}</td>
+                    <td class="text-start align-middle table-pdf text-pdf">{{ Str::limit($d->nama_rek, 15) }}</td>
                     <td class="text-center align-middle table-pdf text-pdf">{{$d->bank}}</td>
                     <td class="text-end align-middle table-pdf text-pdf">{{number_format($d->modal_investor, 0, ',', '.')}}</td>
                 </tr>
