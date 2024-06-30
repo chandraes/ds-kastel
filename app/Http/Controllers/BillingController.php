@@ -154,7 +154,7 @@ class BillingController extends Controller
             return redirect()->route('billing')->with('error', 'Form Gaji Bulan Ini Sudah Dibuat');
         }
         $month = Carbon::now()->locale('id')->monthName;
-        $data = Karyawan::where('status', 1)->get();
+        $data = Karyawan::with(['jabatan'])->where('status', 1)->get();
 
         return view('billing.form-cost-operational.form-gaji.index', [
             'data' => $data,
@@ -188,24 +188,18 @@ class BillingController extends Controller
                 'total' => $ds['total'],
             ]);
 
+            $rekapGajiDetails = []; // Initialize an array to hold all records for bulk insertion
+
             foreach ($data as $d) {
+                $bpjs_tk = $d->apa_bpjs_tk == 1 ? $d->gaji_pokok * 0.049 : 0;
+                $potongan_bpjs_tk = $d->apa_bpjs_tk == 1 ? $d->gaji_pokok * 0.02 : 0;
+                $bpjs_k = $d->apa_bpjs_kes == 1 ? $d->gaji_pokok * 0.04 : 0;
+                $potongan_bpjs_kesehatan = $d->apa_bpjs_kes == 1 ? $d->gaji_pokok * 0.01 : 0;
 
-                $bpjs_tk = 0;
-                $bpjs_k = 0;
-                $potongan_bpjs_tk = 0;
-                $potongan_bpjs_kesehatan = 0;
-                $pendapatan_kotor = 0;
-                $pendapatan_bersih = 0;
-
-                $bpjs_tk = $d->gaji_pokok * 0.049;
-                $bpjs_k = $d->gaji_pokok * 0.04;
-                $potongan_bpjs_tk = $d->gaji_pokok * 0.02;
-                $potongan_bpjs_kesehatan = $d->gaji_pokok * 0.01;
                 $pendapatan_kotor = $d->gaji_pokok + $d->tunjangan_jabatan + $d->tunjangan_keluarga + $bpjs_tk + $bpjs_k;
-                $pendapatan_bersih = $d->gaji_pokok + $d->tunjangan_jabatan + $d->tunjangan_keluarga - $potongan_bpjs_tk - $potongan_bpjs_kesehatan;
+                $pendapatan_bersih = $pendapatan_kotor - $potongan_bpjs_tk - $potongan_bpjs_kesehatan;
 
-
-                RekapGajiDetail::create([
+                $rekapGajiDetails[] = [
                     'rekap_gaji_id' => $rekap->id,
                     'nik' => $d->kode.sprintf("%03d", $d->nomor),
                     'nama' => $d->nama,
@@ -223,9 +217,13 @@ class BillingController extends Controller
                     'nama_rek' => $d->nama_rek,
                     'bank' => $d->bank,
                     'no_rek' => $d->no_rek,
-                ]);
-
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ];
             }
+
+            // Perform a bulk insert after the loop
+            RekapGajiDetail::insert($rekapGajiDetails);
 
             $arrayKasBesar['uraian'] = "Gaji Bulan ".date('F')." ".date('Y');
             $arrayKasBesar['tanggal'] = date('Y-m-d');

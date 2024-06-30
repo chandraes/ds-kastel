@@ -123,6 +123,8 @@ class DatabaseController extends Controller
             'tunjangan_keluarga' => 'required',
             'nik' => 'required',
             'npwp' => 'required',
+            'apa_bpjs_tk' => 'nullable',
+            'apa_bpjs_kes' => 'nullable',
             'bpjs_tk' => 'required',
             'bpjs_kesehatan' => 'required',
             'tempat_lahir' => 'required',
@@ -144,7 +146,8 @@ class DatabaseController extends Controller
         $data['tunjangan_jabatan'] = str_replace('.', '', $data['tunjangan_jabatan']);
         $data['tunjangan_keluarga'] = str_replace('.', '', $data['tunjangan_keluarga']);
 
-
+        $data['apa_bpjs_tk'] = $request->filled('apa_bpjs_tk') ? 1 : 0;
+        $data['apa_bpjs_kes'] = $request->filled('apa_bpjs_kes') ? 1 : 0;
 
         try {
             DB::beginTransaction();
@@ -187,6 +190,8 @@ class DatabaseController extends Controller
             'tunjangan_keluarga' => 'required',
             'nik' => 'required',
             'npwp' => 'required',
+            'apa_bpjs_tk' => 'nullable',
+            'apa_bpjs_kes' => 'nullable',
             'bpjs_tk' => 'required',
             'bpjs_kesehatan' => 'required',
             'tempat_lahir' => 'required',
@@ -205,6 +210,9 @@ class DatabaseController extends Controller
         $data['gaji_pokok'] = str_replace('.', '', $data['gaji_pokok']);
         $data['tunjangan_jabatan'] = str_replace('.', '', $data['tunjangan_jabatan']);
         $data['tunjangan_keluarga'] = str_replace('.', '', $data['tunjangan_keluarga']);
+
+        $data['apa_bpjs_tk'] = $request->filled('apa_bpjs_tk') ? 1 : 0;
+        $data['apa_bpjs_kes'] = $request->filled('apa_bpjs_kes') ? 1 : 0;
 
         try {
             DB::beginTransaction();

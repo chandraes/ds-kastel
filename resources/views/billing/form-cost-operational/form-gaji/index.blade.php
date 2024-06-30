@@ -41,11 +41,12 @@
             <tbody>
                 @foreach ($data as $i)
                 @php
-                    $bpjs_tk = $i->gaji_pokok * 0.049;
-                    $bpjs_k = $i->gaji_pokok * 0.04;
-                    $potongan_bpjs_tk = $i->gaji_pokok * 0.02;
+                     $bpjs_tk = $i->apa_bpjs_tk == 1 ? $i->gaji_pokok * 0.049 : 0;
+                    $potongan_bpjs_tk = $i->apa_bpjs_tk == 1 ? $i->gaji_pokok * 0.02 : 0;
+                    $bpjs_k = $i->apa_bpjs_kes == 1 ? $i->gaji_pokok * 0.04 : 0;
+                    $potongan_bpjs_kesehatan = $i->apa_bpjs_kes == 1 ? $i->gaji_pokok * 0.01 : 0;
+
                     $grandTotalPotonganBpjsTk = $grandTotalPotonganBpjsTk + $potongan_bpjs_tk;
-                    $potongan_bpjs_kesehatan = $i->gaji_pokok * 0.01;
                     $grandTotalPotonganBpjsKesehatan = $grandTotalPotonganBpjsKesehatan + $potongan_bpjs_kesehatan;
                     $pendapatan_kotor = $i->gaji_pokok + $i->tunjangan_jabatan + $i->tunjangan_keluarga + $bpjs_tk + $bpjs_k;
                     $grandTotalPendapatanKotor = $grandTotalPendapatanKotor + $pendapatan_kotor;

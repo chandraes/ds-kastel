@@ -122,6 +122,30 @@
         </div>
         <hr>
         <div class="row">
+            {{-- checkbox ikut bpjs atau tidak --}}
+
+
+
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="row">
+                    <label for="bpjs_tk" class="form-label" >----------------------------</label>
+                    <div class="btn-group" role="group" data-bs-toggle="buttons">
+                        <label class="btn btn-secondary active">
+                            <input type="checkbox" class="me-2" name="apa_bpjs_tk" id="apa_bpjs_tk" autocomplete="off" {{$data->apa_bpjs_tk ? 'checked' : ''}}/>
+                            Ikut BPJS Tenaga Kerja
+                        </label>
+                        <label class="btn btn-secondary">
+                            <input type="checkbox" class="me-2" name="apa_bpjs_kes" id="apa_bpjs_kes" autocomplete="off" {{$data->apa_bpjs_kes ? 'checked' : ''}} />
+                            Ikut BPJS Kesehatan
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
             <div class="col-md-4 mb-3">
                 <label for="bpjs_tk" class="form-label">Nomor BPJS Tenaga Kerja</label>
                 <input type="text" class="form-control @if ($errors->has('bpjs_tk'))
