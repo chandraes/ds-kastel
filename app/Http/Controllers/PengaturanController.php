@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 Use App\Http\Controllers\Hash;
+use App\Models\Config;
 use App\Models\PasswordKonfirmasi;
 use App\Models\Pengaturan;
 use Illuminate\Http\Request;
@@ -189,6 +190,44 @@ class PengaturanController extends Controller
         $batasan->update($data);
 
         return redirect()->route('pengaturan.batasan')->with('success', 'Data berhasil diubah!');
+    }
+
+    public function aplikasi()
+    {
+        $data = Config::all();
+
+        return view('pengaturan.aplikasi.index', [
+            'data' => $data
+        ]);
+    }
+
+    public function aplikasi_edit(Config $config)
+    {
+        $data = $config;
+        return view('pengaturan.aplikasi.edit', compact('data'));
+    }
+
+    public function aplikasi_update(Config $config, Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+            'singkatan' => 'required',
+            'alamat' => 'required',
+            'kode_pos' => 'required',
+            'nama_direktur' => 'required',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move('uploads/logo/', $filename);
+            $data['logo'] = $filename;
+        }
+
+        $config->update($data);
+
+        return redirect()->route('pengaturan.aplikasi')->with('success', 'Data berhasil diubah!');
     }
 
 }

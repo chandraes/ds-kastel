@@ -7,6 +7,12 @@
 <div class="container mt-5">
     <div class="row justify-content-left">
         <div class="col-lg-3 col-md-4 text-center mt-3">
+            <a href="{{route('pengaturan.aplikasi')}}" class="text-decoration-none">
+                <img src="{{asset('images/aplikasi.svg')}}" alt="" width="70">
+                <h4 class="mt-2">APLIKASI</h4>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 text-center mt-3">
             <a href="{{route('pengaturan.akun')}}" class="text-decoration-none">
                 <img src="{{asset('images/pengguna.svg')}}" alt="" width="70">
                 <h4 class="mt-2">AKUN</h4>
