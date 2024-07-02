@@ -133,19 +133,6 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td class="text-center align-middle"></td>
-                            <td class="text-center align-middle">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('jumlah'), 0, ',','.') : ''}}</td>
-                            <td class="text-center align-middle"></td>
-                            <td class="text-center align-middle">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('harga'), 0, ',','.') : ''}}</td>
-                            <td class="text-center align-middle">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('add_fee'), 0, ',','.') : ''}}</td>
-                            <td class="text-end align-middle">{{count($keranjang) > 0 ?
-                                number_format($keranjang->sum('total'), 0, ',','.') : ''}}</td>
-                            <td class="text-center align-middle"></td>
-                        </tr>
-                        <tr>
                             <td class="text-end align-middle" colspan="5">Total DPP</td>
                             <td class="text-end align-middle" id="tdTotal">{{count($keranjang) > 0 ?
                                 number_format($keranjang->sum('total') + $keranjang->sum('add_fee'), 0, ',','.') : ''}}
