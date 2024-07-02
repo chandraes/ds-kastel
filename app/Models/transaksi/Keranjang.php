@@ -632,16 +632,16 @@ class Keranjang extends Model
 
         $belanja = $this->where('user_id', auth()->user()->id)->where('jenis', 2)->where('tempo', 0)->get();
         $data['add_fee'] = str_replace('.', '', $data['add_fee']);
+        $data['diskon'] = str_replace('.', '', $data['diskon']);
+
         if($data['ppn'] == 1)
         {
             $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
-            $data['ppn'] = ($ppn/100) * ($belanja->sum('total'));
+            $data['ppn'] = ($ppn/100) * ($belanja->sum('total') - $data['diskon']);
 
         }else {
             $data['ppn'] = 0;
         }
-
-        $data['diskon'] = str_replace('.', '', $data['diskon']);
 
         $data['total'] = $belanja->sum('total') + $data['add_fee'] + $data['ppn'] - $data['diskon'];
 
@@ -721,16 +721,15 @@ class Keranjang extends Model
 
         $belanja = $this->where('user_id', auth()->user()->id)->where('jenis', 3)->where('tempo', 0)->get();
         $data['add_fee'] = str_replace('.', '', $data['add_fee']);
+        $data['diskon'] = str_replace('.', '', $data['diskon']);
 
         if($data['ppn'] == 1)
         {
             $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
-            $data['ppn'] = ($ppn/100) * ($belanja->sum('total'));
+            $data['ppn'] = ($ppn/100) * ($belanja->sum('total')-$data['diskon']);
         } else {
             $data['ppn'] = 0;
         }
-
-        $data['diskon'] = str_replace('.', '', $data['diskon']);
 
         $data['total'] = $belanja->sum('total') + $data['add_fee'] + $data['ppn'] - $data['diskon'];
 
