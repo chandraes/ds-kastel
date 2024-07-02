@@ -26,7 +26,7 @@
             </a>
         </div>
         <div class="col-md-3 text-center mb-5 mt-3">
-            <a href="#" class="text-decoration-none">
+            <a href="{{route('po')}}" class="text-decoration-none">
                 <img src="{{asset('images/po.svg')}}" alt="" width="70">
                 <h4 class="mt-2">PURCHASE<br>ORDER</h4>
             </a>

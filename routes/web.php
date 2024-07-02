@@ -307,9 +307,18 @@ Route::group(['middleware' => ['auth']], function() {
 
     // END ROUTE REKAP
     Route::group(['middleware' => ['role:su,admin,user']], function() {
-        Route::get('/billing', [App\Http\Controllers\BillingController::class, 'index'])->name('billing');
+
+        Route::prefix('po')->group(function(){
+            Route::get('/', [App\Http\Controllers\PoController::class, 'index'])->name('po');
+            Route::get('/form', [App\Http\Controllers\PoController::class, 'form'])->name('po.form');
+            Route::post('/form/store', [App\Http\Controllers\PoController::class, 'store'])->name('po.form.store');
+
+            Route::get('/rekap', [App\Http\Controllers\PoController::class, 'rekap'])->name('po.rekap');
+        });
+
         Route::prefix('billing')->group(function() {
 
+            Route::get('/', [App\Http\Controllers\BillingController::class, 'index'])->name('billing');
             Route::prefix('form-inventaris')->group(function(){
                 Route::get('/', [App\Http\Controllers\BillingController::class, 'form_inventaris'])->name('billing.form-inventaris');
                 Route::get('/get-jenis', [App\Http\Controllers\FormInventaris::class, 'getJenis'])->name('billing.form-inventaris.get-jenis');
@@ -472,10 +481,13 @@ Route::group(['middleware' => ['auth']], function() {
                 });
             });
 
-            Route::get('/nota-tagihan', [App\Http\Controllers\NotaTagihanController::class, 'index'])->name('nota-tagihan.index');
-            Route::post('/nota-tagihan/cicilan/{invoice}', [App\Http\Controllers\NotaTagihanController::class, 'cicilan'])->name('nota-tagihan.cicilan');
-            Route::post('/nota-tagihan/cutoff/{invoice}', [App\Http\Controllers\NotaTagihanController::class, 'cutoff'])->name('nota-tagihan.cutoff');
-            Route::post('/nota-tagihan/pelunasan/{invoice}', [App\Http\Controllers\NotaTagihanController::class, 'pelunasan'])->name('nota-tagihan.pelunasan');
+            Route::prefix('nota-tagihan')->group(function(){
+                Route::get('/', [App\Http\Controllers\NotaTagihanController::class, 'index'])->name('nota-tagihan.index');
+                Route::post('/cicilan/{invoice}', [App\Http\Controllers\NotaTagihanController::class, 'cicilan'])->name('nota-tagihan.cicilan');
+                Route::post('/cutoff/{invoice}', [App\Http\Controllers\NotaTagihanController::class, 'cutoff'])->name('nota-tagihan.cutoff');
+                Route::post('/pelunasan/{invoice}', [App\Http\Controllers\NotaTagihanController::class, 'pelunasan'])->name('nota-tagihan.pelunasan');
+            });
+
 
             Route::prefix('nota-ppn-masukan')->group(function(){
                 Route::get('/', [App\Http\Controllers\BillingController::class, 'nota_ppn_masukan'])->name('nota-ppn-masukan');
