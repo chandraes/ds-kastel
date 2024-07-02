@@ -121,58 +121,49 @@ function submitBeli(){
             })
         }
 
-    function add_diskon() {
-        // get value from tdDiskon
-        var diskonT = document.getElementById('diskon').value;
-        var diskon = diskonT.replace(/\./g, '');
+        function add_diskon() {
+            // Existing code to calculate discount and total after discount
+            var diskonT = document.getElementById('diskon').value;
+            var diskon = diskonT.replace(/\./g, '');
+            var total = document.getElementById('tdTotal').textContent;
+            total = total.replace(/\./g, '');
+            var ppn = document.getElementById('tdPpn').textContent;
+            ppn = ppn.replace(/\./g, '');
+            var addFeeT = document.getElementById('add_fee').value;
+            var addFee = addFeeT.replace(/\./g, '');
+            var total_diskon = total - diskon;
+            var gd = total_diskon + Number(ppn) + Number(addFee);
+            var diskonFormatted = Number(diskon).toLocaleString('id-ID');
+            var totalFormatted = total_diskon.toLocaleString('id-ID');
+            var addFeeFormatted = Number(addFee).toLocaleString('id-ID');
+            var gF = gd.toLocaleString('id-ID');
+            document.getElementById('tdDiskon').textContent = diskonT;
+            document.getElementById('tdTotalSetelahDiskon').textContent = totalFormatted;
+            document.getElementById('tdAddFee').textContent = addFeeFormatted;
+            document.getElementById('grand_total').textContent = gF;
 
-        // get element value tdTotal
-        var total = document.getElementById('tdTotal').textContent;
-        total = total.replace(/\./g, '');
-
-        var ppn = document.getElementById('tdPpn').textContent;
-        ppn = ppn.replace(/\./g, '');
-
-        // Retrieve the add_fee value
-        var addFeeT = document.getElementById('add_fee').value; // Assuming add_fee is an input field
-        var addFee = addFeeT.replace(/\./g, '');
-
-        var total_diskon = total - diskon;
-
-        // Include add_fee in the total calculation
-        var gd = total_diskon + Number(ppn) + Number(addFee);
-
-        var diskonFormatted = Number(diskon).toLocaleString('id-ID');
-        var totalFormatted = total_diskon.toLocaleString('id-ID');
-        var addFeeFormatted = Number(addFee).toLocaleString('id-ID'); // Format add_fee for display
-        var gF = gd.toLocaleString('id-ID');
-
-        document.getElementById('tdDiskon').textContent = diskonT;
-        document.getElementById('tdTotalSetelahDiskon').textContent = totalFormatted;
-        document.getElementById('tdAddFee').textContent = addFeeFormatted; // Display add_fee in tdAddFee
-        document.getElementById('grand_total').textContent = gF;
-    }
-
-    function add_ppn(){
-        var apa_ppn = document.getElementById('ppn').value;
-        var ppn = {!! $ppn !!} / 100;
-
-        if (apa_ppn === "1") { // compare with string "1"
-            var gt = Number(document.getElementById('tdTotalSetelahDiskon').textContent.replace(/\./g, ''));
-
-            var vPpn = gt * ppn;
-            var totalap = gt + (gt *ppn);
-
-            var tF = totalap.toLocaleString('id-ID');
-            var vF = vPpn.toLocaleString('id-ID');
-            document.getElementById('grand_total').textContent = tF;
-            document.getElementById('tdPpn').textContent = vF;
-        } else {
-            document.getElementById('tdPpn').textContent = 0;
-
+            // Call add_ppn at the end to recalculate PPN based on the new total after discount
+            add_ppn();
         }
-        add_diskon();
-    }
+
+        function add_ppn() {
+            var apa_ppn = document.getElementById('ppn').value;
+            var ppnRate = {!! $ppn !!} / 100;
+            if (apa_ppn === "1") {
+                var gt = Number(document.getElementById('tdTotalSetelahDiskon').textContent.replace(/\./g, ''));
+                var vPpn = gt * ppnRate;
+                var totalap = gt + vPpn;
+                var tF = totalap.toLocaleString('id-ID');
+                var vF = vPpn.toLocaleString('id-ID');
+                document.getElementById('grand_total').textContent = tF;
+                document.getElementById('tdPpn').textContent = vF;
+            } else {
+                document.getElementById('tdPpn').textContent = 0;
+                // Since PPN is not applied, directly update grand_total with tdTotalSetelahDiskon
+                var gtWithoutPpn = document.getElementById('tdTotalSetelahDiskon').textContent;
+                document.getElementById('grand_total').textContent = gtWithoutPpn;
+            }
+        }
 
         $(function() {
             var nominal = new Cleave('#harga', {
