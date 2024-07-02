@@ -10,7 +10,7 @@ class WaController extends Controller
 {
     public function index()
     {
-        $data = GroupWa::all();
+        $data = GroupWa::whereNot('untuk', 'team')->get();
         return view('pengaturan.wa.index', [
             'data' => $data
         ]);

@@ -34,7 +34,7 @@ class FormKasKecilController extends Controller
         $kb = new KasBesar();
         $saldo = $kb->saldoTerakhir();
 
-        $group = GroupWa::where('untuk', 'kas-kecil')->first();
+        $group = GroupWa::where('untuk', 'kas-besar')->first();
         $pesan =    "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                     "*Form Permintaan Kas Kecil*\n".
                     "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
@@ -105,7 +105,7 @@ class FormKasKecilController extends Controller
 
         DB::commit();
 
-        $group = GroupWa::where('untuk', 'team')->first();
+        $group = GroupWa::where('untuk', 'kas-kecil')->first();
 
         if ($data['nama_rek'] == 'Cash') {
             $pesan =    "==========================\n".

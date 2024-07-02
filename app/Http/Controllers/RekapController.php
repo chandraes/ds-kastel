@@ -160,7 +160,7 @@ class RekapController extends Controller
 
         $store = $db->voidKasKecil($kas->id);
 
-        $group = GroupWa::where('untuk', 'team')->first();
+        $group = GroupWa::where('untuk', 'kas-kecil')->first();
 
         $pesan =    "==========================\n".
                     "*Form Void Kas Kecil*\n".
