@@ -61,6 +61,7 @@
                     <th class="text-center align-middle">Uraian</th>
                     <th class="text-center align-middle">Diskon</th>
                     <th class="text-center align-middle">PPn</th>
+                    <th class="text-center align-middle">Add Fee</th>
                     <th class="text-center align-middle">Total Belanja</th>
 
                 </tr>
@@ -81,6 +82,9 @@
                     </td>
                     <td class="text-end align-middle">
                         {{$d->nf_ppn}}
+                    </td>
+                    <td class="text-end align-middle">
+                        {{$d->nf_add_fee}}
                     </td>
                     <td class="text-end align-middle">
                         {{$d->nf_total}}

@@ -76,15 +76,7 @@
                 @endif" name="harga" id="harga" data-thousands="." required>
                   </div>
             </div>
-            <div class="col-md-3 mb-3">
-                <label for="add_fee" class="form-label">Additional Fee</label>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">Rp</span>
-                    <input type="text" class="form-control @if ($errors->has('add_fee'))
-                    is-invalid
-                @endif" name="add_fee" id="add_fee" data-thousands="." required value="0">
-                  </div>
-            </div>
+
         </div>
         <hr>
 
@@ -126,16 +118,23 @@
         var ppn = document.getElementById('tdPpn').textContent;
         ppn = ppn.replace(/\./g, '');
 
+        // Retrieve the add_fee value
+        var addFeeT = document.getElementById('add_fee').value; // Assuming add_fee is an input field
+        var addFee = addFeeT.replace(/\./g, '');
+
         var total_diskon = total - diskon;
 
-        var gd = total_diskon + Number(ppn);
+        // Include add_fee in the total calculation
+        var gd = total_diskon + Number(ppn) + Number(addFee);
 
         var diskonFormatted = Number(diskon).toLocaleString('id-ID');
         var totalFormatted = total_diskon.toLocaleString('id-ID');
+        var addFeeFormatted = Number(addFee).toLocaleString('id-ID'); // Format add_fee for display
         var gF = gd.toLocaleString('id-ID');
 
         document.getElementById('tdDiskon').textContent = diskonT;
         document.getElementById('tdTotalSetelahDiskon').textContent = totalFormatted;
+        document.getElementById('tdAddFee').textContent = addFeeFormatted; // Display add_fee in tdAddFee
         document.getElementById('grand_total').textContent = gF;
     }
 
@@ -155,8 +154,8 @@
             document.getElementById('tdPpn').textContent = vF;
         } else {
             document.getElementById('tdPpn').textContent = 0;
-            add_diskon();
         }
+        add_diskon();
     }
 
         $(function() {

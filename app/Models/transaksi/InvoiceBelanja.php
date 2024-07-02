@@ -23,7 +23,7 @@ class InvoiceBelanja extends Model
     protected $guarded = ['id'];
 
     protected $appends = ['tanggal', 'nf_diskon', 'nf_ppn', 'nf_total', 'id_jatuh_tempo', 'kode', 'nf_dp', 'nf_sisa', 'dpp', 'nf_dp_ppn', 'nf_sisa_ppn',
-                         'total_dp', 'nf_total_dp', 'total_dp', 'ppn_masukan', 'formatted_tgl'];
+                         'total_dp', 'nf_total_dp', 'total_dp', 'ppn_masukan', 'formatted_tgl', 'nf_add_fee'];
 
 
     public function dataTahun()
@@ -65,6 +65,11 @@ class InvoiceBelanja extends Model
     public function getNfDpPpnAttribute()
     {
         return number_format($this->dp_ppn, 0, ',', '.');
+    }
+
+    public function getNfAddFeeAttribute()
+    {
+        return number_format($this->add_fee, 0, ',', '.');
     }
 
     public function getNfSisaPpnAttribute()

@@ -57,12 +57,14 @@ class FormTransaksiController extends Controller
         $kategori = KategoriBahan::all();
         $keranjang = Keranjang::with(['bahan_baku'])->where('user_id', auth()->id())->where('jenis', 1)->where('tempo', 0)->get();
         $satuan = Satuan::all();
+        $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
 
         return view('billing.form-transaksi.bahan-baku.beli', [
             'kategori' => $kategori,
             'keranjang' => $keranjang,
             'satuan' => $satuan,
-            'supplier' => $supplier
+            'supplier' => $supplier,
+            'ppn' => $ppn
         ]);
     }
 
@@ -74,7 +76,6 @@ class FormTransaksiController extends Controller
             'jumlah' => 'required|numeric|min:1',
             'harga' => 'required',
             'satuan_id' => 'required_if:apa_konversi,==,0',
-            'add_fee' => 'required'
         ]);
 
         $data['user_id'] = auth()->user()->id;
@@ -85,7 +86,6 @@ class FormTransaksiController extends Controller
 
         $data['harga'] = str_replace('.', '', $data['harga']);
         $data['total'] = $data['jumlah'] * $data['harga'];
-        $data['add_fee'] = str_replace('.', '', $data['add_fee']);
 
         unset($data['apa_konversi']);
 
@@ -126,7 +126,8 @@ class FormTransaksiController extends Controller
             'nama_rek' => 'required',
             'no_rek' => 'required',
             'bank' => 'required',
-            'supplier_id' => 'required|exists:suppliers,id'
+            'supplier_id' => 'required|exists:suppliers,id',
+            'add_fee' => 'required',
         ]);
 
         $db = new Keranjang();
@@ -323,7 +324,6 @@ class FormTransaksiController extends Controller
             'jumlah' => 'required|numeric|min:1',
             'harga' => 'required',
             'satuan_id' => 'required_if:apa_konversi,==,0',
-            'add_fee' => 'required'
         ]);
 
 
@@ -333,7 +333,6 @@ class FormTransaksiController extends Controller
         $data['harga'] = str_replace('.', '', $data['harga']);
         $data['jumlah'] = str_replace('.', '', $data['jumlah']);
         $data['total'] = $data['jumlah'] * $data['harga'];
-        $data['add_fee'] = str_replace('.', '', $data['add_fee']);
         $data['jenis'] = 2;
         $data['tempo'] = 1;
 
