@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('telepon');
             $table->integer('grand_total');
             $table->integer('status')->default(1);
-            $table->foreignId('created_by')->nullabe()->constrained('users')->onDelete('set null');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }
