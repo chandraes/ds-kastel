@@ -149,19 +149,23 @@ function submitBeli(){
         function add_ppn() {
             var apa_ppn = document.getElementById('ppn').value;
             var ppnRate = {!! $ppn !!} / 100;
+            // Retrieve add_fee value and convert it to a number after removing any formatting
+            var addFee = Number(document.getElementById('add_fee').value.replace(/\./g, ''));
             if (apa_ppn === "1") {
                 var gt = Number(document.getElementById('tdTotalSetelahDiskon').textContent.replace(/\./g, ''));
                 var vPpn = gt * ppnRate;
-                var totalap = gt + vPpn;
+                // Include add_fee in the total calculation
+                var totalap = gt + vPpn + addFee;
                 var tF = totalap.toLocaleString('id-ID');
                 var vF = vPpn.toLocaleString('id-ID');
                 document.getElementById('grand_total').textContent = tF;
                 document.getElementById('tdPpn').textContent = vF;
             } else {
-                document.getElementById('tdPpn').textContent = 0;
-                // Since PPN is not applied, directly update grand_total with tdTotalSetelahDiskon
-                var gtWithoutPpn = document.getElementById('tdTotalSetelahDiskon').textContent;
-                document.getElementById('grand_total').textContent = gtWithoutPpn;
+                // Since PPN is not applied, directly update grand_total with tdTotalSetelahDiskon and add_fee
+                var gtWithoutPpn = Number(document.getElementById('tdTotalSetelahDiskon').textContent.replace(/\./g, ''));
+                var totalWithoutPpn = gtWithoutPpn + addFee;
+                var totalFormatted = totalWithoutPpn.toLocaleString('id-ID');
+                document.getElementById('grand_total').textContent = totalFormatted;
             }
         }
 
