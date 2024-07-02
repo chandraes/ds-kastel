@@ -53,7 +53,7 @@
                                 <span class="input-group-text" id="basic-addon1">Rp</span>
                                 <input type="text" class="form-control @if ($errors->has('add_fee'))
                                 is-invalid
-                            @endif" name="add_fee" id="add_fee" data-thousands="." required value="0">
+                            @endif" name="add_fee" id="add_fee" data-thousands="." required value="0" onkeyup="add_diskon()">
                               </div>
                         </div>
                     </div>
@@ -140,44 +140,46 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td class="text-end align-middle" colspan="5">Total DPP</td>
+                            <td class="text-end align-middle" colspan="4">Total DPP</td>
                             <td class="text-end align-middle" id="tdTotal">{{count($keranjang) > 0 ?
                                 number_format($keranjang->sum('total') + $keranjang->sum('add_fee'), 0, ',','.') : ''}}
                             </td>
-
+                            <td></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="5">Diskon</td>
+                            <td class="text-end align-middle" colspan="4">Diskon</td>
                             <td class="text-end align-middle" id="tdDiskon">
                                 {{number_format($diskon, 0, ',','.')}}
                             </td>
-
+                            <td></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="5">Total DPP Setelah Diskon</td>
+                            <td class="text-end align-middle" colspan="4">Total DPP Setelah Diskon</td>
                             <td class="text-end align-middle" id="tdTotalSetelahDiskon">
                                 {{number_format($total-$diskon, 0, ',','.')}}
                             </td>
-
+                            <td></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="5">PPN</td>
+                            <td class="text-end align-middle" colspan="4">PPN</td>
                             <td class="text-end align-middle" id="tdPpn">
                                 0
                             </td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="5">Additional Fee</td>
+                            <td class="text-end align-middle" colspan="4">Additional Fee</td>
                             <td class="text-end align-middle" id="tdAddFee">
                                 0
                             </td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <td class="text-end align-middle" colspan="5">Grand Total</td>
+                            <td class="text-end align-middle" colspan="4">Grand Total</td>
                             <td class="text-end align-middle" id="grand_total">
                                 {{number_format($total + $add_fee + $ppn - $diskon, 0, ',','.')}}
                             </td>
-
+                            <td></td>
                         </tr>
                     </tfoot>
                 </table>

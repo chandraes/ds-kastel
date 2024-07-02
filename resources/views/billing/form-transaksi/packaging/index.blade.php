@@ -82,6 +82,22 @@
 @push('js')
     <script>
 
+function submitBeli(){
+            Swal.fire({
+                title: "Apakah Anda Yakin?" ,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#spinner').show();
+                    document.getElementById('beliBarang').submit();
+                }
+            })
+        }
+
     function add_diskon() {
         // get value from tdDiskon
         var diskonT = document.getElementById('diskon').value;
@@ -94,18 +110,26 @@
         var ppn = document.getElementById('tdPpn').textContent;
         ppn = ppn.replace(/\./g, '');
 
+        // Retrieve the add_fee value
+        var addFeeT = document.getElementById('add_fee').value; // Assuming add_fee is an input field
+        var addFee = addFeeT.replace(/\./g, '');
+
         var total_diskon = total - diskon;
 
-        var gd = total_diskon + Number(ppn);
+        // Include add_fee in the total calculation
+        var gd = total_diskon + Number(ppn) + Number(addFee);
 
         var diskonFormatted = Number(diskon).toLocaleString('id-ID');
         var totalFormatted = total_diskon.toLocaleString('id-ID');
+        var addFeeFormatted = Number(addFee).toLocaleString('id-ID'); // Format add_fee for display
         var gF = gd.toLocaleString('id-ID');
 
         document.getElementById('tdDiskon').textContent = diskonT;
         document.getElementById('tdTotalSetelahDiskon').textContent = totalFormatted;
+        document.getElementById('tdAddFee').textContent = addFeeFormatted; // Display add_fee in tdAddFee
         document.getElementById('grand_total').textContent = gF;
     }
+
 
     function add_ppn(){
         var apa_ppn = document.getElementById('ppn').value;
@@ -123,8 +147,9 @@
             document.getElementById('tdPpn').textContent = vF;
         } else {
             document.getElementById('tdPpn').textContent = 0;
-            add_diskon();
+
         }
+        add_diskon();
     }
 
         $(function() {

@@ -396,7 +396,6 @@ class FormTransaksiController extends Controller
             'jumlah' => 'required|numeric|min:1',
             'harga' => 'required',
             'satuan_id' => 'required_if:apa_konversi,==,0',
-            'add_fee' => 'required'
         ]);
 
 
@@ -405,7 +404,6 @@ class FormTransaksiController extends Controller
 
         $data['harga'] = str_replace('.', '', $data['harga']);
         $data['total'] = $data['jumlah'] * $data['harga'];
-        $data['add_fee'] = str_replace('.', '', $data['add_fee']);
         $data['jenis'] = 2;
 
 
@@ -426,7 +424,8 @@ class FormTransaksiController extends Controller
             'nama_rek' => 'required',
             'no_rek' => 'required',
             'bank' => 'required',
-            'supplier_id' => 'required|exists:suppliers,id'
+            'supplier_id' => 'required|exists:suppliers,id',
+            'add_fee' => 'required',
         ]);
 
         $db = new Keranjang();
@@ -487,7 +486,6 @@ class FormTransaksiController extends Controller
             'packaging_id' => 'required|exists:packagings,id',
             'jumlah' => 'required|numeric|min:1',
             'harga' => 'required',
-            'add_fee' => 'required'
         ]);
 
 
@@ -496,7 +494,6 @@ class FormTransaksiController extends Controller
 
         $data['harga'] = str_replace('.', '', $data['harga']);
         $data['total'] = $data['jumlah'] * $data['harga'];
-        $data['add_fee'] = str_replace('.', '', $data['add_fee']);
         $data['jenis'] = 3;
 
 
@@ -537,7 +534,8 @@ class FormTransaksiController extends Controller
             'nama_rek' => 'required',
             'no_rek' => 'required',
             'bank' => 'required',
-            'supplier_id' => 'required|exists:suppliers,id'
+            'supplier_id' => 'required|exists:suppliers,id',
+            'add_fee' => 'required',
         ]);
 
         $db = new Keranjang();
