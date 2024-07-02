@@ -6,6 +6,9 @@
             <h1><u>Form Lain-lain Masuk</u></h1>
         </div>
     </div>
+    @php
+    $role = ['admin', 'su'];
+@endphp
     <form action="{{route('form-lain.masuk.store')}}" method="post" id="masukForm">
         @csrf
         <div class="row">
@@ -27,7 +30,7 @@
                     <span class="input-group-text" id="basic-addon1">Rp</span>
                     <input type="text" class="form-control @if ($errors->has('nominal'))
                     is-invalid
-                @endif" name="nominal" id="nominal"  @if (auth()->user()->role != 'admin' || auth()->user()->role != 'su')  onkeyup="checkNominal()" @endif>
+                @endif" name="nominal" id="nominal"  {{ !in_array(auth()->user()->role, $role) ? 'onkeyup=checkNominal()' : '' }} required>
                   </div>
                 @if ($errors->has('nominal'))
                 <div class="invalid-feedback">
