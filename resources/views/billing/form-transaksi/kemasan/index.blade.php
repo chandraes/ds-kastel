@@ -98,6 +98,22 @@
 @push('js')
     <script>
 
+    function submitBeli(){
+            Swal.fire({
+                title: "Apakah Anda Yakin?" ,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#spinner').show();
+                    document.getElementById('beliBarang').submit();
+                }
+            })
+        }
+
     function add_diskon() {
         // get value from tdDiskon
         var diskonT = document.getElementById('diskon').value;
