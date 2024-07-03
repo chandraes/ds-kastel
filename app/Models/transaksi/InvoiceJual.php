@@ -41,14 +41,14 @@ class InvoiceJual extends Model
         return $this->selectRaw('YEAR(created_at) as tahunArray')->groupBy('tahunArray')->get();
     }
 
-    public function generateInvoice($nomor)
+    public function generateInvoice($nomor, $kodeKonsumen)
     {
-        return str_pad($nomor, 3, '0', STR_PAD_LEFT) . '/PT Kastel/' . date('m'). '/' . date('Y');
+        return str_pad($nomor, 3, '0', STR_PAD_LEFT) . '/KASTEL-'.$kodeKonsumen.'/' . date('m'). '/' . date('Y');
     }
 
     public function getFullInvoiceAttribute()
     {
-        return str_pad($this->no_invoice, 3, '0', STR_PAD_LEFT) . '/PT Kaster/' . $this->bulan. '/' . $this->tahun;
+        return str_pad($this->no_invoice, 3, '0', STR_PAD_LEFT) . '/KASTEL'.$this->konsumen->full_kode.'/' . $this->bulan. '/' . $this->tahun;
     }
 
     public function konsumen()

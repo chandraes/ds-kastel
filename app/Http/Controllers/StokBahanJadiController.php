@@ -62,7 +62,7 @@ class StokBahanJadiController extends Controller
 
         $db = new InvoiceJual();
         $nomor = $db->generateNoInvoice();
-        $invoice = $db->generateInvoice($nomor);
+        $invoice = $db->generateInvoice($nomor, "KONSUMEN");
         // dd($invoice);
         $konsumen = Konsumen::where('active', 1)->get();
 
@@ -382,7 +382,7 @@ class StokBahanJadiController extends Controller
                         return redirect()->back()->with('error', 'Stok packaging tidak mencukupi');
                     }
                 }
-                
+
                 $dbPackaging = $data->kemasan->packaging->decrement('stok', $packaging);
             }
 

@@ -92,7 +92,7 @@ class KeranjangJual extends Model
         }
 
         $data['no_invoice'] = $db->generateNoInvoice();
-        $data['invoice'] = $db->generateInvoice($data['no_invoice']);
+        $data['invoice'] = $db->generateInvoice($data['no_invoice'], $konsumen->full_kode);
         $data['konsumen_id'] = $req['konsumen_id'];
         $data['total'] = $getData->sum('total');
         $data['ppn'] = $data['total'] * $ppnVal;

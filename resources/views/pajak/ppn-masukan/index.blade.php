@@ -77,11 +77,21 @@
 
                 </tr>
                 @endforeach
+                @foreach ($dataInven as $i)
+                <td class="text-center align-middle">{{$i->tanggal}}</td>
+                <td class="text-center align-middle">{{$i->nama_rek}}</td>
+                <td class="text-center align-middle">
+                   -
+                </td>
+                <td class="text-end align-middle">
+                    {{number_format($i->ppn, 0, ',','.')}}
+                </td>
+                @endforeach
             </tbody>
             <tfoot>
                 <tr>
                     <th class="text-end align-middle" colspan="3">Grand Total : </th>
-                    <th class="text-end align-middle">{{number_format($data->sum('nilai_ppn'), 0, ',','.')}}</th>
+                    <th class="text-end align-middle">{{number_format($data->sum('nilai_ppn')+$dataInven->sum('ppn'), 0, ',','.')}}</th>
                 </tr>
             </tfoot>
         </table>
