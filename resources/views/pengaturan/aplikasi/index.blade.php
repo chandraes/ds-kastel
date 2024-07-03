@@ -41,7 +41,7 @@
                     <td class="text-center align-middle">{{$d->singkatan}}</td>
                     <td class="text-center align-middle">{{$d->nama_direktur}}</td>
                     <td class="text-start align-middle">
-                        <p>{{STR::limit($d->alamat, 40)}}</p>
+                        <p>{{Str::limit($d->alamat, 40)}}</p>
                     </td>
                     <td class="text-center align-middle">{{$d->kode_pos}}</td>
                     <td class="text-center align-middle">
