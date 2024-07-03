@@ -35,6 +35,7 @@ class PoController extends Controller
             'kepada' => 'required',
             'alamat' => 'required',
             'telepon' => 'required',
+            'apa_ppn' => 'required',
             'kategori' => 'required|array',
             'kategori.*' => 'required',
             'nama_barang' => 'required|array',
@@ -61,6 +62,7 @@ class PoController extends Controller
                 'telepon' => $data['telepon'],
                 'nomor' => $data['nomor'],
                 'full_nomor' => $data['full_nomor'],
+                'apa_ppn' => $data['apa_ppn'],
                 'user_id' => $data['user_id'],
             ]);
 
@@ -117,7 +119,13 @@ class PoController extends Controller
     {
         $pt = Config::where('untuk', 'resmi')->first();
         $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
-        $total = $po->items->sum('total') + ($po->items->sum('total') * $ppn / 100);
+
+        if($po->apa_ppn == 1){
+            $total = $po->items->sum('total') + ($po->items->sum('total') * $ppn / 100);
+        } else {
+            $total = $po->items->sum('total');
+        }
+
         $terbilang = Terbilang::make($total);
 
         // dd($terbilang, $po->items->sum('total'));

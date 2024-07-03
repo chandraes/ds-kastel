@@ -14,7 +14,7 @@
     <p>{{$data->full_nomor}}</p>
 </div>
 <div class="tujuan-div">
-    <table>
+    <table style="font-size: 12px">
         <tr>
             <th style="width: 100px; text-align: left" >Tanggal</th>
             <th style="width: 20px">:</th>
@@ -68,6 +68,7 @@
                 <td colspan="6" class="total">GRAND TOTAL</td>
                 <td style="text-align: right">{{number_format($data->items->sum('total'), 0, ',', '.')}}</td>
             </tr>
+            @if ($data->apa_ppn == 1)
             <tr>
                 <td colspan="6" class="total">PPN (11%)</td>
                 <td style="text-align: right">{{number_format($data->items->sum('total') * ($ppn/100), 0, ',', '.')}}</td>
@@ -76,6 +77,7 @@
                 <td colspan="6" class="total">GRAND TOTAL + PPN</td>
                 <td style="text-align: right">{{number_format($data->items->sum('total') + $data->items->sum('total') * ($ppn/100), 0, ',', '.')}}</td>
             </tr>
+            @endif
             <tr>
                 <td colspan="7" style="text-align: center">Terbilang: <strong>#{{ucfirst($terbilang)}} rupiah#</strong></td>
             </tr>
@@ -86,7 +88,7 @@
     <h5 style="margin-bottom:5px;">Notes :</h5>
     @if ($data->notes())
     <ul style="font-size: 10px; margin-top:0">
-        @foreach ($data->notes() as $i)
+        @foreach ($data->notes as $i)
         <li>{{$i->note}}</li>
         @endforeach
     </ul>

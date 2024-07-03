@@ -25,6 +25,14 @@
                 <label for="telepon" class="form-label">Telepon:</label>
                 <input type="text" name="telepon" class="form-control" id="telepon" value="{{ old('telepon') }}" required>
             </div>
+            {{-- add select option --}}
+            <div class="col-md-12 mb-3">
+                <label for="apa_ppn" class="form-label">Apakah Menggunakan PPN:</label>
+                <select name="apa_ppn" id="apa_ppn" class="form-select" required onchange="checkPPN()">
+                    <option value="1" {{ old('apa_ppn') == '1' ? 'selected' : '' }}>Dengan PPN</option>
+                    <option value="0" {{ old('apa_ppn') == '2' ? 'selected' : '' }}>Tanpa PPN</option>
+                </select>
+            </div>
 
             <div class="col-md-12 mb-3 text-end">
                 <button type="button" class="btn btn-success" id="addRowButton"><i class="fa fa-plus"></i> Tambah Item</button>
@@ -65,14 +73,14 @@
                             <td class="text-center align-middle" id="grandTotal">0</td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr id="ppnRow">
                             <td colspan="3" class="text-end align-middle">PPN ({{ $ppn }}%):</td>
                             <td colspan="2"></td>
                             <td class="text-center align-middle" id="ppnTotal">0</td>
                             <td></td>
                         </tr>
-                        <tr>
-                            <th colspan="3" class="text-end align-middle">Grand Total + PPN:</th>
+                        <tr id="totalKeseluruhanRow">
+                            <td colspan="3" class="text-end align-middle">Grand Total + PPN:</td>
                             <td colspan="2"></td>
                             <td class="text-center align-middle" id="totalKeseluruhan">0</td>
                             <td></td>
@@ -125,7 +133,26 @@
 <script>
     confirmAndSubmit('#masukForm', 'Pastikan data yang diinput sudah benar, yakin ingin menyimpan data ini?');
 
+    function checkPPN() {
+        const apaPPN = document.getElementById('apa_ppn').value;
+        const ppnRow = document.getElementById('ppnRow');
+        const tkr = document.getElementById('totalKeseluruhanRow');
+
+        if (apaPPN == '0') {
+            ppnRow.style.display = 'none';
+            tkr.style.display = 'none';
+        } else {
+            ppnRow.style.display = '';
+            tkr.style.display = '';
+        }
+    }
+
 document.addEventListener('DOMContentLoaded', function () {
+   // Memanggil fungsi saat halaman dimuat
+
+    // Tambahkan event listener untuk memanggil fungsi setiap kali nilai select diubah
+
+
     const addRowButton = document.getElementById('addRowButton');
     const addNoteButton = document.getElementById('addNoteButton');
     const bahanTable = document.getElementById('bahanTable');
@@ -204,8 +231,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 grandTotal += value;
             });
 
+            const apaPPN = document.getElementById('apa_ppn').value;
+
             const ppn = {{ $ppn }} / 100;
-            const ppnTotal = grandTotal * ppn;
+            let ppnTotal = 0;
+
+            if (apaPPN == '1') {
+                ppnTotal = grandTotal * ppn;
+            }
+
             const totalKeseluruhan = grandTotal + ppnTotal;
 
             document.getElementById('grandTotal').textContent = grandTotal.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -216,6 +250,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const terHurufBesar = ter.charAt(0).toUpperCase() + ter.slice(1); // Mengubah huruf depan menjadi besar
 
             document.getElementById('terbilangTotal').textContent = `Terbilang: #${terHurufBesar}#`;
+
+            checkPPN();
         };
 
 
@@ -266,5 +302,6 @@ document.addEventListener('DOMContentLoaded', function () {
         saveButton.hidden = false;
     });
 });
+
 </script>
 @endpush
