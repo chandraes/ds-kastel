@@ -13,8 +13,8 @@
                 <tr class="text-center">
                     <td><a href="{{route('home')}}"><img src="{{asset('images/dashboard.svg')}}" alt="dashboard"
                                 width="30"> Dashboard</a></td>
-                    <td><a href="{{route('rekap')}}"><img src="{{asset('images/rekap.svg')}}" alt="dokumen" width="30">
-                            REKAP</a></td>
+                    <td><a href="{{route('inventaris.index')}}"><img src="{{asset('images/inventaris.svg')}}" alt="dokumen" width="30">
+                            Inventaris</a></td>
                 </tr>
             </table>
         </div>
