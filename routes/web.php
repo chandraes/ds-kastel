@@ -26,6 +26,8 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::prefix('inventaris')->group(function(){
         Route::get('/', [App\Http\Controllers\InventarisController::class, 'index'])->name('inventaris.index');
+        Route::get('/invoice', [App\Http\Controllers\InventarisController::class, 'invoice'])->name('inventaris.invoice');
+
         Route::prefix('/{kategori}')->group(function(){
             Route::get('/', [App\Http\Controllers\InventarisController::class, 'detail'])->name('inventaris.detail');
             Route::get('/{jenis}', [App\Http\Controllers\InventarisController::class, 'detail_jenis'])->name('inventaris.detail.jenis');

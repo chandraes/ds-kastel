@@ -16,7 +16,13 @@ class InventarisInvoice extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    protected $appends = ['tanggal', 'nf_jumlah', 'nf_harga_satuan', 'nf_ppn', 'nf_total', 'nf_dp', 'id_tanggal_jatuh_tempo', 'nf_sisa_bayar'];
+    protected $appends = ['tanggal', 'nf_jumlah', 'nf_harga_satuan', 'nf_ppn', 'nf_total', 'nf_dp', 'id_tanggal_jatuh_tempo', 'nf_sisa_bayar', 'nf_diskon', 'nf_add_fee'];
+
+
+    public function dataTahun()
+    {
+        return $this->selectRaw('YEAR(created_at) as tahun')->groupBy('tahun')->get();
+    }
 
     public function getTanggalAttribute()
     {
@@ -33,9 +39,19 @@ class InventarisInvoice extends Model
         return number_format($this->harga_satuan, 0, ',', '.');
     }
 
+    public function getNfDiskonAttribute()
+    {
+        return number_format($this->diskon, 0, ',', '.');
+    }
+
     public function getNfPpnAttribute()
     {
         return number_format($this->ppn, 0, ',', '.');
+    }
+
+    public function getNfAddFeeAttribute()
+    {
+        return number_format($this->add_fee, 0, ',', '.');
     }
 
     public function getNfTotalAttribute()
@@ -66,6 +82,11 @@ class InventarisInvoice extends Model
     public function inventaris()
     {
         return $this->belongsTo(InventarisRekap::class, 'inventaris_id');
+    }
+
+    public function rekapInvoice($month, $year)
+    {
+        return $this->where('lunas', 1)->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
     }
 
     public function beliInventaris($data)

@@ -3,8 +3,8 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
-            <h1><u>PPN MASUKAN</u></h1>
-            {{-- <h1>{{$stringBulanNow}} {{$tahun}}</h1> --}}
+            <h1><u>REKAP INVOICE INVENTARIS</u></h1>
+            <h1>{{$stringBulanNow}} {{$tahun}}</h1>
         </div>
     </div>
     <div class="row justify-content-between mt-3">
@@ -13,12 +13,12 @@
                 <tr class="text-center">
                     <td><a href="{{route('home')}}"><img src="{{asset('images/dashboard.svg')}}" alt="dashboard"
                                 width="30"> Dashboard</a></td>
-                    <td><a href="{{route('pajak.index')}}"><img src="{{asset('images/pajak.svg')}}" alt="dokumen" width="30">
-                            PAJAK</a></td>
+                    <td><a href="{{route('rekap')}}"><img src="{{asset('images/rekap.svg')}}" alt="dokumen" width="30">
+                            REKAP</a></td>
                 </tr>
             </table>
         </div>
-        {{-- <form action="{{route('rekap.invoice-belanja')}}" method="get" class="col-md-6">
+        <form action="{{route('inventaris.invoice')}}" method="get" class="col-md-6">
             <div class="row mt-2">
                 <div class="col-md-4 mb-3">
                     <select class="form-select" name="bulan" id="bulan">
@@ -47,7 +47,7 @@
                     <button type="submit" class="btn btn-primary form-control" id="btn-cari">Tampilkan</button>
                 </div>
             </div>
-        </form> --}}
+        </form>
     </div>
 </div>
 <div class="container table-responsive ml-3">
@@ -56,43 +56,64 @@
             <thead class=" table-success">
                 <tr>
                     <th class="text-center align-middle">Tanggal</th>
-                    <th class="text-center align-middle">Supplier</th>
-                    <th class="text-center align-middle">Nota</th>
+                    <th class="text-center align-middle">Uraian</th>
+                    <th class="text-center align-middle">Qty</th>
+                    <th class="text-center align-middle">Diskon</th>
                     <th class="text-center align-middle">PPn</th>
+                    <th class="text-center align-middle">Add Fee</th>
+                    <th class="text-center align-middle">Total Belanja</th>
+
                 </tr>
             </thead>
             <tbody>
                 @foreach ($data as $d)
                 <tr>
-                    <td class="text-center align-middle">{{$d->formatted_tgl}}</td>
-                    <td class="text-center align-middle">{{$d->supplier->nama}}</td>
+                    <td class="text-center align-middle">{{$d->tanggal}}</td>
+                    <td class="text-start align-middle">{{$d->uraian}}</td>
                     <td class="text-center align-middle">
-                        <a href="{{route('rekap.invoice-belanja.detail', ['invoice' => $d])}}">
-                            {{$d->kode}}
-                        </a>
+                        {{$d->nf_jumlah}}
                     </td>
                     <td class="text-end align-middle">
-                        {{number_format($d->nilai_ppn, 0, ',','.')}}
+                        {{$d->nf_diskon}}
+                    </td>
+                    <td class="text-end align-middle">
+                        {{$d->nf_ppn}}
+                    </td>
+                    <td class="text-end align-middle">
+                        {{$d->nf_add_fee}}
+                    </td>
+                    <td class="text-end align-middle">
+                        {{$d->nf_total}}
                     </td>
                 </tr>
-                @endforeach
-                @foreach ($dataInven as $i)
-                <td class="text-center align-middle">{{$i->tanggal}}</td>
-                <td class="text-center align-middle">{{$i->nama_rek}}</td>
-                <td class="text-center align-middle">
-                   -
-                </td>
-                <td class="text-end align-middle">
-                    {{number_format($i->ppn, 0, ',','.')}}
-                </td>
                 @endforeach
             </tbody>
             <tfoot>
                 <tr>
-                    <th class="text-end align-middle" colspan="3">Grand Total : </th>
-                    <th class="text-end align-middle">{{number_format($data->sum('nilai_ppn')+$dataInven->sum('ppn'), 0, ',','.')}}</th>
+                    <th class="text-end align-middle" colspan="3">Grand Total</th>
+                    <th class="text-end align-middle">{{number_format($data->sum('diskon'), 0, ',','.')}}</th>
+                    <th class="text-end align-middle">{{number_format($data->sum('ppn'), 0, ',','.')}}</th>
+                    <th class="text-end align-middle">{{number_format($data->sum('add_fee'), 0, ',','.')}}</th>
+                    <th class="text-end align-middle">{{number_format($data->sum('total'), 0, ',','.')}}</th>
                 </tr>
             </tfoot>
+            {{-- <tfoot>
+                <tr>
+                    <td colspan="3" class="text-center align-middle"><strong>GRAND TOTAL</strong></td>
+                    <td class="text-end align-middle"><strong>{{number_format($data->where('jenis',
+                            1)->sum('nominal'), 0, ',', '.')}}</strong></td>
+                    <td class="text-end align-middle text-danger"><strong>{{number_format($data->where('jenis',
+                            0)->sum('nominal'), 0, ',', '.')}}</strong></td>
+                    <td class="text-end align-middle">
+                        <strong>
+                            {{$data->last() ? number_format($data->last()->saldo, 0, ',', '.') : ''}}
+                        </strong>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tfoot> --}}
         </table>
     </div>
 </div>
@@ -107,7 +128,7 @@
     $(document).ready(function() {
         $('#rekapTable').DataTable({
             "paging": false,
-            "ordering": true,
+            "ordering": false,
             "searching": false,
             "scrollCollapse": true,
             "scrollY": "550px",

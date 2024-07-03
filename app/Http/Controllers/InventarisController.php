@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\db\InventarisJenis;
 use App\Models\db\InventarisKategori;
 use App\Models\db\InventarisRekap;
+use App\Models\transaksi\InventarisInvoice;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class InventarisController extends Controller
@@ -51,6 +53,35 @@ class InventarisController extends Controller
         $res = $db->createRekap($data, $inventaris->id);
 
         return redirect()->back()->with($res['status'], $res['message']);
+    }
+
+    public function invoice(Request $request)
+    {
+        $db = new InventarisInvoice();
+
+        $dataTahun = $db->dataTahun();
+
+        $bulan = $request->bulan ?? date('m');
+        $tahun = $request->tahun ?? date('Y');
+
+        $data = $db->rekapInvoice($bulan, $tahun);
+
+        $bulanSebelumnya = $bulan - 1;
+        $bulanSebelumnya = $bulanSebelumnya == 0 ? 12 : $bulanSebelumnya;
+        $tahunSebelumnya = $bulanSebelumnya == 12 ? $tahun - 1 : $tahun;
+        $stringBulan = Carbon::createFromDate($tahun, $bulanSebelumnya)->locale('id')->monthName;
+        $stringBulanNow = Carbon::createFromDate($tahun, $bulan)->locale('id')->monthName;
+
+        return view('inventaris.rekap.index', [
+            'data' => $data,
+            'dataTahun' => $dataTahun,
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'stringBulan' => $stringBulan,
+            'stringBulanNow' => $stringBulanNow,
+            'bulanSebelumnya' => $bulanSebelumnya,
+            'tahunSebelumnya' => $tahunSebelumnya,
+        ]);
     }
 
 

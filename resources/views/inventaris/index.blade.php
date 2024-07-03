@@ -35,6 +35,12 @@
         </div>
         @endforeach
         <div class="col-md-3 text-center mt-3">
+            <a href="{{route('inventaris.invoice')}}" class="text-decoration-none">
+                <img src="{{asset('images/rekap-invoice.svg')}}" alt="" width="70">
+                <h4 class="mt-2">INVOICE<br>INVENTARIS</h4>
+            </a>
+        </div>
+        <div class="col-md-3 text-center mt-3">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="70">
                 <h4 class="mt-2">DASHBOARD</h4>
