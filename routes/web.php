@@ -314,6 +314,7 @@ Route::group(['middleware' => ['auth']], function() {
             Route::post('/form/store', [App\Http\Controllers\PoController::class, 'store'])->name('po.form.store');
 
             Route::get('/rekap', [App\Http\Controllers\PoController::class, 'rekap'])->name('po.rekap');
+            Route::get('/rekap/{po}', [App\Http\Controllers\PoController::class, 'pdf'])->name('po.rekap.pdf');
         });
 
         Route::prefix('billing')->group(function() {

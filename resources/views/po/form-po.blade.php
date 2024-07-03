@@ -13,8 +13,21 @@
     <form action="{{route('po.form.store')}}" method="post" id="masukForm">
         @csrf
         <div class="row">
+            <div class="col-md-12 mb-3">
+                <label for="kepada" class="form-label">Kepada:</label>
+                <input type="text" name="kepada" class="form-control" id="kepada" value="{{ old('kepada') }}" required>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="alamat" class="form-label">Alamat:</label>
+                <input type="text" name="alamat" class="form-control" id="alamat" value="{{ old('alamat') }}" required>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="telepon" class="form-label">Telepon:</label>
+                <input type="text" name="telepon" class="form-control" id="telepon" value="{{ old('telepon') }}" required>
+            </div>
+
             <div class="col-md-12 mb-3 text-end">
-                <button type="button" class="btn btn-success" id="addRowButton">Tambah Baris</button>
+                <button type="button" class="btn btn-success" id="addRowButton"><i class="fa fa-plus"></i> Tambah Item</button>
             </div>
 
             <div id="bahanContainer">
@@ -24,30 +37,75 @@
                             <th class="text-center align-middle">No</th>
                             <th class="text-center align-middle">KATEGORI</th>
                             <th class="text-center align-middle">NAMA BARANG</th>
-                            <th class="text-center align-middle">
-                                Qty<br>
-                                <small class="text-danger">Gunakan "." untuk nilai desimal!!</small>
-                            </th>
-                            <th class="text-center align-middle">
-                                HARGA SATUAN<br>
-                                <small class="text-danger">Gunakan "." untuk nilai desimal!!</small>
-                            </th>
+                            <th class="text-center align-middle">Qty</th>
+                            <th class="text-center align-middle">HARGA SATUAN</th>
                             <th class="text-center align-middle">TOTAL</th>
                             <th class="text-center align-middle">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="bahanTable">
-                        <!-- Rows will be added here dynamically -->
+                        @if(old('kategori'))
+                            @foreach(old('kategori') as $index => $kategori)
+                                <tr class="bahan-row">
+                                    <td class="text-center align-middle">{{ $index + 1 }}</td>
+                                    <td><input type="text" name="kategori[]" class="form-control kategori" value="{{ $kategori }}" required></td>
+                                    <td><input type="text" name="nama_barang[]" class="form-control nama_barang" value="{{ old('nama_barang')[$index] }}" required></td>
+                                    <td><input type="text" name="jumlah[]" class="form-control persentase" value="{{ old('jumlah')[$index] }}" required></td>
+                                    <td><input type="text" name="harga_satuan[]" class="form-control harga" value="{{ old('harga_satuan')[$index] }}" required></td>
+                                    <td><input type="text" name="total[]" class="form-control total" value="{{ old('jumlah')[$index] * old('harga_satuan')[$index] }}" readonly></td>
+                                    <td class="text-center align-middle"><button type="button" class="btn btn-danger remove-bahan w-100">Hapus</button></td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                     <tfoot class="table-secondary">
                         <tr>
                             <td colspan="3" class="text-end align-middle">Grand Total:</td>
-                            <td class="text-center align-middle" id="grandTotalQty">0</td>
-                            <td></td>
+                            <td colspan="2"></td>
                             <td class="text-center align-middle" id="grandTotal">0</td>
                             <td></td>
                         </tr>
+                        <tr>
+                            <td colspan="3" class="text-end align-middle">PPN ({{ $ppn }}%):</td>
+                            <td colspan="2"></td>
+                            <td class="text-center align-middle" id="ppnTotal">0</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th colspan="3" class="text-end align-middle">Grand Total + PPN:</th>
+                            <td colspan="2"></td>
+                            <td class="text-center align-middle" id="totalKeseluruhan">0</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="text-center align-middle" id="terbilangTotal"></td>
+                        </tr>
                     </tfoot>
+                </table>
+            </div>
+            <div class="col-md-12 m-3 text-end">
+                <button type="button" class="btn btn-info" id="addNoteButton"><i class="fa fa-plus"></i> Tambah Catatan</button>
+            </div>
+            <div id="noteContainer" class="col-md-12 mt-2">
+                <table class="table table-bordered table-hover" id="tableNote">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th class="text-center align-middle">No</th>
+                            <th class="text-center align-middle">Catatan</th>
+                            <th class="text-center align-middle">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="noteTable">
+                        @if(old('catatan'))
+                            @foreach(old('catatan') as $index => $catatan)
+                                <tr class="note-row">
+                                    <td class="text-center align-middle">{{ $index + 1 }}</td>
+                                    <td><input type="text" name="catatan[]" class="form-control catatan" value="{{ $catatan }}" required></td>
+                                    <td class="text-center align-middle"><button type="button" class="btn btn-danger remove-note w-100">Hapus</button></td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
                 </table>
             </div>
             <div class="col-md-12 mt-2">
@@ -63,12 +121,18 @@
 
 @push('js')
 <!-- DataTables JS -->
+<script src="{{asset('assets/js/angka_terbilang.js')}}"></script>
 <script>
+    confirmAndSubmit('#masukForm', 'Pastikan data yang diinput sudah benar, yakin ingin menyimpan data ini?');
+
 document.addEventListener('DOMContentLoaded', function () {
     const addRowButton = document.getElementById('addRowButton');
+    const addNoteButton = document.getElementById('addNoteButton');
     const bahanTable = document.getElementById('bahanTable');
+    const noteTable = document.getElementById('noteTable');
     const saveButton = document.getElementById('saveButton');
     let bahanCounter = 0;
+    let noteCounter = 0;
 
     const dataTable = $('#tableBahan').DataTable({
         paging: false,
@@ -76,6 +140,12 @@ document.addEventListener('DOMContentLoaded', function () {
         searching: false,
         scrollY: '450px',
         scrollCollapse: true
+    });
+
+    const noteTableInstance = $('#tableNote').DataTable({
+        paging: false,
+        info: false,
+        searching: false
     });
 
     addRowButton.addEventListener('click', function () {
@@ -134,9 +204,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 grandTotal += value;
             });
 
-            document.getElementById('grandTotalQty').textContent = grandTotalQty.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const ppn = {{ $ppn }} / 100;
+            const ppnTotal = grandTotal * ppn;
+            const totalKeseluruhan = grandTotal + ppnTotal;
+
             document.getElementById('grandTotal').textContent = grandTotal.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('ppnTotal').textContent = ppnTotal.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('totalKeseluruhan').textContent = totalKeseluruhan.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            const ter = angkaTerbilang(totalKeseluruhan);
+            const terHurufBesar = ter.charAt(0).toUpperCase() + ter.slice(1); // Mengubah huruf depan menjadi besar
+
+            document.getElementById('terbilangTotal').textContent = `Terbilang: #${terHurufBesar}#`;
         };
+
 
         jumlahInput.addEventListener('input', updateTotals);
         hargaSatuanInput.addEventListener('input', updateTotals);
@@ -154,6 +235,32 @@ document.addEventListener('DOMContentLoaded', function () {
             if (bahanCounter === 0) {
                 saveButton.hidden = true;
             }
+        });
+
+        saveButton.hidden = false;
+    });
+
+    addNoteButton.addEventListener('click', function () {
+        noteCounter++;
+
+        const row = document.createElement('tr');
+        row.classList.add('note-row');
+        row.innerHTML = `
+            <td class="text-center align-middle">${noteCounter}</td>
+            <td><input type="text" name="catatan[]" class="form-control catatan" required></td>
+            <td class="text-center align-middle"><button type="button" class="btn btn-danger remove-note w-100">Hapus</button></td>
+        `;
+        noteTableInstance.row.add(row).draw();
+
+        row.querySelector('.remove-note').addEventListener('click', function () {
+            noteTableInstance.row($(this).closest('tr')).remove().draw();
+
+            let noteIndex = 1;
+            document.querySelectorAll('.note-row').forEach((row) => {
+                row.cells[0].textContent = noteIndex++;
+            });
+
+            noteCounter--;
         });
 
         saveButton.hidden = false;

@@ -10,4 +10,9 @@ class PurchaseOrderNote extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function purchaseOrder()
+    {
+        return $this->belongsTo(PurchaseOrder::class);
+    }
 }
