@@ -57,6 +57,7 @@
                 <tr>
                     <th class="text-center align-middle">Tanggal</th>
                     <th class="text-center align-middle">Uraian</th>
+                    <th class="text-center align-middle">Pembayaran</th>
                     <th class="text-center align-middle">Qty</th>
                     <th class="text-center align-middle">Diskon</th>
                     <th class="text-center align-middle">PPn</th>
@@ -70,6 +71,15 @@
                 <tr>
                     <td class="text-center align-middle">{{$d->tanggal}}</td>
                     <td class="text-start align-middle">{{$d->uraian}}</td>
+                    <td class="text-center align-middle">
+                        @if ($d->pembayaran == 1)
+                        <span class="badge bg-success">Cash</span>
+                        @elseif($d->pembayaran == 2)
+                        <span class="badge bg-warning">Tempo</span>
+                        @else
+                        <span class="badge bg-danger">Kredit</span>
+                        @endif
+                    </td>
                     <td class="text-center align-middle">
                         {{$d->nf_jumlah}}
                     </td>
@@ -90,7 +100,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th class="text-end align-middle" colspan="3">Grand Total</th>
+                    <th class="text-end align-middle" colspan="4">Grand Total</th>
                     <th class="text-end align-middle">{{number_format($data->sum('diskon'), 0, ',','.')}}</th>
                     <th class="text-end align-middle">{{number_format($data->sum('ppn'), 0, ',','.')}}</th>
                     <th class="text-end align-middle">{{number_format($data->sum('add_fee'), 0, ',','.')}}</th>
