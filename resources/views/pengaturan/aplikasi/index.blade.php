@@ -24,7 +24,6 @@
             <thead class="table-success">
                 <tr>
                     <th class="text-center align-middle">No</th>
-                    <th class="text-center align-middle">PENGGUNAAN</th>
                     <th class="text-center align-middle">Nama Perusahaan</th>
                     <th class="text-center align-middle">Singkatan</th>
                     <th class="text-center align-middle">Nama Direktur</th>
@@ -38,7 +37,6 @@
                 @foreach ($data as $d)
                 <tr>
                     <td class="text-center align-middle">{{$loop->iteration}}</td>
-                    <td class="text-center align-middle">{{Str::upper($d->untuk)}}</td>
                     <td class="text-start align-middle">{{$d->nama}}</td>
                     <td class="text-center align-middle">{{$d->singkatan}}</td>
                     <td class="text-center align-middle">{{$d->nama_direktur}}</td>

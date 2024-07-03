@@ -194,7 +194,7 @@ class PengaturanController extends Controller
 
     public function aplikasi()
     {
-        $data = Config::all();
+        $data = Config::where('untuk', 'resmi')->get();
 
         return view('pengaturan.aplikasi.index', [
             'data' => $data
