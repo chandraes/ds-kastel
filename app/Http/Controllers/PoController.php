@@ -23,7 +23,19 @@ class PoController extends Controller
 
     public function store(Request $request)
     {
-
+        $data = $request->validate([
+            'kepada' => 'required',
+            'alamat' => 'required',
+            'telepon' => 'required',
+            'kategori' => 'required|array',
+            'kategori.*' => 'required',
+            'nama_barang' => 'required|array',
+            'nama_barang.*' => 'required',
+            'jumlah' => 'required|array',
+            'jumlah.*' => 'required',
+            'harga_satuan' => 'required|array',
+            'harga_satuan.*' => 'required',
+        ]);
     }
 
     public function rekap()
