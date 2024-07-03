@@ -4,27 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>PO PT IUP</title>
+    <title>PO {{$pt->nama}}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
         }
-        .header, .footer {
+        .header {
             text-align: center;
             position: relative;
+        }
+
+        , .footer {
+            margin-left: 70%;
+            text-align: center;
+            position: relative;
+            font-size: 12px;
         }
         .header img {
             position: absolute;
             left: 0;
             top: 0;
             /* height: 80px; */
-            width: 150px
+            width: 130px
         }
         .header h1, .header p {
             margin: 0;
         }
         .header-div {
-            margin-left: 150px;
+            margin-left: 130px;
             margin-right: 100px;
         }
         .content {
@@ -92,10 +99,6 @@
 
     </div>
 
-    <div class="footer">
-        <p>Hormat Kami,</p>
-        <p>ADE ZULKARNAIN</p>
-        <p>Direktur</p>
-    </div>
+
 </body>
 </html>

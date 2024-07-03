@@ -13,8 +13,8 @@
                 <tr class="text-center">
                     <td><a href="{{route('home')}}"><img src="{{asset('images/dashboard.svg')}}" alt="dashboard"
                                 width="30"> Dashboard</a></td>
-                    <td><a href="{{route('rekap')}}"><img src="{{asset('images/rekap.svg')}}" alt="dokumen" width="30">
-                            REKAP</a></td>
+                    <td><a href="{{route('po')}}"><img src="{{asset('images/po.svg')}}" alt="dokumen" width="30">
+                            Purchase Order</a></td>
                 </tr>
             </table>
         </div>
@@ -61,8 +61,15 @@
                     <td class="text-center align-middle">{{$d->kepada}}</td>
                     <td class="text-center align-middle">{{$d->alamat}}</td>
                     <td class="text-center align-middle">{{$d->telepon}}</td>
-                    <td>
-                        <a href="{{route('po.rekap.pdf', ['po' => $d])}}" class="btn btn-primary btn-sm">Detail</a>
+                    <td class="text-center align-middle">
+                        <div class="d-flex justify-content-center">
+                        <a href="{{route('po.rekap.pdf', ['po' => $d])}}" class="btn btn-success btn-sm mx-2" target="_blank"><i class="fa fa-file"></i> PDF</a>
+                        <form action="{{route('po.rekap.delete', $d)}}" method="post" id="deleteForm{{ $d->id }}" class="delete-form" data-id="{{ $d->id }}">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Hapus</button>
+                        </form>
+                        </div>
                     </td>
                 </tr>
                 @endforeach
@@ -82,10 +89,7 @@
 @push('js')
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
-    function detailInvoice(data)
-    {
-        document.getElementById('detailModalTitle').innerHTML = 'INVOICE : '+data.invoice;
-    }
+   
     $(document).ready(function() {
         var table = $('#data-table').DataTable({
             "paging": false,
@@ -100,6 +104,24 @@
                 cell.innerHTML = i+1;
             } );
         } ).draw();
+    });
+
+    $('.delete-form').submit(function(e){
+        e.preventDefault();
+        var formId = $(this).data('id');
+        Swal.fire({
+            title: 'Apakah Anda Yakin?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, simpan!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $(`#deleteForm${formId}`).unbind('submit').submit();
+                $('#spinner').show();
+            }
+        });
     });
 </script>
 @endpush

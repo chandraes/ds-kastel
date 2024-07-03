@@ -10,8 +10,8 @@
 @endpush
 @section('content')
 <div class="center-container">
-    <h4>PURCHASE ORDER (PO)</h4>
-    <p>{{$data->full_nomor}}4</p>
+    <h4 style="margin-bottom: 0; margin-top:0;">PURCHASE ORDER (PO)</h4>
+    <p>{{$data->full_nomor}}</p>
 </div>
 <div class="tujuan-div">
     <table>
@@ -82,5 +82,22 @@
         </tfoot>
     </table>
 </div>
-
+<div class="po-notes">
+    <h5 style="margin-bottom:5px;">Notes :</h5>
+    @if ($data->notes())
+    <ul style="font-size: 10px; margin-top:0">
+        @foreach ($data->notes() as $i)
+        <li>{{$i->note}}</li>
+        @endforeach
+    </ul>
+    @endif
+</div>
+<div class="footer">
+    <p><strong>Hormat Kami,</strong></p>
+    <br><br><br>
+    <p style="margin-bottom: 0;">
+        <strong>{{$pt->nama_direktur}}</strong>
+    </p>
+    <p style="margin-top: 0;">Direktur</p>
+</div>
 @endsection

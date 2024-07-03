@@ -117,8 +117,8 @@ class PoController extends Controller
     {
         $pt = Config::where('untuk', 'resmi')->first();
         $ppn = Pajak::where('untuk', 'ppn')->first()->persen;
-
-        $terbilang = Terbilang::make($po->items->sum('total'));
+        $total = $po->items->sum('total') + ($po->items->sum('total') * $ppn / 100);
+        $terbilang = Terbilang::make($total);
 
         // dd($terbilang, $po->items->sum('total'));
 
@@ -130,5 +130,23 @@ class PoController extends Controller
         ])->setPaper('a4', 'portrait');
 
         return $pdf->stream($po->full_nomor.'.pdf');
+    }
+
+    public function delete(PurchaseOrder $po)
+    {
+        try {
+            DB::beginTransaction();
+
+            $po->items()->delete();
+            $po->notes()->delete();
+            $po->delete();
+
+            DB::commit();
+
+            return redirect()->route('po.rekap')->with('success', 'Purchase Order berhasil dihapus.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Terjadi kesalahan saat menghapus data. '.$e->getMessage()]);
+        }
     }
 }
