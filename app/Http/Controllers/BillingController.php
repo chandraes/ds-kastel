@@ -213,7 +213,6 @@ class BillingController extends Controller
                     'potongan_bpjs_kesehatan' => $potongan_bpjs_kesehatan,
                     'pendapatan_kotor' => $pendapatan_kotor,
                     'pendapatan_bersih' => $pendapatan_bersih,
-                    'sisa_gaji_dibayar' => $pendapatan_bersih,
                     'nama_rek' => $d->nama_rek,
                     'bank' => $d->bank,
                     'no_rek' => $d->no_rek,
