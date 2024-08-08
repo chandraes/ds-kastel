@@ -617,15 +617,17 @@ class KasBesar extends Model
 
         $data['nominal'] = str_replace('.', '', $data['nominal']);
         $data['jenis'] = 0;
-        $data['saldo'] = $this->saldoTerakhir() - $data['nominal'];
 
-        if ($data['saldo'] < $data['nominal']) {
+
+        if ($this->saldoTerakhir() < $data['nominal']) {
             return [
                 'status' => 'error',
                 'message' => 'Saldo kas besar tidak mencukupi!! Sisa Saldo : Rp. '.number_format($this->saldoTerakhir(), 0, ',', '.'),
             ];
         }
 
+        $data['saldo'] = $this->saldoTerakhir() - $data['nominal'];
+        
         $data['modal_investor_terakhir'] = $this->modalInvestorTerakhir();
 
         try {
