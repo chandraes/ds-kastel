@@ -59,7 +59,12 @@
                 <h4 class="mt-3">FORM GANTI RUGI</h4>
             </a>
         </div>
-
+        <div class="col-md-2 text-center mt-5">
+            <a href="#" class="text-decoration-none">
+                <img src="{{asset('images/kosong.svg')}}" alt="" width="70">
+                <h4 class="mt-3">FORM CSR</h4>
+            </a>
+        </div>
 
     </div>
     <hr>
@@ -96,10 +101,41 @@
     <br>
     <div class="row justify-content-left">
         <h4 class="mt-3">TRANSAKSI</h4>
-        <div class="col-md-2 text-center mt-5">
+        {{-- <div class="col-md-2 text-center mt-5">
             <a href="{{route('billing.form-transaksi')}}" class="text-decoration-none">
                 <img src="{{asset('images/transaksi.svg')}}" alt="" width="70">
                 <h4 class="mt-3">FORM TRANSAKSI</h4>
+            </a>
+        </div> --}}
+        <div class="col-md-2 text-center mt-5">
+            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#bahanBakuModal">
+                <img src="{{asset('images/form-bahan-baku.svg')}}" alt="" width="70">
+                <h4 class="mt-4">FORM BAHAN BAKU</h4>
+            </a>
+        </div>
+        <div class="col-md-2 text-center mt-5">
+            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#kemasanModal">
+                <img src="{{asset('images/kemasan.svg')}}" alt="" width="70">
+                <h4 class="mt-4">FORM KEMASAN</h4>
+            </a>
+        </div>
+        <div class="col-md-2 text-center mt-5">
+            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#packagingModal">
+                <img src="{{asset('images/packaging.svg')}}" alt="" width="70">
+                <h4 class="mt-4">FORM PACKAGING</h4>
+            </a>
+        </div>
+        @include('billing.form-transaksi.modal-bahan-baku')
+        @include('billing.form-transaksi.modal-kemasan')
+        @include('billing.form-transaksi.modal-packaging')
+        <div class="col-md-2 text-center mt-5">
+            <a href="{{route('billing.form-transaksi.bahan-baku.hutang-belanja')}}" class="text-decoration-none">
+                <img src="{{asset('images/nota-belanja.svg')}}" alt="" width="70">
+                <h4 class="mt-4">HUTANG BELANJA
+                    @if ($hb > 0)
+                    <span class="text-danger">({{$hb}})</span>
+                    @endif
+                </h4>
             </a>
         </div>
         {{-- <div class="col-md-2 text-center mt-5">
@@ -108,9 +144,6 @@
                 <h4 class="mt-3">FORM COST<br>OPERATIONAL</h4>
             </a>
         </div> --}}
-
-
-
 
     </div>
     <hr>
@@ -150,11 +183,16 @@
                 </h4>
             </a>
         </div>
-
+        <div class="col-md-2 text-center mt-5">
+            <a href="{{route('home')}}" class="text-decoration-none">
+                <img src="{{asset('images/dashboard.svg')}}" alt="" width="70">
+                <h4 class="mt-3">DASHBOARD</h4>
+            </a>
+        </div>
     </div>
     <hr>
     <br>
-    <div class="row justify-content-left">
+   {{-- <div class="row justify-content-left">
         <h4 class="mt-3">INVENTARIS</h4>
         <div class="col-md-2 text-center mt-5">
             <a href="{{route('billing.form-inventaris')}}" class="text-decoration-none">
@@ -163,13 +201,8 @@
                 </h4>
             </a>
         </div>
-        <div class="col-md-2 text-center mt-5">
-            <a href="{{route('home')}}" class="text-decoration-none">
-                <img src="{{asset('images/dashboard.svg')}}" alt="" width="70">
-                <h4 class="mt-3">DASHBOARD</h4>
-            </a>
-        </div>
-    </div>
+
+    </div> --}}
 </div>
 @endsection
 @push('js')

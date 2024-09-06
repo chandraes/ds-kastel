@@ -26,9 +26,11 @@ class BillingController extends Controller
         $np = InvoiceBelanja::where('ppn_masukan', 0)->where('tempo', 0)->count();
         $rp = RencanaProduksi::where('approved', 0)->count();
         $ij = InvoiceJual::where('lunas', 0)->count();
+        $hb = InvoiceBelanja::where('tempo', 1)->where('void', 0)->count();
 
         return view('billing.index', [
             'np' => $np,
+            'hb' => $hb,
             'rp' => $rp,
             'ij' => $ij,
         ]);

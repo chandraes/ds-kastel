@@ -82,7 +82,7 @@
 
         <div class="d-grid gap-3 mt-3">
             <button class="btn btn-primary">Masukan Keranjang</button>
-            <a href="{{route('billing.form-transaksi')}}" class="btn btn-secondary" type="button">Batal</a>
+            <a href="{{route('billing')}}" class="btn btn-secondary" type="button">Batal</a>
           </div>
     </form>
 </div>

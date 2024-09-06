@@ -5,6 +5,30 @@
 </div>
 <div class="container mt-3">
     <div class="row justify-content-left">
+        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
+            <a href="{{route('billing.form-inventaris.beli')}}" class="text-decoration-none">
+                <img src="{{asset('images/form-bahan-baku.svg')}}" alt="" width="70">
+                <h4 class="mt-3">FORM INVENTARIS</h4>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
+            <a href="{{route('billing.form-inventaris.hutang')}}" class="text-decoration-none">
+                <img src="{{asset('images/kemasan.svg')}}" alt="" width="70">
+                <h4 class="mt-3">HUTANG INVENTARIS
+                    @if($hi != 0) <span class="text-danger">({{$hi}})</span> @endif
+                </h4>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 text-center mt-5">
+            <a href="#" class="text-decoration-none">
+                <img src="{{asset('images/packaging.svg')}}" alt="" width="70">
+                <h4 class="mt-3">KREDIT INVENTARIS</h4>
+            </a>
+        </div>
+    </div>
+    <hr>
+    <br>
+    <div class="row justify-content-left">
         {{-- <div class="col-md-3 text-center mb-5 mt-3">
             <a href="{{route('rekap')}}" class="text-decoration-none">
                 <img src="{{asset('images/rekap.svg')}}" alt="" width="70">
@@ -27,9 +51,9 @@
                 @endphp
 
                 @if(count($namaParts) == 2)
-                    <h3 class="mt-2">{{ $namaParts[0] }}<br>{{ $namaParts[1] }}</h3>
+                    <h4 class="mt-3">{{ $namaParts[0] }}<br>{{ $namaParts[1] }}</h4>
                 @else
-                    <h3 class="mt-2">{{ $k->nama }}</h3>
+                    <h4 class="mt-3">{{ $k->nama }}</h4>
                 @endif
             </a>
         </div>
