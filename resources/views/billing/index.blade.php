@@ -62,7 +62,7 @@
         <div class="col-md-2 text-center mt-5">
             <a href="#" class="text-decoration-none">
                 <img src="{{asset('images/kosong.svg')}}" alt="" width="70">
-                <h4 class="mt-3">FORM CSR</h4>
+                <h4 class="mt-3">FORM CSR<br>(TIDAK TERTENTU)</h4>
             </a>
         </div>
 
@@ -128,16 +128,7 @@
         @include('billing.form-transaksi.modal-bahan-baku')
         @include('billing.form-transaksi.modal-kemasan')
         @include('billing.form-transaksi.modal-packaging')
-        <div class="col-md-2 text-center mt-5">
-            <a href="{{route('billing.form-transaksi.bahan-baku.hutang-belanja')}}" class="text-decoration-none">
-                <img src="{{asset('images/nota-belanja.svg')}}" alt="" width="70">
-                <h4 class="mt-4">HUTANG BELANJA
-                    @if ($hb > 0)
-                    <span class="text-danger">({{$hb}})</span>
-                    @endif
-                </h4>
-            </a>
-        </div>
+
         {{-- <div class="col-md-2 text-center mt-5">
             <a href="{{route('billing.form-cost-operational')}}" class="text-decoration-none">
                 <img src="{{asset('images/form-cost-operational.svg')}}" alt="" width="70">
@@ -178,8 +169,18 @@
         <div class="col-md-2 text-center mt-5">
             <a href="{{route('billing.invoice-jual')}}" class="text-decoration-none">
                 <img src="{{asset('images/invoice-jual.svg')}}" alt="" width="70">
-                <h4 class="mt-3">TAGIHAN KE KONSUMEN
+                <h4 class="mt-3">INVOICE KONSUMEN
                     @if($ij != 0) <span class="text-danger">({{$ij}})</span> @endif
+                </h4>
+            </a>
+        </div>
+        <div class="col-md-2 text-center mt-5">
+            <a href="{{route('billing.form-transaksi.bahan-baku.hutang-belanja')}}" class="text-decoration-none">
+                <img src="{{asset('images/nota-belanja.svg')}}" alt="" width="70">
+                <h4 class="mt-4">INVOICE SUPPLIER
+                    @if ($hb > 0)
+                    <span class="text-danger">({{$hb}})</span>
+                    @endif
                 </h4>
             </a>
         </div>
