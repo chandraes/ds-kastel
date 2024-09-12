@@ -19,22 +19,12 @@ class StarSender
     public function sendGroup()
     {
         $apikey=$this->apikey;
-        $file=$this->file;
 
-        if ($file != null) {
-            $pesan = [
-                'messageType' => 'text',
-                'to' => $this->tujuan,
-                'body' => $this->pesan,
-                'file' => $file
-            ];
-        } else {
-            $pesan = [
-                'messageType' => 'text',
-                'to' => $this->tujuan,
-                'body' => $this->pesan
-            ];
-        }
+        $pesan = [
+            'messageType' => 'text',
+            'to' => $this->tujuan,
+            'body' => $this->pesan
+        ];
 
         $curl = curl_init();
 
