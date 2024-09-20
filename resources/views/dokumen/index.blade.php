@@ -30,15 +30,15 @@
             </a>
         </div> --}}
         <div class="col-md-3 text-center mb-5">
-            <a href="{{route('dokumen.kontrak-tambang')}}" class="text-decoration-none">
+            <a href="{{route('dokumen.kontrak-vendor')}}" class="text-decoration-none">
                 <img src="{{asset('images/kontrak-tambang.svg')}}" alt="" width="70">
-                <h4 class="mt-3">KONTRAK SUPPLIER</h4>
+                <h4 class="mt-3">KONTRAK KONSUMEN</h4>
             </a>
         </div>
         <div class="col-md-3 text-center mb-5">
-            <a href="{{route('dokumen.kontrak-vendor')}}" class="text-decoration-none">
+            <a href="{{route('dokumen.kontrak-tambang')}}" class="text-decoration-none">
                 <img src="{{asset('images/kontrak-vendor.svg')}}" alt="" width="70">
-                <h4 class="mt-3">KONTRAK KONSUMEN</h4>
+                <h4 class="mt-3">KONTRAK SUPPLIER</h4>
             </a>
         </div>
         {{-- SPH ISI SAMA DENGAN COMPANY PROFILE BATASI 5MB --}}
