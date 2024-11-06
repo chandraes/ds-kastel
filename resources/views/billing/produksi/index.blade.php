@@ -53,6 +53,7 @@
                             <th class="text-center align-middle">KADAR(%)</th>
                             <th class="text-center align-middle">Jumlah<br>Bahan</th>
                             <th class="text-center align-middle">Jumlah<br>Stok</th>
+                            <th class="text-center align-middle">Estimasi<br>Sisa Stok</th>
                         </tr>
                     </thead>
                     <tbody id="komposisiBody">
@@ -215,6 +216,7 @@
                 '<td class="text-center align-middle">'+value.jumlah+'%</td>'+
                 '<td class="text-center align-middle">'+parseFloat(totalBahan).toLocaleString('id-ID')+' '+value.bahan_baku.satuan.nama+'</td>'+
                 '<td class="text-center align-middle">'+parseFloat(value.bahan_baku.stock).toLocaleString('id-ID')+' '+value.bahan_baku.satuan.nama+'</td>'+
+                '<td class="text-center align-middle">'+parseFloat(value.bahan_baku.stock-totalBahan).toLocaleString('id-ID')+' '+value.bahan_baku.satuan.nama+'</td>'+
             '</tr>');
             total += totalBahan;
             no++;
