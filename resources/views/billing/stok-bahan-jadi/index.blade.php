@@ -79,16 +79,16 @@
                             {{$d->stock_kemasan ?? 0}}
                         </td>
                         <td class="text-center align-middle">
-                            {{$d->kemasan->satuan->nama}}
+                            {{$d->kemasan->nama}}
                         </td>
                         <td class="text-center align-middle">
                             {{$d->stock_packaging ?? 0}}
                         </td>
                         <td class="text-center align-middle">
                             @if ($d->kemasan->packaging)
-                            {{$d->kemasan->packaging->satuan->nama}}
+                            {{$d->kemasan->packaging->nama}}
                             @else
-                            {{$d->kemasan->satuan->nama}}
+                            {{$d->kemasan->nama}}
                             @endif
                         </td>
                         <td class="text-end align-middle">
