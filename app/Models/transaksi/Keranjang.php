@@ -10,6 +10,8 @@ use App\Models\db\RekapBahanBaku;
 use App\Models\db\Satuan;
 use App\Models\GroupWa;
 use App\Models\KasBesar;
+use App\Models\Pajak\PpnMasukan;
+use App\Models\Pajak\RekapPpn;
 use App\Models\PesanWa;
 use App\Models\User;
 use App\Services\StarSender;
@@ -99,7 +101,10 @@ class Keranjang extends Model
 
             DB::commit();
 
-            $ppnMasukan = InvoiceBelanja::where('ppn_masukan', 0)->sum('ppn');
+            $ppnMasukanDb = new PpnMasukan();
+            $dbRekapPpn = new RekapPpn();
+            $saldoTerakhirPpn = $dbRekapPpn->saldoTerakhir();
+            $ppnMasukan = $ppnMasukanDb->totalPpnMasukan() + $saldoTerakhirPpn;
 
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                         "*FORM BELI BAHAN BAKU*\n".
@@ -250,6 +255,15 @@ class Keranjang extends Model
 
         $store = $db->create($invoice);
 
+        if ($data['ppn'] > 0) {
+            PpnMasukan::create([
+                'invoice_belanja_id' => $store->id,
+                'uraian' => 'PPN '.$store->uraian,
+                'nominal' => $data['ppn'],
+                'saldo' => 0,
+            ]);
+        }
+
         $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', $jenis)->where('tempo', 0)->get();
 
         foreach ($keranjang as $item) {
@@ -359,8 +373,10 @@ class Keranjang extends Model
 
                 $store = $this->kas_checkout_tempo($data, $store_inv->id);
 
-                $dbInvoice = new InvoiceBelanja();
-                $ppnMasukan = $dbInvoice->sumNilaiPpn();
+                $ppnMasukanDb = new PpnMasukan();
+                $dbRekapPpn = new RekapPpn();
+                $saldoTerakhirPpn = $dbRekapPpn->saldoTerakhir();
+                $ppnMasukan = $ppnMasukanDb->totalPpnMasukan() + $saldoTerakhirPpn;
 
                 $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                             "*FORM BELI BAHAN BAKU*\n".
@@ -440,6 +456,15 @@ class Keranjang extends Model
         ];
 
         $store = $db->create($invoice);
+
+        if ($data['ppn'] > 0) {
+            PpnMasukan::create([
+                'invoice_belanja_id' => $store->id,
+                'uraian' => 'PPN '.$store->uraian,
+                'nominal' => $data['ppn'],
+                'saldo' => 0,
+            ]);
+        }
 
         $keranjang = $this->where('user_id', auth()->user()->id)->where('jenis', $jenis)->where('tempo', 1)->get();
 
@@ -573,8 +598,10 @@ class Keranjang extends Model
             if ($data['dp'] > 0) {
                 $store = $this->kas_checkout_tempo($data, $store_inv->id);
 
-                $dbInvoice = new InvoiceBelanja();
-                $ppnMasukan = $dbInvoice->sumNilaiPpn();
+                $ppnMasukanDb = new PpnMasukan();
+                $dbRekapPpn = new RekapPpn();
+                $saldoTerakhirPpn = $dbRekapPpn->saldoTerakhir();
+                $ppnMasukan = $ppnMasukanDb->totalPpnMasukan() + $saldoTerakhirPpn;
 
                 $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                             "*FORM BELI KEMASAN*\n".
@@ -670,8 +697,10 @@ class Keranjang extends Model
 
             DB::commit();
 
-            $dbInvoice = new InvoiceBelanja();
-            $ppnMasukan = $dbInvoice->sumNilaiPpn();
+            $ppnMasukanDb = new PpnMasukan();
+            $dbRekapPpn = new RekapPpn();
+            $saldoTerakhirPpn = $dbRekapPpn->saldoTerakhir();
+            $ppnMasukan = $ppnMasukanDb->totalPpnMasukan() + $saldoTerakhirPpn;
 
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                         "*FORM BELI KEMASAN*\n".
@@ -758,8 +787,10 @@ class Keranjang extends Model
 
             DB::commit();
 
-            $dbInvoice = new InvoiceBelanja();
-            $ppnMasukan = $dbInvoice->sumNilaiPpn();
+            $ppnMasukanDb = new PpnMasukan();
+            $dbRekapPpn = new RekapPpn();
+            $saldoTerakhirPpn = $dbRekapPpn->saldoTerakhir();
+            $ppnMasukan = $ppnMasukanDb->totalPpnMasukan() + $saldoTerakhirPpn;
 
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                         "*FORM BELI PACKAGING*\n".
@@ -856,8 +887,10 @@ class Keranjang extends Model
 
                 $store = $this->kas_checkout_tempo($data, $store_inv->id);
 
-                $dbInvoice = new InvoiceBelanja();
-                $ppnMasukan = $dbInvoice->sumNilaiPpn();
+                $ppnMasukanDb = new PpnMasukan();
+                $dbRekapPpn = new RekapPpn();
+                $saldoTerakhirPpn = $dbRekapPpn->saldoTerakhir();
+                $ppnMasukan = $ppnMasukanDb->totalPpnMasukan() + $saldoTerakhirPpn;
 
                 $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                             "*FORM BELI PACKAGING*\n".

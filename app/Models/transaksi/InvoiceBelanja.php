@@ -9,6 +9,8 @@ use App\Models\db\RekapBahanBaku;
 use App\Models\db\Supplier;
 use App\Models\GroupWa;
 use App\Models\KasBesar;
+use App\Models\Pajak\PpnMasukan;
+use App\Models\Pajak\RekapPpn;
 use App\Models\PesanWa;
 use App\Models\Rekening;
 use App\Services\StarSender;
@@ -23,7 +25,7 @@ class InvoiceBelanja extends Model
     protected $guarded = ['id'];
 
     protected $appends = ['tanggal', 'nf_diskon', 'nf_ppn', 'nf_total', 'id_jatuh_tempo', 'kode', 'nf_dp', 'nf_sisa', 'dpp', 'nf_dp_ppn', 'nf_sisa_ppn',
-                         'total_dp', 'nf_total_dp', 'total_dp', 'ppn_masukan', 'formatted_tgl', 'nf_add_fee'];
+                         'total_dp', 'nf_total_dp', 'total_dp', 'nf_add_fee'];
 
 
     public function dataTahun()
@@ -251,8 +253,10 @@ class InvoiceBelanja extends Model
 
             DB::commit();
 
-            $dbInvoice = new InvoiceBelanja();
-            $ppnMasukan = $dbInvoice->sumNilaiPpn();
+            $ppnMasukanDb = new PpnMasukan();
+            $dbRekapPpn = new RekapPpn();
+            $saldoTerakhirPpn = $dbRekapPpn->saldoTerakhir();
+            $ppnMasukan = $ppnMasukanDb->totalPpnMasukan() + $saldoTerakhirPpn;
 
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                         "*FORM BELI BAHAN BAKU*\n".
@@ -327,16 +331,16 @@ class InvoiceBelanja extends Model
         return $sum;
     }
 
-    public function getFormattedTglAttribute()
-    {
-        // Check if 'tgl' attribute is set
-        if ($this->attributes['tgl']) {
-            // Parse the 'tgl' attribute as a Carbon instance and format it
-            return Carbon::parse($this->attributes['tgl'])->format('d-m-Y');
-        }
+    // public function getFormattedTglAttribute()
+    // {
+    //     // Check if 'tgl' attribute is set
+    //     if ($this->attributes['tgl']) {
+    //         // Parse the 'tgl' attribute as a Carbon instance and format it
+    //         return Carbon::parse($this->attributes['tgl'])->format('d-m-Y');
+    //     }
 
-        return null;
-    }
+    //     return null;
+    // }
 
     public function void_belanja($id)
     {
@@ -377,6 +381,8 @@ class InvoiceBelanja extends Model
             ]);
 
             $invoice->update(['void' => 1]);
+
+            PpnMasukan::where('invoice_belanja_id', $invoice->id)->delete();
 
             DB::commit();
 

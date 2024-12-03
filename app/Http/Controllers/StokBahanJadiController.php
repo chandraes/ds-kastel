@@ -80,6 +80,7 @@ class StokBahanJadiController extends Controller
         $data = $request->validate([
             'konsumen_id' => 'required|exists:konsumens,id',
             'apa_pph' => 'required',
+            'ppn_dipungut' => 'required',
         ]);
 
         $db = new KeranjangJual();

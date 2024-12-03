@@ -6,6 +6,7 @@
             <h1><u>Form Operational</u></h1>
         </div>
     </div>
+    @include('wa-status')
     @include('swal')
     <form action="{{route('billing.form-cost-operational.cost-operational.store')}}" method="post" id="masukForm">
         @csrf

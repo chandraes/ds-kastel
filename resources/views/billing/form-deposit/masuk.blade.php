@@ -6,6 +6,7 @@
             <h1><u>Penambahan Deposit</u></h1>
         </div>
     </div>
+    @include('wa-status')
     <form action="{{route('form-deposit.masuk.store')}}" method="post" id="masukForm">
         @csrf
         <div class="row">

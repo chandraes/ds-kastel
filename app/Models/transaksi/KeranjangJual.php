@@ -7,6 +7,7 @@ use App\Models\db\Pajak;
 use App\Models\GroupWa;
 use App\Models\KasBesar;
 use App\Models\KasKonsumen;
+use App\Models\Pajak\PpnKeluaran;
 use App\Models\PesanWa;
 use App\Models\Produksi\ProductJadi;
 use App\Models\Produksi\ProductJadiRekap;
@@ -73,7 +74,13 @@ class KeranjangJual extends Model
 
         $sisaTerakhir = $dbKonsumen->sisaTerakhir($konsumen->id);
 
-        $gt = $getData->sum('total') + ($getData->sum('total')*$ppnVal) - $pph;
+        if ($req['ppn_dipungut'] == 1) {
+            $gt = $getData->sum('total') + ($getData->sum('total')*$ppnVal) - $pph;
+        } else {
+            $gt = $getData->sum('total') - $pph;
+        }
+
+
 
         $now = Carbon::now();
 
@@ -97,7 +104,10 @@ class KeranjangJual extends Model
         $data['total'] = $getData->sum('total');
         $data['ppn'] = $data['total'] * $ppnVal;
         $data['pph'] = $pph;
+        $data['ppn_dipungut'] = $req['ppn_dipungut'];
         $data['lunas'] = $konsumen->pembayaran == 1 ? 1 : 0;
+
+        unset($req['ppn_dipungut']);
 
        try {
 
@@ -128,23 +138,36 @@ class KeranjangJual extends Model
         }
 
         $this->penguranganStock();
+        $total_bayar = $store->ppn_dipungut == 1 ? $store->total + $store->ppn - $store->pph : $store->total - $store->pph;
 
         if ($konsumen->pembayaran == 1) {
+
+
 
             $storeKasKonsumen = $kasKonsumen->create([
                 'konsumen_id' => $konsumen->id,
                 'invoice_jual_id' => $store->id,
                 'uraian' => 'Pembelian ' . $store->invoice,
-                'bayar' =>  $store->total + $store->ppn - $store->pph,
+                'bayar' =>  $total_bayar,
                 'sisa' => $kasKonsumen->sisaTerakhir($konsumen->id),
             ]);
+
+            if ($store->ppn > 0) {
+                PpnKeluaran::create([
+                    'invoice_jual_id' => $store->id,
+                    'uraian' => 'PPN ' . $store->invoice,
+                    'nominal' => $store->ppn,
+                    'saldo' => 0,
+                    'dipungut' => $store->ppn_dipungut,
+                ]);
+            }
 
             $kas = new KasBesar();
             $rekening = Rekening::where('untuk', 'kas-besar')->first();
 
             $kb['uraian'] = 'Penjualan ' . $store->invoice;
             $kb['jenis'] = 1;
-            $kb['nominal'] = $store->total + $store->ppn - $store->pph;
+            $kb['nominal'] = $total_bayar;
             $kb['saldo'] = $kas->saldoTerakhir() + $kb['nominal'];
             $kb['no_rek'] = $rekening->no_rek;
             $kb['invoice_jual_id'] = $store->id;
@@ -179,7 +202,7 @@ class KeranjangJual extends Model
                 'konsumen_id' => $konsumen->id,
                 'invoice_jual_id' => $store->id,
                 'uraian' => 'Hutang ' . $store->invoice,
-                'hutang' =>  $store->total + $store->ppn - $store->pph,
+                'hutang' =>  $total_bayar,
                 'sisa' => $kasKonsumen->sisaTerakhir($konsumen->id) + ($store->total + $store->ppn - $store->pph),
             ]);
         }

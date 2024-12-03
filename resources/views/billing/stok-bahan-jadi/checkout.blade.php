@@ -35,6 +35,17 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-form-label col-md-3">PPn Disetor :</label>
+                                <div class="col-md-8">
+                                    <select class="form-select" name="ppn_dipungut" id="ppn_dipungut" required
+                                        onchange="calculatePPh()">
+                                        <option value="" disabled selected>-- Pilih Salah Satu --</option>
+                                        <option value="1">Perusahaan</option>
+                                        <option value="0">Konsumen</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label class="col-form-label col-md-3">Konsumen :</label>
                                 <div class="col-md-8">
@@ -164,6 +175,7 @@
     function calculatePPh()
     {
         var apa_pph = document.getElementById('apa_pph').value;
+        var ppn_dipungut = document.getElementById('ppn_dipungut').value ?? 1;
         var total = {{$total}};
         var ppn = {{$ppn}};
         var pph = 0;
@@ -171,8 +183,12 @@
         if (apa_pph == 1) {
             pph = total * {{$pphVal}};
         }
+        if (ppn_dipungut == 1) {
+            var gt = total + ppn - pph;
+        } else {
+            var gt = total - pph;
+        }
 
-        var gt = total + ppn - pph;
         var pphNf = pph.toLocaleString('id-ID');
         var gtVal = gt.toLocaleString('id-ID');
         document.getElementById('pphTh').innerText = pphNf;

@@ -1,11 +1,12 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
-    <div class="row justify-content-center mb-5">
+    <div class="row justify-content-center mb-2">
         <div class="col-md-12 text-center">
             <h1><u>Form Lain-lain Keluar</u></h1>
         </div>
     </div>
+    @include('wa-status')
     @php
         $role = ['admin', 'su'];
     @endphp

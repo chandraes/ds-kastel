@@ -1,8 +1,12 @@
 @extends('layouts.app')
 @section('content')
+
 <div class="container text-center">
     <h1><u>DASHBOARD</u></h1>
 </div>
+{{-- make div for status wa --}}
+
+
 <div class="container mt-3">
     <div class="row justify-content-left">
         @if (auth()->user()->role == 'admin' || auth()->user()->role == 'su')

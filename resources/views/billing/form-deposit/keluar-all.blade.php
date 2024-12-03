@@ -15,6 +15,7 @@
         })
     </script>
     @endif
+    @include('wa-status')
     <form action="{{route('form-deposit.keluar-all.store')}}" method="post" id="masukForm">
         @csrf
         <div class="row">

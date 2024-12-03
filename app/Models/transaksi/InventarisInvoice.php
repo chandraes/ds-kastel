@@ -6,6 +6,7 @@ use App\Models\db\InventarisJenis;
 use App\Models\db\InventarisRekap;
 use App\Models\GroupWa;
 use App\Models\KasBesar;
+use App\Models\Pajak\PpnMasukan;
 use App\Models\PesanWa;
 use App\Services\StarSender;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -120,6 +121,7 @@ class InventarisInvoice extends Model
                 'total' => $data['jumlah'] * $data['harga_satuan'],
             ]);
 
+
             $invoiceData = [
                 'inventaris_id' => $inventaris->id,
                 'uraian' => $data['uraian'],
@@ -145,6 +147,15 @@ class InventarisInvoice extends Model
 
             // Create invoice
             $invoice = $this->create($invoiceData);
+
+            if ($data['ppn'] > 0) {
+                PpnMasukan::create([
+                    'inventaris_invoice_id' => $invoice->id,
+                    'uraian' => 'Ppn ' . $data['uraian'],
+                    'nominal' => $data['ppn'],
+                    'saldo' =>  0,
+                ]);
+            }
 
             $nominal = $data['pembayaran'] == 2 && $data['dp'] > 0 ? $data['dp'] : $total;
 
@@ -295,15 +306,21 @@ class InventarisInvoice extends Model
 
     private function sendWa($tujuan, $pesan)
     {
+
+       $wa = PesanWa::create([
+            'pesan' => $pesan,
+            'tujuan' => $tujuan,
+            'status' => 0,
+        ]);
+
         $send = new StarSender($tujuan, $pesan);
         $res = $send->sendGroup();
 
-        $status = ($res == 'true') ? 1 : 0;
+        if ($res == true) {
+            $wa->update([
+                'status' => 1,
+            ]);
+        }
 
-        PesanWa::create([
-            'pesan' => $pesan,
-            'tujuan' => $tujuan,
-            'status' => $status,
-        ]);
     }
 }

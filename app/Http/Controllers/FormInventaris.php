@@ -64,7 +64,7 @@ class FormInventaris extends Controller
 
         $res = $db->beliInventaris($data);
 
-        return redirect()->back()->with($res['status'], $res['message']);
+        return redirect()->back()->withInput()->with($res['status'], $res['message']);
 
     }
 

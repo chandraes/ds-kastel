@@ -1,14 +1,14 @@
 @extends('layouts.app')
 @section('content')
-<div class="container-fluid">
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
-            <h1><u>PPN MASUKAN</u></h1>
+            <h1><u>PPN KELUARAN</u></h1>
             {{-- <h1>{{$stringBulanNow}} {{$tahun}}</h1> --}}
         </div>
     </div>
     <div class="row justify-content-between mt-3">
-        <div class="col-md-8">
+        <div class="col-md-6">
             <table class="table">
                 <tr class="text-center">
                     <td><a href="{{route('home')}}"><img src="{{asset('images/dashboard.svg')}}" alt="dashboard"
@@ -16,26 +16,27 @@
                     <td><a href="{{route('pajak.index')}}"><img src="{{asset('images/pajak.svg')}}" alt="dokumen"
                                 width="30">
                             PAJAK</a></td>
-                    <td><a href="#" data-bs-toggle="modal" data-bs-target="#keranjangModal"><i class="fa fa-shopping-cart h3 me-2"></i>
-                        Keranjang {!! $keranjang > 0 ? "<span class='text-danger'>($keranjang)</span>" : '' !!}</a></td>
+                    <td><a href="@if($keranjang > 0) {{route('pajak.ppn-keluaran.keranjang')}} @else # @endif"><i
+                                class="fa fa-shopping-cart h3 me-2"></i>
+                            Keranjang {!! $keranjang > 0 ? "<span class='text-danger'>($keranjang)</span>" : '' !!}</a>
+                    </td>
                 </tr>
             </table>
         </div>
 
     </div>
 </div>
+@include('pajak.ppn-keluaran.faktur-modal')
+@include('pajak.ppn-keluaran.show-faktur')
 
-@include('pajak.ppn-masukan.faktur-modal')
-@include('pajak.ppn-masukan.show-faktur')
-@include('pajak.ppn-masukan.keranjang')
 <div class="container-fluid table-responsive ml-3">
     <div class="row mt-3">
-        <form action="{{route('pajak.ppn-masukan.keranjang-store')}}" method="post" id="keranjangForm">
+        <form action="{{route('pajak.ppn-keluaran.keranjang-store')}}" method="post" id="keranjangForm">
             @csrf
             <div class="row">
                 <div class="col-md-2 text-end">
                     <div class="mb-3 pt-2">
-                        <label for="total_tagihan" >Nominal Dipilih :</label>
+                        <label for="total_tagihan">Nominal Dipilih :</label>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -59,22 +60,31 @@
         <table class="table table-hover table-bordered" id="rekapTable">
             <thead class=" table-success">
                 <tr>
-                    <th class="text-center align-middle">
+                    <th class="text-center align-middle" rowspan="2">
 
                         {{-- select all --}}
                         <input style="height: 25px; width:25px" type="checkbox" onclick="checkAll(this)" id="checkAll">
                     </th>
-                    <th class="text-center align-middle">Tanggal Input</th>
-                    <th class="text-center align-middle">Nota</th>
-                    <th class="text-center align-middle">Supplier</th>
-                    <th class="text-center align-middle">Uraian</th>
+                    <th rowspan="2" class="text-center align-middle">Tanggal Input</th>
+                    <th rowspan="2" class="text-center align-middle">Nota</th>
+                    <th rowspan="2" class="text-center align-middle">Konsumen</th>
+                    <th rowspan="2" class="text-center align-middle">Uraian</th>
                     {{-- <th class="text-center align-middle">Tanggal Bayar</th> --}}
-                    <th class="text-center align-middle">Sebelum<br>Terbit<br>Faktur</th>
-                    <th class="text-center align-middle">Setelah<br>Terbit<br>Faktur</th>
-                    <th class="text-center align-middle">ACT</th>
+                    <th colspan="2" class="text-center align-middle">Sebelum Terbit Faktur</th>
+                    <th rowspan="2" class="text-center align-middle">Setelah<br>Terbit<br>Faktur</th>
+                    <th rowspan="2" class="text-center align-middle">ACT</th>
+                </tr>
+                <tr>
+                    <th class="text-center align-middle">Non NPWP</th>
+                    <th class="text-center align-middle">NPWP</th>
                 </tr>
             </thead>
             <tbody>
+                @php
+                $totalNonNpwp = 0;
+                $totalNpwp = 0;
+                $totalFaktur = 0;
+                @endphp
                 @foreach ($data as $d)
                 <tr>
                     <td class="text-center align-middle">
@@ -83,45 +93,70 @@
                             data-tagihan="{{$d->nominal}}" onclick="check(this, {{$d->id}})" id="idSelect-{{$d->id}}"
                             {{$d->is_faktur == 0 ? 'disabled' : ''}}>
                     </td>
+                    <td class="text-center align-middle">{{$d->invoiceJual ? $d->invoiceJual->tanggal : '-'}}</td>
                     <td class="text-center align-middle">
-                        {{$d->invoiceBelanja ? $d->invoiceBelanja->tanggal : $d->tanggal}}
-                    </td>
-                    <td class="text-center align-middle">
-                        @if ($d->invoiceBelanja)
-                        <a href="{{route('rekap.invoice-belanja.detail', ['invoice' => $d->invoice_belanja_id])}}">
-                            {{$d->invoiceBelanja->kode}}
+                        @if ($d->invoiceJual)
+                        <a href="{{route('billing.invoice-konsumen.detail', ['invoice' => $d->invoice_jual_id])}}">
+                            {{$d->invoiceJual->kode}}
                         </a>
                         @endif
+
                     </td>
-                    <td class="text-center align-middle">
-                        {{$d->invoiceBelanja ? $d->invoiceBelanja->supplier->nama : '-'}}
-                    </td>
+                    <td class="text-center align-middle">{{$d->invoiceJual->konsumen ? $d->invoiceJual->konsumen->nama :
+                        $d->invoiceJual->konsumen_temp->nama}}</td>
                     <td class="text-start align-middle">
                         {{$d->uraian}}
                     </td>
                     {{-- <td class="text-center align-middle">{{$d->tanggal}}</td> --}}
                     <td class="text-end align-middle">
-                        @if ($d->is_faktur == 0)
+                        @if ($d->is_faktur == 0 && (strlen($d->invoiceJual->konsumen ? $d->invoiceJual->konsumen->npwp :
+                        $d->invoiceJual->konsumen_temp->npwp) < 10)) {{$d->nf_nominal}}
+                            @php
+                            $totalNonNpwp += $d->nominal;
+                            @endphp
+                            @else
+                            0
+                            @endif
+                    </td>
+                    <td
+                        class="text-end align-middle @if ($d->dipungut == 0 && $d->is_faktur == 0) table-danger @endif ">
+                        @if ($d->is_faktur == 0 && (strlen($d->invoiceJual->konsumen ? $d->invoiceJual->konsumen->npwp :
+                        $d->invoiceJual->konsumen_temp->npwp) > 10 ))
                         {{$d->nf_nominal}}
+                        @php
+                        $totalNpwp += $d->nominal;
+                        @endphp
                         @else
                         0
                         @endif
-
                     </td>
-                    <td class="text-end align-middle">
+                    <td
+                        class="text-end align-middle  @if ($d->dipungut == 0 && $d->is_faktur == 1) table-danger @endif ">
                         @if ($d->is_faktur == 1)
                         <a href="#" onclick="showFaktur({{$d->id}})" data-bs-toggle="modal"
                             data-bs-target="#showModal">{{$d->nf_nominal}}</a>
-
+                        @php
+                        $totalFaktur += $d->nominal;
+                        @endphp
                         @else
                         0
                         @endif
                     </td>
                     <td class="text-center align-middle">
-                        <button type="button" class="btn btn-{{$d->is_faktur == 1 ? 'warning' : 'primary'}} btn-sm"
-                            data-bs-toggle="modal" data-bs-target="#modalFaktur" onclick="faktur({{$d->id}})">
-                            {{$d->is_faktur == 1 ? 'Ubah' : ''}} Faktur
-                        </button>
+                        @if ($d->is_faktur == 0 && (strlen($d->invoiceJual->konsumen ? $d->invoiceJual->konsumen->npwp : $d->invoiceJual->konsumen_temp->npwp) < 10)) {{-- form to expired button --}}
+                        <form
+                            action="{{route('pajak.ppn-keluaran.expired', ['ppnKeluaran' => $d->id])}}" method="post" class="d-inline expired-form" id="expiredForm{{ $d->id }}" data-id="{{ $d->id }}">
+                            @csrf
+
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Expired
+                            </button>
+                            </form>
+                            @endif
+                            <button type="button" class="btn btn-{{$d->is_faktur == 1 ? 'warning' : 'primary'}} btn-sm"
+                                data-bs-toggle="modal" data-bs-target="#modalFaktur" onclick="faktur({{$d->id}})">
+                                {{$d->is_faktur == 1 ? 'Ubah' : ''}} Faktur
+                            </button>
                     </td>
                 </tr>
                 @endforeach
@@ -129,8 +164,9 @@
             <tfoot>
                 <tr>
                     <th class="text-end align-middle" colspan="5">Grand Total</th>
-                    <th class="text-end align-middle">{{number_format($total_blm_faktur, 0, ',','.')}}</th>
-                    <th class="text-end align-middle">{{number_format($total_faktur, 0, ',','.')}}</th>
+                    <th class="text-end align-middle">{{number_format($totalNonNpwp, 0, ',','.')}}</th>
+                    <th class="text-end align-middle">{{number_format($totalNpwp, 0, ',','.')}}</th>
+                    <th class="text-end align-middle">{{number_format($totalFaktur, 0, ',','.')}}</th>
                     <th></th>
                 </tr>
             </tfoot>
@@ -157,39 +193,37 @@
 
     function faktur(id) {
         const form = document.getElementById('fakturForm');
-        form.action = `/pajak/ppn-masukan/store-faktur/${id}`;
+        form.action = `/pajak/ppn-keluaran/store-faktur/${id}`;
         form.reset();
 
         const d = getDataById(id);
 
-        $('#nota').val(d.invoice_belanja_id != null ? d.invoice_belanja.kode : 'Nota Belum Terisi');
+        $('#nota').val(d.invoice_jual_id != null ? d.invoice_jual.kode : 'Nota Belum Terisi');
         $('#nominal').val(d.nf_nominal);
         $('#no_faktur').val(d.is_faktur == 1 ? d.no_faktur : '');
     }
 
     $(document).ready(function() {
-        // reset selectedData
-        $('input[name="selectedData"]').val('');
+
+    $('.expired-form').submit(function(e){
+        e.preventDefault();
+        var formId = $(this).data('id');
+        Swal.fire({
+            title: 'Apakah Anda Yakin?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, simpan!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $(`#expiredForm${formId}`).unbind('submit').submit();
+                $('#spinner').show();
+            }
+        });
+    });
         $('#rekapTable').DataTable({
             "paging": false,
-            "ordering": true,
-            "searching": false,
-            "scrollCollapse": true,
-            "scrollY": "400px",
-            // default order column 1
-            "order": [
-                [2, 'asc']
-            ],
-            // "rowCallback": function(row, data, index) {
-            //     // Update the row number
-            //     $('td:eq(0)', row).html(index + 1);
-            // }
-
-        });
-
-        $('#keranjangTable').DataTable({
-            "paging": false,
-            'info': false,
             "ordering": true,
             "searching": false,
             "scrollCollapse": true,
@@ -204,45 +238,6 @@
             // }
 
         });
-        $('#keranjangModal').on('shown.bs.modal', function() {
-            $('#keranjangTable').DataTable().columns.adjust().draw();
-        });
-
-        $('#keranjangForm').submit(function(e){
-            e.preventDefault();
-            Swal.fire({
-                title: 'Apakah anda yakin?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, simpan!'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#spinner').show();
-                    this.submit();
-                }
-            })
-        });
-
-        $('#lanjutForm').submit(function(e){
-            e.preventDefault();
-            Swal.fire({
-                title: 'Apakah anda yakin?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, simpan!'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#spinner').show();
-                    this.submit();
-                }
-            })
-        });
-
-
 
     });
 

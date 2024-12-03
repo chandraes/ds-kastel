@@ -6,6 +6,7 @@ use App\Models\db\Konsumen;
 use App\Models\GroupWa;
 use App\Models\KasBesar;
 use App\Models\KasKonsumen;
+use App\Models\Pajak\PpnKeluaran;
 use App\Models\PesanWa;
 use App\Models\RekapGaji;
 use App\Models\Rekening;
@@ -130,18 +131,30 @@ class InvoiceJual extends Model
         try {
             DB::beginTransaction();
 
+            $bayar = $data->ppn_dipungut == 1 ? $data->total + $data->ppn - $data->pph : $data->total - $data->pph;
+
             $kas = new KasBesar();
             $rekening = Rekening::where('untuk', 'kas-besar')->first();
 
             $kb['uraian'] = 'Pelunasan ' . $data->invoice;
             $kb['jenis'] = 1;
-            $kb['nominal'] = $data->total + $data->ppn;
+            $kb['nominal'] = $bayar;
             $kb['saldo'] = $kas->saldoTerakhir() + $kb['nominal'];
             $kb['no_rek'] = $rekening->no_rek;
             $kb['invoice_jual_id'] = $data->id;
             $kb['nama_rek'] = $rekening->nama_rek;
             $kb['bank'] = $rekening->bank;
             $kb['modal_investor_terakhir'] = $kas->modalInvestorTerakhir();
+
+            if ($data->ppn > 0) {
+                PpnKeluaran::create([
+                    'invoice_jual_id' => $data->id,
+                    'uraian' => 'PPN ' . $kb['uraian'],
+                    'nominal' => $data->ppn,
+                    'saldo' => 0,
+                    'dipungut' => $data->ppn_dipungut,
+                ]);
+            }
 
             $storeKas = $kas->create($kb);
 
@@ -162,9 +175,6 @@ class InvoiceJual extends Model
                         "Rp. ".number_format($storeKas->modal_investor_terakhir, 0, ',', '.')."\n\n".
                         "Terima kasih 🙏🙏🙏\n";
 
-
-
-
             $data->update([
                 'lunas' => 1
             ]);
@@ -172,13 +182,13 @@ class InvoiceJual extends Model
 
             $kasKonsumen = new KasKonsumen();
 
-            $sisa = $kasKonsumen->sisaTerakhir($data->konsumen->id) - ($data->total + $data->ppn);
+            $sisa = $kasKonsumen->sisaTerakhir($data->konsumen->id) - ($bayar);
 
             $storeKasKonsumen = $kasKonsumen->create([
                 'konsumen_id' => $data->konsumen->id,
                 'invoice_jual_id' => $data->id,
                 'uraian' => 'Pelunasan ' . $data->invoice,
-                'bayar' =>  $data->total + $data->ppn,
+                'bayar' =>  $bayar,
                 'sisa' => $sisa > 0 ? $sisa : 0,
             ]);
 
