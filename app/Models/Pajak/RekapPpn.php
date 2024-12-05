@@ -164,7 +164,7 @@ class RekapPpn extends Model
 
                 $nominalKasBesar = abs($saldo);
 
-                $saldoKasBesar = $dbKasBesar->saldoTerakhir(1);
+                $saldoKasBesar = $dbKasBesar->saldoTerakhir();
 
                 if ($saldoKasBesar < $nominalKasBesar) {
                     return [
@@ -178,11 +178,11 @@ class RekapPpn extends Model
                     'uraian' => 'Pembayaran PPN',
                     'jenis' => 0,
                     'nominal' => $nominalKasBesar,
-                    'saldo' => $dbKasBesar->saldoTerakhir(1) - $nominalKasBesar,
+                    'saldo' => $dbKasBesar->saldoTerakhir() - $nominalKasBesar,
                     'no_rek' => 'Pajak',
                     'nama_rek' => 'Pajak',
                     'bank' => 'Pajak',
-                    'modal_investor_terakhir' => $dbKasBesar->modalInvestorTerakhir(1),
+                    'modal_investor_terakhir' => $dbKasBesar->modalInvestorTerakhir(),
                 ]);
 
                 $this->create([
@@ -194,18 +194,6 @@ class RekapPpn extends Model
 
                 $waState = 1;
 
-                $kasPpn = [
-                    'saldo' => $dbKasBesar->saldoTerakhir(1),
-                    'modal_investor' => $dbKasBesar->modalInvestorTerakhir(1),
-                ];
-
-                $kasNonPpn = [
-                    'saldo' => $dbKasBesar->saldoTerakhir(0),
-                    'modal_investor' => $dbKasBesar->modalInvestorTerakhir(0),
-                ];
-
-                // sum modal investor
-                $totalModal = $kasPpn['modal_investor'] + $kasNonPpn['modal_investor'];
 
                 $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                         "*Form PPN*\n".
@@ -217,12 +205,10 @@ class RekapPpn extends Model
                         "Nama    : ".$store->nama_rek."\n".
                         "No. Rek : ".$store->no_rek."\n\n".
                         "==========================\n".
-                        "Sisa Saldo Kas Besar PPN: \n".
-                        "Rp. ".number_format($kasPpn['saldo'], 0, ',', '.')."\n\n".
-                        "Sisa Saldo Kas Besar  NON PPN: \n".
-                        "Rp. ".number_format($kasNonPpn['saldo'], 0, ',', '.')."\n\n".
+                        "Sisa Saldo Kas Besar: \n".
+                        "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
                         "Total Modal Investor : \n".
-                        "Rp. ".number_format($totalModal, 0, ',', '.')."\n\n".
+                        "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                         "Terima kasih 🙏🙏🙏\n";
 
             }
