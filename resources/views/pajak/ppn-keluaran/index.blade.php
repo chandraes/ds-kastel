@@ -96,7 +96,7 @@
                     <td class="text-center align-middle">{{$d->invoiceJual ? $d->invoiceJual->tanggal : '-'}}</td>
                     <td class="text-center align-middle">
                         @if ($d->invoiceJual)
-                        <a href="{{route('billing.invoice-konsumen.detail', ['invoice' => $d->invoice_jual_id])}}">
+                        <a href="{{route('billing.invoice-jual.detail', ['invoice' => $d->invoice_jual_id])}}">
                             {{$d->invoiceJual->kode}}
                         </a>
                         @endif
