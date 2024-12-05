@@ -229,7 +229,7 @@ class RekapPpn extends Model
             DB::commit();
 
             if ($waState == 1) {
-                $tujuan = GroupWa::where('untuk', 'kas-besar-ppn')->first()->nama_group;
+                $tujuan = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
                 $dbKasBesar->sendWa($tujuan, $pesan);
             }
 
