@@ -183,7 +183,7 @@
 
         const d = getDataById(id);
 
-        $('#nota').val(d.invoice_jual_id != null ? d.invoice_jual.kode : 'Nota Belum Terisi');
+        $('#nota').val(d.invoice_jual_id != null ? d.invoice_jual.invoice : 'Nota Belum Terisi');
         $('#nominal').val(d.nf_nominal);
         $('#no_faktur').val(d.is_faktur == 1 ? d.no_faktur : '');
     }
