@@ -6,18 +6,19 @@ use Illuminate\Support\Facades\Http;
 
 class WaStatus
 {
-    private $apikey;
+    private $apikey, $apikeyAkun;
     private $deviceId;
 
     function __construct()
     {
-        $this->apikey = env('STARSENDER_API_KEY');
+        $this->apikey = env('STARSENDER_KEY');
+        $this->apikeyAkun = env('STARSENDER_API_KEY');
         $this->deviceId = env('STARSENDER_DEVICE_ID');
     }
 
     public function getStatusWa()
     {
-        $apikey=$this->apikey;
+        $apikey=$this->apikeyAkun;
 
         $curl = curl_init();
 
