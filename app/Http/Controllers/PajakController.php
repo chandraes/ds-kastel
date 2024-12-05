@@ -163,7 +163,7 @@ class PajakController extends Controller
     public function ppn_keluaran_keranjang()
     {
         $db = new PpnKeluaran();
-        $data = $db->with('invoiceJual.konsumen', 'invoiceJual.konsumen_temp')->where('is_keranjang', 1)->where('is_finish', 0)->get();
+        $data = $db->with('invoiceJual.konsumen')->where('is_keranjang', 1)->where('is_finish', 0)->get();
         $dbRekap = new RekapPpn();
         $saldoMasukan = $dbRekap->saldoTerakhir();
 
