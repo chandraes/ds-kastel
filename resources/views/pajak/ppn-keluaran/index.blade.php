@@ -97,7 +97,7 @@
                     <td class="text-center align-middle">
                         @if ($d->invoiceJual)
                         <a href="{{route('billing.invoice-jual.detail', ['invoice' => $d->invoice_jual_id])}}">
-                            {{$d->invoiceJual->kode}}
+                            {{$d->invoiceJual->invoice}}
                         </a>
                         @endif
 
