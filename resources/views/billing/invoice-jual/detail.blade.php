@@ -8,7 +8,7 @@
     </div>
     <div class="row mb-3 d-flex">
         <div class="col-md-6">
-            <a href="{{route('billing.invoice-jual')}}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i>
+            <a href="{{url()->previous()}}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i>
                 Kembali</a>
         </div>
     </div>
