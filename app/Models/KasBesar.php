@@ -3,7 +3,10 @@
 namespace App\Models;
 
 use App\Models\db\CostOperational;
+use App\Models\db\Kreditor;
+use App\Models\db\Pajak;
 use App\Models\Legalitas\LegalitasDokumen;
+use App\Models\Rekap\BungaInvestor;
 use App\Models\transaksi\InvoiceBelanja;
 use App\Services\StarSender;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -341,16 +344,14 @@ class KasBesar extends Model
 
     public function sendWa($tujuan, $pesan)
     {
-        $send = new StarSender($tujuan, $pesan);
-        $res = $send->sendGroup();
-
-        // $status = ($res == 'true') ? 1 : 0;
-
         $store = PesanWa::create([
             'pesan' => $pesan,
             'tujuan' => $tujuan,
             'status' => 0,
         ]);
+
+        $send = new StarSender($tujuan, $pesan);
+        $res = $send->sendGroup();
 
         if ($res == 'true') {
             $store->update(['status' => 1]);
@@ -704,6 +705,123 @@ class KasBesar extends Model
                     'message' => $th->getMessage(),
                 ];
 
+        }
+    }
+
+    public function bunga_investor($data)
+    {
+        $kreditor = Kreditor::find($data['kreditor_id']);
+
+        $pph_val = Pajak::where('untuk', 'pph-investor')->first()->persen / 100;
+        $data['nominal'] = str_replace('.', '', $data['nominal_transaksi']);
+        $data['pph'] = $kreditor->apa_pph == 1 ? $data['nominal'] * $pph_val : 0;
+        $data['total'] = $data['nominal'] - $data['pph'];
+
+        $saldo = $this->saldoTerakhir();
+        $pesan = [];
+
+        if($data['total'] > $saldo){
+            return [
+                'status' => 'error',
+                'message' => 'Saldo kas besar tidak mencukupi!! Sisa Saldo : Rp. '.number_format($saldo, 0, ',', '.'),
+            ];
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $storeBunga = BungaInvestor::create([
+                'kreditor_id' => $data['kreditor_id'],
+                'nominal' => $data['nominal'],
+                'pph' => $data['pph'],
+                'total' => $data['total'],
+            ]);
+
+            $kas = [
+                'tanggal' => date('Y-m-d'),
+                'uraian' => 'Bunga Kreditur '.$kreditor->nama,
+                'jenis' => 0,
+                'nominal' => $storeBunga->total,
+                'saldo' => $this->saldoTerakhir() - $storeBunga->total,
+                'nama_rek' => substr($data['transfer_ke'], 0, 15),
+                'bank' => $data['bank'],
+                'no_rek' => $data['no_rekening'],
+                'modal_investor_terakhir' => $this->modalInvestorTerakhir(),
+
+            ];
+
+            $storeKas = $this->create($kas);
+
+            $pesan[] =    "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
+                        "*Form Bunga Kreditur*\n".
+                        "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
+                        "Nama Kreditur : ".$kreditor->nama."\n\n".
+                        "Nilai      : *Rp. ".number_format($storeBunga->total, 0, ',', '.')."*\n\n".
+                        "Ditransfer ke rek:\n\n".
+                        "Bank      : ".$storeKas->bank."\n".
+                        "Nama    : ".$storeKas->nama_rek."\n".
+                        "No. Rek : ".$storeKas->no_rek."\n\n".
+                        "==========================\n".
+                        "Sisa Saldo Kas Besar : \n".
+                        "Rp. ".number_format($this->saldoTerakhir(), 0, ',', '.')."\n\n".
+                        "Total Modal Investor : \n".
+                        "Rp. ".number_format($this->modalInvestorTerakhir(), 0, ',', '.')."\n\n".
+                        "Terima kasih 🙏🙏🙏\n";
+
+            if ($kreditor->apa_pph == 1) {
+
+                $kasPph = [
+                    'tanggal' => date('Y-m-d'),
+                    'uraian' => 'PPH Bunga Kreditur '.$kreditor->nama,
+                    'jenis' => 0,
+                    'nominal' => $storeBunga->pph,
+                    'saldo' => $this->saldoTerakhir() - $storeBunga->pph,
+                    'nama_rek' => substr("Pajak", 0, 15),
+                    'bank' => "Pajak",
+                    'no_rek' => "Rekening Pajak",
+                    'modal_investor_terakhir' => $this->modalInvestorTerakhir(),
+
+                ];
+
+                $storePph = $this->create($kasPph);
+
+                $pesan[] =   "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
+                            "*Form PPh Bunga Kreditur*\n".
+                            "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
+                            "Nilai PPH        : *Rp. ".number_format($storePph->nominal, 0, ',', '.')."*\n\n".
+                            "Ditransfer ke rek:\n\n".
+                            "Bank      : ".$storePph->bank."\n".
+                            "Nama    : ".$storePph->nama_rek."\n".
+                            "No. Rek : ".$storePph->no_rek."\n\n".
+                            "==========================\n".
+                            "Sisa Saldo Kas Besar : \n".
+                            "Rp. ".number_format($this->saldoTerakhir(), 0, ',', '.')."\n\n".
+                            "Total Modal Investor : \n".
+                            "Rp. ".number_format($this->modalInvestorTerakhir(), 0, ',', '.')."\n\n".
+                            "Terima kasih 🙏🙏🙏\n";
+            }
+
+            DB::commit();
+
+            $tujuan = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
+
+            foreach ($pesan as $key => $value) {
+                $this->sendWa($tujuan, $value);
+            }
+
+            return [
+                'status' => 'success',
+                'message' => 'Berhasil menambahkan data',
+            ];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+
+            return [
+                'status' => 'error',
+                'message' => "Gagal Menyimpan Data. " . $th->getMessage(),
+            ];
         }
     }
 

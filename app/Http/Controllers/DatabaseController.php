@@ -14,6 +14,7 @@ use App\Models\db\Packaging;
 use App\Models\db\Satuan;
 use App\Models\db\Supplier;
 use App\Models\db\Konsumen;
+use App\Models\db\Kreditor;
 use App\Models\db\Pajak;
 use App\Models\Pengelola;
 use App\Models\db\Product;
@@ -794,5 +795,55 @@ class DatabaseController extends Controller
         $kemasan->update($data);
 
         return redirect()->route('db.harga-jual')->with('success', 'Data berhasil diupdate');
+    }
+
+    public function kreditor()
+    {
+        $data = Kreditor::where('is_active', 1)->get();
+
+        return view('db.kreditor.index', [
+            'data' => $data
+        ]);
+    }
+
+    public function kreditor_store(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+            'persen' => 'required',
+            'npwp' => 'required',
+            'no_rek' => 'required',
+            'nama_rek' => 'required',
+            'bank' => 'required',
+            'apa_pph' => 'required',
+        ]);
+
+        Kreditor::create($data);
+
+        return redirect()->back()->with('success', 'Data berhasil ditambahkan');
+    }
+
+    public function kreditor_update(Kreditor $kreditor, Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+            'persen' => 'required',
+            'npwp' => 'required',
+            'no_rek' => 'required',
+            'nama_rek' => 'required',
+            'bank' => 'required',
+            'apa_pph' => 'required',
+        ]);
+
+        $kreditor->update($data);
+
+        return redirect()->back()->with('success', 'Data berhasil diubah');
+    }
+
+    public function kreditor_destroy(Kreditor $kreditor)
+    {
+        $kreditor->update(['is_active' => 0]);
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 }
