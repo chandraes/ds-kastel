@@ -738,7 +738,6 @@ class KasBesar extends Model
             ]);
 
             $kas = [
-                'tanggal' => date('Y-m-d'),
                 'uraian' => 'Bunga Kreditur '.$kreditor->nama,
                 'jenis' => 0,
                 'nominal' => $storeBunga->total,

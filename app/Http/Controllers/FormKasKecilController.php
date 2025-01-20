@@ -49,7 +49,7 @@ class FormKasKecilController extends Controller
                     "No. Rek : ".$store->no_rek."\n\n".
                     "==========================\n".
                     "Sisa Saldo Kas Besar : \n".
-                    "Rp. ".number_format($saldo, 0, ',', '.')."\n\n".
+                    "Rp. ".number_format($kb->saldoTerakhir(), 0, ',', '.')."\n\n".
                     "Sisa Saldo Kas Kecil : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n";
